@@ -1,0 +1,22 @@
+int soma(int n1, float n2) {
+	return (n1 + n2);
+}
+
+int invalido(int n) {
+	int list n;
+	int list m;
+
+	return m;
+}
+
+int main() {
+	int n;
+	n = 1+1;
+
+	if (n == 2 {
+		write("Correto");
+	} else {
+		write("Errado")
+	}
+	return 0; 
+}

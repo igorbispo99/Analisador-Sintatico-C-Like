@@ -1,0 +1,11 @@
+int main() {
+	float list l;
+	int i;
+	l = NIL;
+	for (i = 0; i < 10; i = i + 1) {
+		float temp;
+		read(temp);
+		l = temp : l;
+	}
+	return 0;
+}

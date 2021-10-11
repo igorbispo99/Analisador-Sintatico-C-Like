@@ -1,0 +1,20 @@
+Igor Bispo de Moraes
+170050432
+Tradutores 2021/1
+
+
+## Como compilar:
+
+Neste diretório, execute: 
+
+$ make all
+
+Será gerado um arquivo executável na pasta bin
+
+## Como executar:
+
+Vá até a pasta bin e execute:
+
+$ ./parser <arquivo de entrada>
+
+Serão providos quatro arquivos de teste na pasta samples/, dois com casos de sucesso (example_1.test e example_2.test) e dois com erros sintáticos e semânticos (erro1.test e erro2.test).

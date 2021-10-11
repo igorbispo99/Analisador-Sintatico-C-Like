@@ -1,0 +1,17 @@
+int is_odd(int n) {
+	return (n / 2 == 0);
+}
+
+int mult(int n) {
+	return n * 10;
+}
+
+int main() {
+	int list l;
+	l = 1 : l;
+	l = 2 : l;
+	l = 3 : l;
+	l = 4 : l;
+
+	return 0;
+}

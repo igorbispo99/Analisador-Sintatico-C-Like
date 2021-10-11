@@ -1,0 +1,37 @@
+#ifndef SYMBOL_TABLE_H_
+#define SYMBOL_TABLE_H_
+
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdbool.h>
+
+typedef struct {
+    char** symbol;
+    uint16_t* scope;
+    char** type;
+    bool* is_var;
+
+    uint16_t n_lines;
+} symbol_table;
+
+typedef struct{
+    uint16_t* stack;
+    uint16_t stack_size;
+    uint16_t current_n;
+} scope_t;
+
+
+symbol_table* new_symbol_table();
+symbol_table* add_row_symbol_table(symbol_table* table, const char* symbol, const char* type, uint16_t scope, bool is_var);
+
+void show_table(symbol_table* table);
+void free_table(symbol_table* table);
+
+scope_t* new_scope_stack();
+void increase_depth_scope(scope_t* scp);
+void decrease_depth_scope(scope_t* scp);
+void free_scope(scope_t* scp);
+
+#endif
