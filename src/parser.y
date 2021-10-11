@@ -35,7 +35,7 @@
 %type <state> GlobalDef GlobalDec Declaration ParamList CompStatement SelStatement JmpStatement LogicalAndExpression
 %type <state> FunctionDefinition Definition Statement StatementExp ExpStatement ItStatement Expression LogicalOrExpression
 %type <state> EqualityExpression RelationalExpression AdditiveExpression MultiplicativeExpression
-%type <state> UnaryExpression UnaryOperator  PrimaryExpression FunctionRet ExpAtt Params
+%type <state> UnaryExpression PrimaryExpression FunctionRet ExpAtt Params
 %type <num> NUM_CONST 
 %type <string> IDENTIFIER TYPE SEMI LIST
 %type <tree> ROOT_TREE
@@ -258,56 +258,120 @@ Expression:
 
 LogicalOrExpression:
 		LogicalAndExpression { $$ = $1; }
-	|	LogicalOrExpression OR LogicalAndExpression { $$ = $3; }
+	|	LogicalOrExpression OR LogicalAndExpression {
+			$$ = new_node("OR", root);
+			add_child($$, $1);
+			add_child($$, $3);
+
+		}
 		;
 
 LogicalAndExpression:
-        LogicalAndExpression AND EqualityExpression { $$ = $3; }
-	|	EqualityExpression {$$ = $1;}
-		;
+		EqualityExpression {$$ = $1;}
+    |	LogicalAndExpression AND EqualityExpression {
+			$$ = new_node("AND", root);
+			add_child($$, $1);
+			add_child($$, $3);
+		}
+	;
 
 EqualityExpression:
 	    RelationalExpression { $$ = $1; }
-	|	EqualityExpression EQ RelationalExpression { $$ = $3; }
+	|	EqualityExpression EQ RelationalExpression {
+			$$ = new_node("EQ", root);
+			add_child($$, $1);
+			add_child($$, $3);
+		}
 		;
 
 RelationalExpression:
 			AdditiveExpression { $$ = $1; }
-	|       RelationalExpression LEQ AdditiveExpression { $$ = $3; }
-    |       RelationalExpression GEQ AdditiveExpression { $$ = $3; }
-	|       RelationalExpression LT AdditiveExpression { $$ = $3; }
-	|       RelationalExpression GT AdditiveExpression { $$ = $3; }
-	|		RelationalExpression DIF AdditiveExpression { $$ = $3; }
+	|       RelationalExpression LEQ AdditiveExpression {
+				$$ = new_node("LEQ", root);
+				add_child($$, $1);
+				add_child($$, $3);
+		}
+    |       RelationalExpression GEQ AdditiveExpression {
+				$$ = new_node("GEQ", root);
+				add_child($$, $1);
+				add_child($$, $3);
+	}
+	|       RelationalExpression LT AdditiveExpression {
+				$$ = new_node("LT", root);
+				add_child($$, $1);
+				add_child($$, $3);
+	}
+	|       RelationalExpression GT AdditiveExpression {
+				$$ = new_node("GT", root);
+				add_child($$, $1);
+				add_child($$, $3);
+	}
+	|		RelationalExpression DIF AdditiveExpression {
+				$$ = new_node("DIF", root);
+				add_child($$, $1);
+				add_child($$, $3);
+	}
 		;
 
 AdditiveExpression:
 		MultiplicativeExpression { $$ = $1; }
-	|	AdditiveExpression PLUS MultiplicativeExpression { $$ = $3; }
-    |	AdditiveExpression MIN MultiplicativeExpression { $$ = $3; }
+	|	AdditiveExpression PLUS MultiplicativeExpression {
+			$$ = new_node("PLUS", root);
+			add_child($$, $1);
+			add_child($$, $3);
+	}
+    |	AdditiveExpression MIN MultiplicativeExpression {
+			$$ = new_node("MIN", root);
+			add_child($$, $1);
+			add_child($$, $3);
+	}
 		;
 
 MultiplicativeExpression:
 		UnaryExpression { $$ = $1; }
-	|	MultiplicativeExpression MUL UnaryExpression { $$ = $3; }
-	|	MultiplicativeExpression DIV UnaryExpression { $$ = $3; }
-	|	MultiplicativeExpression TR UnaryExpression { $$ = $3; }
-	|   MultiplicativeExpression TWD UnaryExpression {$$ = $3;}
-	|   MultiplicativeExpression MAP UnaryExpression {$$ = $3;}
-	|   MultiplicativeExpression FIL UnaryExpression {$$ = $3;}
-		;
+	|	MultiplicativeExpression MUL UnaryExpression {
+			$$ = new_node("MUL", root);
+			add_child($$, $1);
+			add_child($$, $3);
+	}
+	|	MultiplicativeExpression DIV UnaryExpression {
+			$$ = new_node("DIV", root);
+			add_child($$, $1);
+			add_child($$, $3);
+	}
+	|	MultiplicativeExpression TR UnaryExpression {
+			$$ = new_node("TR", root);
+			add_child($$, $1);
+			add_child($$, $3);
+	}
+	|   MultiplicativeExpression TWD UnaryExpression {
+			$$ = new_node("TWD", root);
+			add_child($$, $1);
+			add_child($$, $3);
+	}
+	|   MultiplicativeExpression MAP UnaryExpression {
+			$$ = new_node("MAP", root);
+			add_child($$, $1);
+			add_child($$, $3);
+	}
+	|   MultiplicativeExpression FIL UnaryExpression {
+			$$ = new_node("FIL", root);
+			add_child($$, $1);
+			add_child($$, $3);
+	}
+	;
 
 UnaryExpression:
 		PrimaryExpression { $$ = $1; }
-	|	UnaryOperator PrimaryExpression { $$ = $2; }
-		;
-
-UnaryOperator:
-	    TNR { $$ = new_node("UnaryOperator", root); }
-		|
-		HD { $$ = new_node("UnaryOperator", root); }
-
-		;
-
+	|	TNR PrimaryExpression {
+			$$ = new_node("TNR", root);
+			add_child($$, $2);
+	}
+	|	HD PrimaryExpression {
+			$$ = new_node("HD", root);
+			add_child($$, $2);
+	}
+	;
 PrimaryExpression:
 		IDENTIFIER {$$ = new_node($1, root);}
 	|   NUM_CONST {
@@ -317,7 +381,7 @@ PrimaryExpression:
 		}
 	|	LP Expression RP {$$ = new_node("PrimaryExpression", root);  add_child($$, $2);}
 	|	IDENTIFIER LP Params RP {$$ = new_node("FunctionCall", root);  add_child($$, $3);}
-	|	NIL {$$ = new_node("PrimaryExpression", root);}
+	|	NIL {$$ = new_node("NIL", root);}
 	;
 
 Params:
@@ -328,10 +392,8 @@ Params:
 	Params COM Expression {$$ = new_node("Params", root); add_child($$, $1);}
 ;
 
-
 %%
 int yydebug = 1;
-syntax_tree* root;
 
 syntax_tree* parse() {
     root = new_syntax_tree();
@@ -342,14 +404,15 @@ syntax_tree* parse() {
 
 	show_table(s_table);
 
-	char* line = malloc(1);
+	char* line = (char*) malloc(1024);
+	line[0] = (char) 0;
+	show_tree(root->element_list[root->tree_size-1], line, true);
 
-	show_tree(root, );
 	free_table(s_table);
 	yylex_destroy();
 	free_tree(root);
 	free_scope(scope);
-	
+
 	free(line);
 
     return root;

@@ -51,12 +51,15 @@ syntax_tree_node* pop_search_queue(syntax_tree_node*** queue, uint32_t* q_size) 
 }
 
 void show_tree(syntax_tree_node* node, char* line, bool is_last) {
-    printf("%s +- %s\n",  line, node->element);
-    strcat(line, is_last ? "   " : "|   ");
+    printf("%s+- %s\n",  line, node->element);
+    char* new_line = (char*) malloc(1024);
+    strcpy(new_line, line);
 
+    strcat(new_line, is_last ? "  " : "|  ");
     for (int i = 0; i < node->n_children; i++) {
-        show_tree(node->children[i], line, i == (node->n_children - 1));
+        show_tree(node->children[i], new_line, i == (node->n_children - 1));
     }
+    free(new_line);
 }
 
 void free_tree(syntax_tree* tree) {

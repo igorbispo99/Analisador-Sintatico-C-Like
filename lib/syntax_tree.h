@@ -24,6 +24,6 @@ syntax_tree* new_syntax_tree();
 syntax_tree_node* new_node(char* element, syntax_tree* tree);
 syntax_tree_node* add_child(syntax_tree_node* parent, syntax_tree_node* child);
 void free_tree(syntax_tree* tree);
-void show_tree(syntax_tree_node* node, char* line, bool is_last) {
+void show_tree(syntax_tree_node* node, char* line, bool is_last);
 
 #endif
