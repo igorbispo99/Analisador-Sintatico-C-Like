@@ -51,7 +51,8 @@ syntax_tree_node* pop_search_queue(syntax_tree_node*** queue, uint32_t* q_size) 
 }
 
 void show_tree(syntax_tree_node* node, char* line, bool is_last) {
-    printf("%s+- %s\n",  line, node->element);
+    if (!node) return;
+    printf("%s+- \033[92m%s\033[0m\n",  line, node->element);
     char* new_line = (char*) malloc(1024);
     strcpy(new_line, line);
 

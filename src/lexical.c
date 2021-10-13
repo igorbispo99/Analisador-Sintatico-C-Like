@@ -917,7 +917,7 @@ YY_RULE_SETUP
 case 25:
 YY_RULE_SETUP
 #line 49 "src/lexical.l"
-{n_column += yyleng;return EQ;}
+{n_column += yyleng;return COMP_EQ;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP

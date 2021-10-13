@@ -46,7 +46,7 @@ list {n_column += yyleng;return LIST;}
 [!] {n_column += yyleng;return TNR;}
 [?] {n_column += yyleng;return HD;}
 [=] {n_column += yyleng; return ATT;}
-[=][=] {n_column += yyleng;return EQ;}
+[=][=] {n_column += yyleng;return COMP_EQ;}
 [&][&] {n_column += yyleng;return AND;}
 [|][|] {n_column += yyleng;return OR;}
 

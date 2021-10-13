@@ -62,8 +62,9 @@ extern int yydebug;
 	syntax_tree* root;
 	symbol_table* s_table;
 	scope_t* scope;
+	uint16_t last_f;
 
-#line 67 "src/parser.h"
+#line 68 "src/parser.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -98,7 +99,7 @@ extern int yydebug;
     TNR = 279,                     /* TNR  */
     HD = 280,                      /* HD  */
     ATT = 281,                     /* ATT  */
-    EQ = 282,                      /* EQ  */
+    COMP_EQ = 282,                 /* COMP_EQ  */
     AND = 283,                     /* AND  */
     OR = 284,                      /* OR  */
     RP = 285,                      /* RP  */
@@ -116,14 +117,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 22 "src/parser.y"
+#line 23 "src/parser.y"
 
     char string[256];
     double num;
     syntax_tree_node* state;
 	syntax_tree* tree;
 
-#line 127 "src/parser.h"
+#line 128 "src/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

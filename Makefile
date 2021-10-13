@@ -12,6 +12,7 @@ all: bin/parser
 bin/parser: obj/parser.o obj/lexical.o obj/main.o obj/symbol_table.o obj/syntax_tree.o
 	mkdir -p bin
 	gcc -o $@ $^ $(CFLAGS)
+	cp bin/parser tradutor
 
 src/parser.c: src/parser.y
 #	bison -o $@ -d $^ --debug -Wcounterexamples
@@ -46,4 +47,5 @@ clean:
 	rm -rf bin
 	rm src/lexical.c
 	rm src/parser.c
+	rm tradutor
 

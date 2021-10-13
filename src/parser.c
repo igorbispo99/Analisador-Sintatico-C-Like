@@ -120,7 +120,7 @@ enum yysymbol_kind_t
   YYSYMBOL_TNR = 24,                       /* TNR  */
   YYSYMBOL_HD = 25,                        /* HD  */
   YYSYMBOL_ATT = 26,                       /* ATT  */
-  YYSYMBOL_EQ = 27,                        /* EQ  */
+  YYSYMBOL_COMP_EQ = 27,                   /* COMP_EQ  */
   YYSYMBOL_AND = 28,                       /* AND  */
   YYSYMBOL_OR = 29,                        /* OR  */
   YYSYMBOL_RP = 30,                        /* RP  */
@@ -137,7 +137,7 @@ enum yysymbol_kind_t
   YYSYMBOL_Declaration = 41,               /* Declaration  */
   YYSYMBOL_Definition = 42,                /* Definition  */
   YYSYMBOL_FunctionDefinition = 43,        /* FunctionDefinition  */
-  YYSYMBOL_FunctionRet = 44,               /* FunctionRet  */
+  YYSYMBOL_FunctionHead = 44,              /* FunctionHead  */
   YYSYMBOL_ParamList = 45,                 /* ParamList  */
   YYSYMBOL_Statement = 46,                 /* Statement  */
   YYSYMBOL_CompStatement = 47,             /* CompStatement  */
@@ -546,14 +546,14 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    52,    52,    56,    60,    68,    72,    76,    83,    91,
-     102,   109,   118,   126,   139,   146,   158,   162,   172,   173,
-     174,   175,   176,   177,   181,   188,   189,   194,   199,   207,
-     212,   221,   222,   229,   236,   245,   249,   256,   260,   261,
-     270,   271,   279,   280,   288,   289,   294,   299,   304,   309,
-     317,   318,   323,   331,   332,   337,   342,   347,   352,   357,
-     365,   366,   370,   376,   377,   382,   383,   384,   388,   390,
-     392
+       0,    53,    53,    57,    61,    69,    72,    75,    82,    91,
+     102,   114,   124,   132,   149,   163,   183,   187,   197,   198,
+     199,   200,   201,   202,   206,   212,   213,   218,   223,   231,
+     236,   245,   246,   252,   259,   268,   272,   279,   283,   284,
+     293,   294,   302,   303,   311,   312,   317,   322,   327,   332,
+     340,   341,   346,   354,   355,   360,   365,   370,   375,   380,
+     388,   389,   393,   399,   400,   405,   406,   407,   411,   413,
+     415
 };
 #endif
 
@@ -572,14 +572,15 @@ static const char *const yytname[] =
   "\"end of file\"", "error", "\"invalid token\"", "TYPE", "IDENTIFIER",
   "LIST", "LP", "SEMI", "COM", "RCB", "LCB", "TWD", "PLUS", "MIN", "MUL",
   "LT", "GT", "LEQ", "GEQ", "DIF", "MAP", "FIL", "DIV", "TR", "TNR", "HD",
-  "ATT", "EQ", "AND", "OR", "RP", "NUM_CONST", "NIL", "IF", "ELSE", "FOR",
-  "RET", "$accept", "ROOT_TREE", "GlobalDef", "GlobalDec", "Declaration",
-  "Definition", "FunctionDefinition", "FunctionRet", "ParamList",
-  "Statement", "CompStatement", "StatementExp", "SelStatement",
-  "ExpStatement", "JmpStatement", "ItStatement", "ExpAtt", "Expression",
-  "LogicalOrExpression", "LogicalAndExpression", "EqualityExpression",
-  "RelationalExpression", "AdditiveExpression", "MultiplicativeExpression",
-  "UnaryExpression", "PrimaryExpression", "Params", YY_NULLPTR
+  "ATT", "COMP_EQ", "AND", "OR", "RP", "NUM_CONST", "NIL", "IF", "ELSE",
+  "FOR", "RET", "$accept", "ROOT_TREE", "GlobalDef", "GlobalDec",
+  "Declaration", "Definition", "FunctionDefinition", "FunctionHead",
+  "ParamList", "Statement", "CompStatement", "StatementExp",
+  "SelStatement", "ExpStatement", "JmpStatement", "ItStatement", "ExpAtt",
+  "Expression", "LogicalOrExpression", "LogicalAndExpression",
+  "EqualityExpression", "RelationalExpression", "AdditiveExpression",
+  "MultiplicativeExpression", "UnaryExpression", "PrimaryExpression",
+  "Params", YY_NULLPTR
 };
 
 static const char *
@@ -2401,63 +2402,62 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* ROOT_TREE: GlobalDef  */
-#line 52 "src/parser.y"
+#line 53 "src/parser.y"
                   {;}
-#line 2407 "src/parser.c"
+#line 2408 "src/parser.c"
     break;
 
   case 3: /* GlobalDef: GlobalDec  */
-#line 56 "src/parser.y"
+#line 57 "src/parser.y"
                   {
-			(yyval.state) = new_node("GlobalDef", root);
+			(yyval.state) = new_node("GlobalDefinition", root);
 			add_child((yyval.state), (yyvsp[0].state));
 		}
-#line 2416 "src/parser.c"
+#line 2417 "src/parser.c"
     break;
 
   case 4: /* GlobalDef: GlobalDef GlobalDec  */
-#line 60 "src/parser.y"
+#line 61 "src/parser.y"
                                 {
-			(yyval.state) = new_node("GlobalDef", root);
+			(yyval.state) = new_node("GlobalDefinition", root);
 			add_child((yyval.state), (yyvsp[-1].state));
 			add_child((yyval.state), (yyvsp[0].state));
 			}
-#line 2426 "src/parser.c"
+#line 2427 "src/parser.c"
     break;
 
   case 5: /* GlobalDec: Declaration  */
-#line 68 "src/parser.y"
+#line 69 "src/parser.y"
                     {
-			(yyval.state) = new_node("GlobalDec", root);
-			add_child((yyval.state), (yyvsp[0].state));
+			(yyval.state) = (yyvsp[0].state);
 		}
 #line 2435 "src/parser.c"
     break;
 
   case 6: /* GlobalDec: FunctionDefinition  */
 #line 72 "src/parser.y"
-                               {
-			(yyval.state) = new_node("GlobalDec", root);
-			add_child((yyval.state), (yyvsp[0].state));
+                             {
+			(yyval.state) = (yyvsp[0].state);
 		}
-#line 2444 "src/parser.c"
+#line 2443 "src/parser.c"
     break;
 
   case 7: /* GlobalDec: error  */
-#line 76 "src/parser.y"
+#line 75 "src/parser.y"
                         {
 			yyerrok;
 			(yyval.state) = NULL;
 		}
-#line 2453 "src/parser.c"
+#line 2452 "src/parser.c"
     break;
 
   case 8: /* Declaration: TYPE IDENTIFIER SEMI  */
-#line 83 "src/parser.y"
+#line 82 "src/parser.y"
                                      {
-			char str[128];
+			char str[256];
 			strcpy(str, (yyvsp[-2].string));
 			add_row_symbol_table(s_table, (yyvsp[-1].string), (yyvsp[-2].string), scope->stack[0], true);
+			strcat(str, " ");
 			(yyval.state) = new_node(strcat(str, (yyvsp[-1].string)), root);
 
 		}
@@ -2467,7 +2467,7 @@ yyreduce:
   case 9: /* Declaration: TYPE LIST IDENTIFIER SEMI  */
 #line 91 "src/parser.y"
                                           {
-			char str[128];
+			char str[256];
 			strcpy(str, (yyvsp[-3].string));
 			strcat(str," LIST ");
 			add_row_symbol_table(s_table, (yyvsp[-1].string), str, scope->stack[0], true);
@@ -2480,530 +2480,553 @@ yyreduce:
   case 10: /* Definition: IDENTIFIER ATT Expression  */
 #line 102 "src/parser.y"
                                           {
-			(yyval.state) = new_node("Definition", root);
+			(yyval.state) = new_node("=", root);
+
+			char str[256];
+			strcpy(str, (yyvsp[-2].string));
+
+			add_child((yyval.state), new_node(str, root));
 			add_child((yyval.state), (yyvsp[0].state));
 		}
-#line 2487 "src/parser.c"
+#line 2492 "src/parser.c"
     break;
 
-  case 11: /* FunctionDefinition: FunctionRet LP TYPE IDENTIFIER RP CompStatement  */
-#line 109 "src/parser.y"
-                                                   {
+  case 11: /* FunctionDefinition: FunctionHead LP TYPE IDENTIFIER RP CompStatement  */
+#line 114 "src/parser.y"
+                                                    {
 		(yyval.state) = new_node("FunctionDefinition", root);
 		add_child((yyval.state), (yyvsp[-5].state));
 		add_child((yyval.state), (yyvsp[0].state));
 		add_row_symbol_table(s_table, (yyvsp[-2].string), (yyvsp[-3].string), scope->stack[0], true);
+		push_arg_to_arglist(s_table, (yyvsp[-3].string), last_f);
 		decrease_depth_scope(scope);
 
 	}
-#line 2500 "src/parser.c"
+#line 2506 "src/parser.c"
     break;
 
-  case 12: /* FunctionDefinition: FunctionRet LP RP CompStatement  */
-#line 118 "src/parser.y"
-                                       {
+  case 12: /* FunctionDefinition: FunctionHead LP RP CompStatement  */
+#line 124 "src/parser.y"
+                                        {
 		(yyval.state) = new_node("FunctionDefinition", root);
 		add_child((yyval.state), (yyvsp[-3].state));
 		add_child((yyval.state), (yyvsp[0].state));
 		decrease_depth_scope(scope);
 
 	}
-#line 2512 "src/parser.c"
+#line 2518 "src/parser.c"
     break;
 
-  case 13: /* FunctionDefinition: FunctionRet LP TYPE IDENTIFIER COM TYPE IDENTIFIER ParamList RP CompStatement  */
-#line 126 "src/parser.y"
-                                                                                     {
+  case 13: /* FunctionDefinition: FunctionHead LP TYPE IDENTIFIER COM TYPE IDENTIFIER ParamList RP CompStatement  */
+#line 132 "src/parser.y"
+                                                                                      {
 		(yyval.state) = new_node("FunctionDefinition", root);
 		add_child((yyval.state), (yyvsp[-9].state));
 		add_child((yyval.state), (yyvsp[-2].state));
 		add_child((yyval.state), (yyvsp[0].state));
 		add_row_symbol_table(s_table, (yyvsp[-6].string), (yyvsp[-7].string), scope->stack[0], true);
+		push_arg_to_arglist(s_table, (yyvsp[-7].string), last_f);
+
 		add_row_symbol_table(s_table, (yyvsp[-3].string), (yyvsp[-4].string), scope->stack[0], true);
+		push_arg_to_arglist(s_table, (yyvsp[-4].string), last_f);
+
 		decrease_depth_scope(scope);
 
 	}
-#line 2527 "src/parser.c"
+#line 2537 "src/parser.c"
     break;
 
-  case 14: /* FunctionRet: TYPE IDENTIFIER  */
-#line 139 "src/parser.y"
+  case 14: /* FunctionHead: TYPE IDENTIFIER  */
+#line 149 "src/parser.y"
                         {
-		(yyval.state) = new_node("FunctionRet", root);
+		char str[256];
+		strcpy(str, (yyvsp[0].string));
+		strcat(str, "()");
+
+		(yyval.state) = new_node(str, root);
 		add_row_symbol_table(s_table, (yyvsp[0].string), (yyvsp[-1].string), scope->stack[0], false);
+
+		last_f = s_table->n_lines -1;
+
 		increase_depth_scope(scope);
 
 	}
-#line 2538 "src/parser.c"
+#line 2555 "src/parser.c"
     break;
 
-  case 15: /* FunctionRet: TYPE LIST IDENTIFIER  */
-#line 146 "src/parser.y"
+  case 15: /* FunctionHead: TYPE LIST IDENTIFIER  */
+#line 163 "src/parser.y"
                              {
-		(yyval.state) = new_node("FunctionRet", root);
-		char str[128];
+		char f_name[256];
+		strcpy(f_name, (yyvsp[0].string));
+		strcat(f_name, "()");
+
+		(yyval.state) = new_node(f_name, root);
+
+		char str[256];
 		strcpy(str, (yyvsp[-2].string));
 		strcat(str," LIST ");
 		add_row_symbol_table(s_table, (yyvsp[0].string), str, scope->stack[0], false);
+
+		last_f = s_table->n_lines -1;
+
 		increase_depth_scope(scope);
 
 	}
-#line 2552 "src/parser.c"
+#line 2577 "src/parser.c"
     break;
 
   case 16: /* ParamList: %empty  */
-#line 158 "src/parser.y"
+#line 183 "src/parser.y"
              {
 			(yyval.state) = new_node("ParamList", root);
 		}
-#line 2560 "src/parser.c"
+#line 2585 "src/parser.c"
     break;
 
   case 17: /* ParamList: COM TYPE IDENTIFIER ParamList  */
-#line 162 "src/parser.y"
+#line 187 "src/parser.y"
                                               {
 			(yyval.state) = new_node("ParamList", root);
 			add_child((yyval.state), (yyvsp[0].state));
 			add_row_symbol_table(s_table, (yyvsp[-1].string), (yyvsp[-2].string), scope->stack[0], true);
 		}
-#line 2570 "src/parser.c"
+#line 2595 "src/parser.c"
     break;
 
   case 18: /* Statement: CompStatement  */
-#line 172 "src/parser.y"
+#line 197 "src/parser.y"
                               { (yyval.state) = (yyvsp[0].state); }
-#line 2576 "src/parser.c"
+#line 2601 "src/parser.c"
     break;
 
   case 19: /* Statement: JmpStatement  */
-#line 173 "src/parser.y"
+#line 198 "src/parser.y"
                          { (yyval.state) = (yyvsp[0].state); }
-#line 2582 "src/parser.c"
+#line 2607 "src/parser.c"
     break;
 
   case 20: /* Statement: SelStatement  */
-#line 174 "src/parser.y"
+#line 199 "src/parser.y"
                              { (yyval.state) = (yyvsp[0].state); }
-#line 2588 "src/parser.c"
+#line 2613 "src/parser.c"
     break;
 
   case 21: /* Statement: ItStatement  */
-#line 175 "src/parser.y"
+#line 200 "src/parser.y"
                             { (yyval.state) = (yyvsp[0].state); }
-#line 2594 "src/parser.c"
+#line 2619 "src/parser.c"
     break;
 
   case 22: /* Statement: ExpStatement  */
-#line 176 "src/parser.y"
+#line 201 "src/parser.y"
                              { (yyval.state) = (yyvsp[0].state); }
-#line 2600 "src/parser.c"
+#line 2625 "src/parser.c"
     break;
 
   case 23: /* Statement: error  */
-#line 177 "src/parser.y"
+#line 202 "src/parser.y"
                       {yyerrok; (yyval.state) = NULL;}
-#line 2606 "src/parser.c"
+#line 2631 "src/parser.c"
     break;
 
   case 24: /* CompStatement: LCB StatementExp  */
-#line 181 "src/parser.y"
+#line 206 "src/parser.y"
                                  {
-			(yyval.state) = new_node("CompStatement", root);
-			add_child((yyval.state), (yyvsp[0].state));
+			(yyval.state) =(yyvsp[0].state);
 		}
-#line 2615 "src/parser.c"
+#line 2639 "src/parser.c"
     break;
 
   case 25: /* StatementExp: RCB  */
-#line 188 "src/parser.y"
-                    { (yyval.state) = new_node("StatementExp", root); }
-#line 2621 "src/parser.c"
+#line 212 "src/parser.y"
+                    { (yyval.state) =NULL; }
+#line 2645 "src/parser.c"
     break;
 
   case 26: /* StatementExp: Declaration StatementExp  */
-#line 189 "src/parser.y"
+#line 213 "src/parser.y"
                                          {
 			(yyval.state) = new_node("StatementExp", root);
 			add_child((yyval.state), (yyvsp[-1].state));
 			add_child((yyval.state), (yyvsp[0].state));
 		}
-#line 2631 "src/parser.c"
+#line 2655 "src/parser.c"
     break;
 
   case 27: /* StatementExp: Definition StatementExp  */
-#line 194 "src/parser.y"
+#line 218 "src/parser.y"
                                         {
 			(yyval.state) = new_node("StatementExp", root);
 			add_child((yyval.state), (yyvsp[-1].state));
 			add_child((yyval.state), (yyvsp[0].state));
 		}
-#line 2641 "src/parser.c"
+#line 2665 "src/parser.c"
     break;
 
   case 28: /* StatementExp: Statement StatementExp  */
-#line 199 "src/parser.y"
-                                 {
+#line 223 "src/parser.y"
+                                       {
 			(yyval.state) = new_node("StatementExp", root);
 			add_child((yyval.state), (yyvsp[-1].state));
 			add_child((yyval.state), (yyvsp[0].state));
 		}
-#line 2651 "src/parser.c"
+#line 2675 "src/parser.c"
     break;
 
   case 29: /* SelStatement: IF LP Expression RP Statement  */
-#line 207 "src/parser.y"
+#line 231 "src/parser.y"
                                               {
 			(yyval.state) = new_node("SelStatement", root);
 			add_child((yyval.state), (yyvsp[-2].state));
 			add_child((yyval.state), (yyvsp[0].state));
 		}
-#line 2661 "src/parser.c"
+#line 2685 "src/parser.c"
     break;
 
   case 30: /* SelStatement: IF LP Expression RP Statement ELSE Statement  */
-#line 212 "src/parser.y"
+#line 236 "src/parser.y"
                                                              {
 			(yyval.state) = new_node("SelStatement", root);
 			add_child((yyval.state), (yyvsp[-4].state));
 			add_child((yyval.state), (yyvsp[-2].state));
 			add_child((yyval.state), (yyvsp[0].state));
 		}
-#line 2672 "src/parser.c"
-    break;
-
-  case 31: /* ExpStatement: SEMI  */
-#line 221 "src/parser.y"
-                     { (yyval.state) = new_node("ExpStatement", root); }
-#line 2678 "src/parser.c"
-    break;
-
-  case 32: /* ExpStatement: Expression SEMI  */
-#line 222 "src/parser.y"
-                                {
-			(yyval.state) = new_node("ExpStatement", root);
-			add_child((yyval.state), (yyvsp[-1].state));
-		}
-#line 2687 "src/parser.c"
-    break;
-
-  case 33: /* JmpStatement: RET ExpStatement  */
-#line 229 "src/parser.y"
-                                 {
-			(yyval.state) = new_node("JmpStatement", root);
-			add_child((yyval.state), (yyvsp[0].state));
-		}
 #line 2696 "src/parser.c"
     break;
 
+  case 31: /* ExpStatement: SEMI  */
+#line 245 "src/parser.y"
+                     { (yyval.state) = NULL; }
+#line 2702 "src/parser.c"
+    break;
+
+  case 32: /* ExpStatement: Expression SEMI  */
+#line 246 "src/parser.y"
+                                {
+			(yyval.state) = (yyvsp[-1].state);
+		}
+#line 2710 "src/parser.c"
+    break;
+
+  case 33: /* JmpStatement: RET ExpStatement  */
+#line 252 "src/parser.y"
+                                 {
+			(yyval.state) = new_node("RETURN", root);
+			add_child((yyval.state), (yyvsp[0].state));
+		}
+#line 2719 "src/parser.c"
+    break;
+
   case 34: /* ItStatement: FOR LP ExpAtt SEMI ExpAtt SEMI ExpAtt RP Statement  */
-#line 236 "src/parser.y"
+#line 259 "src/parser.y"
                                                                    {
-			(yyval.state) = new_node("For", root);
+			(yyval.state) = new_node("FOR", root);
 			add_child((yyval.state), (yyvsp[-6].state));
 			add_child((yyval.state), (yyvsp[-4].state));
 			add_child((yyval.state), (yyvsp[-2].state));
 			add_child((yyval.state), (yyvsp[0].state));
 		}
-#line 2708 "src/parser.c"
+#line 2731 "src/parser.c"
     break;
 
   case 35: /* ExpAtt: Expression  */
-#line 245 "src/parser.y"
+#line 268 "src/parser.y"
                    {
 		(yyval.state) = (yyvsp[0].state);
 	}
-#line 2716 "src/parser.c"
+#line 2739 "src/parser.c"
     break;
 
   case 36: /* ExpAtt: Definition  */
-#line 249 "src/parser.y"
+#line 272 "src/parser.y"
                    {
 		(yyval.state) = (yyvsp[0].state);
 	}
-#line 2724 "src/parser.c"
-    break;
-
-  case 37: /* Expression: LogicalOrExpression  */
-#line 256 "src/parser.y"
-                                    { (yyval.state) = (yyvsp[0].state); }
-#line 2730 "src/parser.c"
-    break;
-
-  case 38: /* LogicalOrExpression: LogicalAndExpression  */
-#line 260 "src/parser.y"
-                                     { (yyval.state) = (yyvsp[0].state); }
-#line 2736 "src/parser.c"
-    break;
-
-  case 39: /* LogicalOrExpression: LogicalOrExpression OR LogicalAndExpression  */
-#line 261 "src/parser.y"
-                                                            {
-			(yyval.state) = new_node("OR", root);
-			add_child((yyval.state), (yyvsp[-2].state));
-			add_child((yyval.state), (yyvsp[0].state));
-
-		}
 #line 2747 "src/parser.c"
     break;
 
-  case 40: /* LogicalAndExpression: EqualityExpression  */
-#line 270 "src/parser.y"
-                                   {(yyval.state) = (yyvsp[0].state);}
+  case 37: /* Expression: LogicalOrExpression  */
+#line 279 "src/parser.y"
+                                    { (yyval.state) = (yyvsp[0].state); }
 #line 2753 "src/parser.c"
     break;
 
+  case 38: /* LogicalOrExpression: LogicalAndExpression  */
+#line 283 "src/parser.y"
+                                     { (yyval.state) = (yyvsp[0].state); }
+#line 2759 "src/parser.c"
+    break;
+
+  case 39: /* LogicalOrExpression: LogicalOrExpression OR LogicalAndExpression  */
+#line 284 "src/parser.y"
+                                                            {
+			(yyval.state) = new_node("||", root);
+			add_child((yyval.state), (yyvsp[-2].state));
+			add_child((yyval.state), (yyvsp[0].state));
+
+		}
+#line 2770 "src/parser.c"
+    break;
+
+  case 40: /* LogicalAndExpression: EqualityExpression  */
+#line 293 "src/parser.y"
+                                   {(yyval.state) = (yyvsp[0].state);}
+#line 2776 "src/parser.c"
+    break;
+
   case 41: /* LogicalAndExpression: LogicalAndExpression AND EqualityExpression  */
-#line 271 "src/parser.y"
+#line 294 "src/parser.y"
                                                     {
-			(yyval.state) = new_node("AND", root);
+			(yyval.state) = new_node("&&", root);
 			add_child((yyval.state), (yyvsp[-2].state));
 			add_child((yyval.state), (yyvsp[0].state));
 		}
-#line 2763 "src/parser.c"
+#line 2786 "src/parser.c"
     break;
 
   case 42: /* EqualityExpression: RelationalExpression  */
-#line 279 "src/parser.y"
+#line 302 "src/parser.y"
                                  { (yyval.state) = (yyvsp[0].state); }
-#line 2769 "src/parser.c"
+#line 2792 "src/parser.c"
     break;
 
-  case 43: /* EqualityExpression: EqualityExpression EQ RelationalExpression  */
-#line 280 "src/parser.y"
-                                                           {
-			(yyval.state) = new_node("EQ", root);
+  case 43: /* EqualityExpression: EqualityExpression COMP_EQ RelationalExpression  */
+#line 303 "src/parser.y"
+                                                                {
+			(yyval.state) = new_node("==", root);
 			add_child((yyval.state), (yyvsp[-2].state));
 			add_child((yyval.state), (yyvsp[0].state));
 		}
-#line 2779 "src/parser.c"
+#line 2802 "src/parser.c"
     break;
 
   case 44: /* RelationalExpression: AdditiveExpression  */
-#line 288 "src/parser.y"
+#line 311 "src/parser.y"
                                            { (yyval.state) = (yyvsp[0].state); }
-#line 2785 "src/parser.c"
+#line 2808 "src/parser.c"
     break;
 
   case 45: /* RelationalExpression: RelationalExpression LEQ AdditiveExpression  */
-#line 289 "src/parser.y"
+#line 312 "src/parser.y"
                                                             {
-				(yyval.state) = new_node("LEQ", root);
+				(yyval.state) = new_node("<=", root);
 				add_child((yyval.state), (yyvsp[-2].state));
 				add_child((yyval.state), (yyvsp[0].state));
 		}
-#line 2795 "src/parser.c"
+#line 2818 "src/parser.c"
     break;
 
   case 46: /* RelationalExpression: RelationalExpression GEQ AdditiveExpression  */
-#line 294 "src/parser.y"
+#line 317 "src/parser.y"
                                                         {
-				(yyval.state) = new_node("GEQ", root);
+				(yyval.state) = new_node(">=", root);
 				add_child((yyval.state), (yyvsp[-2].state));
 				add_child((yyval.state), (yyvsp[0].state));
 	}
-#line 2805 "src/parser.c"
+#line 2828 "src/parser.c"
     break;
 
   case 47: /* RelationalExpression: RelationalExpression LT AdditiveExpression  */
-#line 299 "src/parser.y"
+#line 322 "src/parser.y"
                                                            {
-				(yyval.state) = new_node("LT", root);
+				(yyval.state) = new_node("<", root);
 				add_child((yyval.state), (yyvsp[-2].state));
 				add_child((yyval.state), (yyvsp[0].state));
 	}
-#line 2815 "src/parser.c"
+#line 2838 "src/parser.c"
     break;
 
   case 48: /* RelationalExpression: RelationalExpression GT AdditiveExpression  */
-#line 304 "src/parser.y"
+#line 327 "src/parser.y"
                                                            {
-				(yyval.state) = new_node("GT", root);
+				(yyval.state) = new_node(">", root);
 				add_child((yyval.state), (yyvsp[-2].state));
 				add_child((yyval.state), (yyvsp[0].state));
 	}
-#line 2825 "src/parser.c"
+#line 2848 "src/parser.c"
     break;
 
   case 49: /* RelationalExpression: RelationalExpression DIF AdditiveExpression  */
-#line 309 "src/parser.y"
+#line 332 "src/parser.y"
                                                                     {
-				(yyval.state) = new_node("DIF", root);
+				(yyval.state) = new_node("!=", root);
 				add_child((yyval.state), (yyvsp[-2].state));
 				add_child((yyval.state), (yyvsp[0].state));
 	}
-#line 2835 "src/parser.c"
+#line 2858 "src/parser.c"
     break;
 
   case 50: /* AdditiveExpression: MultiplicativeExpression  */
-#line 317 "src/parser.y"
+#line 340 "src/parser.y"
                                          { (yyval.state) = (yyvsp[0].state); }
-#line 2841 "src/parser.c"
+#line 2864 "src/parser.c"
     break;
 
   case 51: /* AdditiveExpression: AdditiveExpression PLUS MultiplicativeExpression  */
-#line 318 "src/parser.y"
+#line 341 "src/parser.y"
                                                                  {
-			(yyval.state) = new_node("PLUS", root);
+			(yyval.state) = new_node("+", root);
 			add_child((yyval.state), (yyvsp[-2].state));
 			add_child((yyval.state), (yyvsp[0].state));
 	}
-#line 2851 "src/parser.c"
+#line 2874 "src/parser.c"
     break;
 
   case 52: /* AdditiveExpression: AdditiveExpression MIN MultiplicativeExpression  */
-#line 323 "src/parser.y"
+#line 346 "src/parser.y"
                                                         {
-			(yyval.state) = new_node("MIN", root);
+			(yyval.state) = new_node("-", root);
 			add_child((yyval.state), (yyvsp[-2].state));
 			add_child((yyval.state), (yyvsp[0].state));
 	}
-#line 2861 "src/parser.c"
+#line 2884 "src/parser.c"
     break;
 
   case 53: /* MultiplicativeExpression: UnaryExpression  */
-#line 331 "src/parser.y"
+#line 354 "src/parser.y"
                                 { (yyval.state) = (yyvsp[0].state); }
-#line 2867 "src/parser.c"
+#line 2890 "src/parser.c"
     break;
 
   case 54: /* MultiplicativeExpression: MultiplicativeExpression MUL UnaryExpression  */
-#line 332 "src/parser.y"
+#line 355 "src/parser.y"
                                                              {
-			(yyval.state) = new_node("MUL", root);
+			(yyval.state) = new_node("*", root);
 			add_child((yyval.state), (yyvsp[-2].state));
 			add_child((yyval.state), (yyvsp[0].state));
 	}
-#line 2877 "src/parser.c"
+#line 2900 "src/parser.c"
     break;
 
   case 55: /* MultiplicativeExpression: MultiplicativeExpression DIV UnaryExpression  */
-#line 337 "src/parser.y"
+#line 360 "src/parser.y"
                                                              {
-			(yyval.state) = new_node("DIV", root);
+			(yyval.state) = new_node("/", root);
 			add_child((yyval.state), (yyvsp[-2].state));
 			add_child((yyval.state), (yyvsp[0].state));
 	}
-#line 2887 "src/parser.c"
+#line 2910 "src/parser.c"
     break;
 
   case 56: /* MultiplicativeExpression: MultiplicativeExpression TR UnaryExpression  */
-#line 342 "src/parser.y"
+#line 365 "src/parser.y"
                                                             {
-			(yyval.state) = new_node("TR", root);
+			(yyval.state) = new_node("%", root);
 			add_child((yyval.state), (yyvsp[-2].state));
 			add_child((yyval.state), (yyvsp[0].state));
 	}
-#line 2897 "src/parser.c"
+#line 2920 "src/parser.c"
     break;
 
   case 57: /* MultiplicativeExpression: MultiplicativeExpression TWD UnaryExpression  */
-#line 347 "src/parser.y"
+#line 370 "src/parser.y"
                                                          {
-			(yyval.state) = new_node("TWD", root);
+			(yyval.state) = new_node(":", root);
 			add_child((yyval.state), (yyvsp[-2].state));
 			add_child((yyval.state), (yyvsp[0].state));
 	}
-#line 2907 "src/parser.c"
+#line 2930 "src/parser.c"
     break;
 
   case 58: /* MultiplicativeExpression: MultiplicativeExpression MAP UnaryExpression  */
-#line 352 "src/parser.y"
+#line 375 "src/parser.y"
                                                          {
-			(yyval.state) = new_node("MAP", root);
+			(yyval.state) = new_node(">>", root);
 			add_child((yyval.state), (yyvsp[-2].state));
 			add_child((yyval.state), (yyvsp[0].state));
 	}
-#line 2917 "src/parser.c"
+#line 2940 "src/parser.c"
     break;
 
   case 59: /* MultiplicativeExpression: MultiplicativeExpression FIL UnaryExpression  */
-#line 357 "src/parser.y"
+#line 380 "src/parser.y"
                                                          {
-			(yyval.state) = new_node("FIL", root);
+			(yyval.state) = new_node("<<", root);
 			add_child((yyval.state), (yyvsp[-2].state));
 			add_child((yyval.state), (yyvsp[0].state));
 	}
-#line 2927 "src/parser.c"
+#line 2950 "src/parser.c"
     break;
 
   case 60: /* UnaryExpression: PrimaryExpression  */
-#line 365 "src/parser.y"
+#line 388 "src/parser.y"
                                   { (yyval.state) = (yyvsp[0].state); }
-#line 2933 "src/parser.c"
+#line 2956 "src/parser.c"
     break;
 
   case 61: /* UnaryExpression: TNR PrimaryExpression  */
-#line 366 "src/parser.y"
+#line 389 "src/parser.y"
                                       {
-			(yyval.state) = new_node("TNR", root);
+			(yyval.state) = new_node("!", root);
 			add_child((yyval.state), (yyvsp[0].state));
 	}
-#line 2942 "src/parser.c"
+#line 2965 "src/parser.c"
     break;
 
   case 62: /* UnaryExpression: HD PrimaryExpression  */
-#line 370 "src/parser.y"
+#line 393 "src/parser.y"
                                      {
-			(yyval.state) = new_node("HD", root);
+			(yyval.state) = new_node("?", root);
 			add_child((yyval.state), (yyvsp[0].state));
 	}
-#line 2951 "src/parser.c"
+#line 2974 "src/parser.c"
     break;
 
   case 63: /* PrimaryExpression: IDENTIFIER  */
-#line 376 "src/parser.y"
+#line 399 "src/parser.y"
                            {(yyval.state) = new_node((yyvsp[0].string), root);}
-#line 2957 "src/parser.c"
+#line 2980 "src/parser.c"
     break;
 
   case 64: /* PrimaryExpression: NUM_CONST  */
-#line 377 "src/parser.y"
+#line 400 "src/parser.y"
                       {
-			char str[128];
+			char str[256];
 			sprintf(str, "%lf", (yyvsp[0].num));
 			(yyval.state) = new_node(str, root);
 		}
-#line 2967 "src/parser.c"
+#line 2990 "src/parser.c"
     break;
 
   case 65: /* PrimaryExpression: LP Expression RP  */
-#line 382 "src/parser.y"
+#line 405 "src/parser.y"
                                  {(yyval.state) = new_node("PrimaryExpression", root);  add_child((yyval.state), (yyvsp[-1].state));}
-#line 2973 "src/parser.c"
+#line 2996 "src/parser.c"
     break;
 
   case 66: /* PrimaryExpression: IDENTIFIER LP Params RP  */
-#line 383 "src/parser.y"
+#line 406 "src/parser.y"
                                         {(yyval.state) = new_node("FunctionCall", root);  add_child((yyval.state), (yyvsp[-1].state));}
-#line 2979 "src/parser.c"
+#line 3002 "src/parser.c"
     break;
 
   case 67: /* PrimaryExpression: NIL  */
-#line 384 "src/parser.y"
+#line 407 "src/parser.y"
                     {(yyval.state) = new_node("NIL", root);}
-#line 2985 "src/parser.c"
+#line 3008 "src/parser.c"
     break;
 
   case 68: /* Params: %empty  */
-#line 388 "src/parser.y"
+#line 411 "src/parser.y"
                {(yyval.state) = new_node("Params", root);}
-#line 2991 "src/parser.c"
+#line 3014 "src/parser.c"
     break;
 
   case 69: /* Params: Expression  */
-#line 390 "src/parser.y"
+#line 413 "src/parser.y"
                    {(yyval.state) = new_node("Params", root);}
-#line 2997 "src/parser.c"
+#line 3020 "src/parser.c"
     break;
 
   case 70: /* Params: Params COM Expression  */
-#line 392 "src/parser.y"
+#line 415 "src/parser.y"
                               {(yyval.state) = new_node("Params", root); add_child((yyval.state), (yyvsp[-2].state));}
-#line 3003 "src/parser.c"
+#line 3026 "src/parser.c"
     break;
 
 
-#line 3007 "src/parser.c"
+#line 3030 "src/parser.c"
 
       default: break;
     }
@@ -3227,7 +3250,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 395 "src/parser.y"
+#line 418 "src/parser.y"
 
 int yydebug = 1;
 
@@ -3235,6 +3258,7 @@ syntax_tree* parse() {
     root = new_syntax_tree();
 	s_table = new_symbol_table();
 	scope = new_scope_stack();
+	last_f = 0;
 
     yyparse();
 

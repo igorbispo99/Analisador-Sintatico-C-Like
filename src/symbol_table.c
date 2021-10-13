@@ -8,39 +8,79 @@ symbol_table* new_symbol_table() {
     t->type = (char**) malloc(sizeof(char*));
     t->is_var = (bool*) malloc(sizeof(bool));
 
+    t->args = (char***) malloc(sizeof(char**));
+
+    t->n_args = (uint16_t*) malloc(sizeof(uint16_t));
+
     t->n_lines = 0;
 
     return t;
 }
 
+void push_arg_to_arglist(symbol_table* table, const char* type, uint16_t line) {
+    table->n_args[line] = table->n_args[line] + 1;
+    table->args[line] = realloc(table->args[line], table->n_args[line] * (sizeof(char*)));
+
+    table->args[line][table->n_args[line]-1] = calloc(256, sizeof(char));
+    strcpy(table->args[line][table->n_args[line]-1], type);
+}
+
 symbol_table* add_row_symbol_table(symbol_table* table, const char* symbol, const char* type, uint16_t scope, bool is_var) {
     table->n_lines = table->n_lines + 1;
+
     table->symbol = (char**) realloc(table->symbol, sizeof(char*)*table->n_lines);
-    char* str_symbol = (char*) malloc(128);
+    char* str_symbol = (char*) calloc(128, sizeof(char));
     strcpy(str_symbol, symbol);
 
     table->type = (char**) realloc(table->type, sizeof(char*)*table->n_lines);
-    char* str_type = (char*) malloc(128);
+    char* str_type = (char*) calloc(128, sizeof(char));
     strcpy(str_type, type);
 
     table->scope = (uint16_t*) realloc(table->scope, sizeof(uint16_t)*table->n_lines);
     table->is_var = (bool*) realloc(table->is_var, sizeof(bool)*table->n_lines);
+    table->args = (char***) realloc(table->args, sizeof(char**)*table->n_lines);
+    table->n_args = (uint16_t*) realloc(table->n_args, sizeof(uint16_t)*table->n_lines);
 
     table->symbol[table->n_lines - 1] = str_symbol;
     table->type[table->n_lines - 1] = str_type;
     table->scope[table->n_lines - 1] = scope;
     table->is_var[table->n_lines -1] = is_var;
+    table->n_args[table->n_lines -1] = 0;
+    table->args[table->n_lines -1] = (char**) malloc(sizeof(char**));
 
     return table;
 }
 
-void show_table(symbol_table* table) {
-    char* first_row[] = {"Function?", "Type", "Symbol", "Scope"};
+char* get_func_args(symbol_table* table, uint16_t line) {
+    char* out_str = calloc(1024, sizeof(char));
 
-    printf("\n%-10s   %-15s   %-32s   %-10s\n", first_row[0], first_row[1], first_row[2], first_row[3]);
+    out_str[0] = '(';
+
+    int i = 0;
+    for (; i < table->n_args[line] -1 ; i++) {
+        strcat(out_str, table->args[line][i]);
+        strcat(out_str, ", ");
+    }
+
+    if (table->n_args[line])
+        strcat(out_str, table->args[line][i]);
+        
+    strcat(out_str, ")");
+    return out_str;
+}
+
+void show_table(symbol_table* table) {
+    char* first_row[] = {"Function?", "Args", "Type", "Symbol", "Scope"};
+
+    printf("\n%-10s   %-32s   %-15s   %-32s   %-10s\n", first_row[0], first_row[1], first_row[2], first_row[3], first_row[4]);
     printf("\n");
     for (int i = 0; i < table->n_lines; i += 1) {
-        printf("%-10s   %-15s   %-32s   %-10u\n", table->is_var[i] ? "No" : "Yes", table->type[i], table->symbol[i], table->scope[i]);
+        char* func_args = table->is_var[i] ? strdup("*") : get_func_args(table, i);
+
+        printf("%-10s   %-32s   %-15s   %-32s   %-10u\n", table->is_var[i] ? "No" : "Yes", func_args,
+                                                            table->type[i], table->symbol[i], table->scope[i]);
+        
+        free(func_args);
     }
     printf("\n");
 }
@@ -51,11 +91,19 @@ void free_table(symbol_table* table) {
     for (int i = 0; i < table->n_lines; i += 1) {
         free(table->symbol[i]);
         free(table->type[i]);
+
+        for (int j = 0; j < table->n_args[i]; j++) {
+            free(table->args[i][j]);
+        }
+
+        free(table->args[i]);
     }
 
     free(table->scope);
     free(table->symbol);
     free(table->type);
+    free(table->n_args);
+    free(table->args);
     free(table->is_var);
     free(table); 
 }
