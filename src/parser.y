@@ -109,6 +109,14 @@ Definition:
 
 			add_child($$, new_node(str, root));
 			add_child($$, $3);
+
+			if (!variable_was_declared(s_table, scope, $1)) {
+				first_pass_sematic_error_found = true;
+				char err[MAX_BUFFER_SIZE];
+				sprintf(err, "Variable %s not declared, at ln %zu col %zu.", $1, n_line, n_column);
+
+				print_error(err);
+			}
 		}
 		;
  
@@ -474,7 +482,7 @@ PrimaryExpression:
 			if (!variable_was_declared(s_table, scope, $1)) {
 				first_pass_sematic_error_found = true;
 				char err[MAX_BUFFER_SIZE];
-				sprintf(err, "Variable %s not declared.", $1);
+				sprintf(err, "Variable %s not declared, at ln %zu col %zu.", $1, n_line, n_column);
 
 				print_error(err);
 			}
@@ -499,7 +507,7 @@ PrimaryExpression:
 			if (!variable_was_declared(s_table, scope, $1)) {
 				first_pass_sematic_error_found = true;
 				char err[MAX_BUFFER_SIZE];
-				sprintf(err, "Variable %s not declared.", $1);
+				sprintf(err, "Variable %s not declared, at ln %zu col %zu.", $1, n_line, n_column);
 
 				print_error(err);
 			}
@@ -526,7 +534,7 @@ syntax_tree* parse() {
 	scope = new_scope_stack();
 	last_f = 0;
 	first_pass_sematic_error_found = false;
-	
+
 	push_default_functions(s_table, scope, &last_f);
 
     yyparse();
@@ -552,5 +560,9 @@ syntax_tree* parse() {
 }
 
  void yyerror (char const *s) {
-   fprintf (stderr, "\033[91m%s, at ln %lu col %lu\033[0m\n", s, n_line, n_column);
+	char str[MAX_BUFFER_SIZE];
+	strcpy(str, s);
+	str[0] = 'S';
+
+	fprintf (stderr, "\033[91m%s, at ln %lu col %lu\033[0m\n", str, n_line, n_column);
  }

@@ -6,6 +6,8 @@ int invalido(int n) {
 	int list n;
 	int list m;
 
+	a = 10;
+
 	return m;
 }
 
