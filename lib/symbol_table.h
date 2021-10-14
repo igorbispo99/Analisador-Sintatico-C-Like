@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#define MAX_BUFFER_SIZE 1024
+
 typedef struct{
     uint16_t* stack;
     uint16_t stack_size;

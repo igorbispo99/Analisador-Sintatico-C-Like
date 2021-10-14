@@ -19,10 +19,11 @@
 	symbol_table* s_table;
 	scope_t* scope;
 	uint16_t last_f;
+	bool first_pass_sematic_error_found;
 }
 
 %union{
-    char string[256];
+    char string[MAX_BUFFER_SIZE/2];
     double num;
     syntax_tree_node* state;
 	syntax_tree* tree;
@@ -81,7 +82,7 @@ GlobalDec:
 
 Declaration:
 		TYPE IDENTIFIER SEMI {
-			char str[256];
+			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $1);
 			add_row_symbol_table(s_table, $2, $1, scope, true);
 			strcat(str, " ");
@@ -90,7 +91,7 @@ Declaration:
 		}
 		|
 		TYPE LIST IDENTIFIER SEMI {
-			char str[256];
+			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $1);
 			strcat(str," LIST ");
 			add_row_symbol_table(s_table, $3, str, scope, true);
@@ -103,7 +104,7 @@ Definition:
 		IDENTIFIER ATT Expression {
 			$$ = new_node("=", root);
 
-			char str[256];
+			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $1);
 
 			add_child($$, new_node(str, root));
@@ -152,7 +153,7 @@ FunctionArgs:
 	TYPE LIST IDENTIFIER {
 		$$ = new_node("FunctionParameters", root);
 
-		char str[256];
+		char str[MAX_BUFFER_SIZE];
 		strcpy(str, $1);
 		strcat(str," LIST ");
 
@@ -163,14 +164,14 @@ FunctionArgs:
 	TYPE LIST IDENTIFIER COM TYPE LIST IDENTIFIER ParamList {
 		$$ = new_node("FunctionParameters", root);
 
-		char arg_1[256];
+		char arg_1[MAX_BUFFER_SIZE];
 		strcpy(arg_1, $1);
 		strcat(arg_1," LIST ");
 
 		add_row_symbol_table(s_table, $3, arg_1, scope, true);
 		push_arg_to_arglist(s_table, arg_1, last_f);
 
-		char arg_2[256];
+		char arg_2[MAX_BUFFER_SIZE];
 		strcpy(arg_2, $5);
 		strcat(arg_2," LIST ");
 
@@ -181,7 +182,7 @@ FunctionArgs:
 
 FunctionHead:
 	TYPE IDENTIFIER {
-		char str[256];
+		char str[MAX_BUFFER_SIZE];
 		strcpy(str, $2);
 		strcat(str, "()");
 
@@ -195,13 +196,13 @@ FunctionHead:
 	}
 	|
 	TYPE LIST IDENTIFIER {
-		char f_name[256];
+		char f_name[MAX_BUFFER_SIZE];
 		strcpy(f_name, $3);
 		strcat(f_name, "()");
 
 		$$ = new_node(f_name, root);
 
-		char str[256];
+		char str[MAX_BUFFER_SIZE];
 		strcpy(str, $1);
 		strcat(str," LIST ");
 		add_row_symbol_table(s_table, $3, str, scope, false);
@@ -229,7 +230,7 @@ ParamList:
 			$$ = new_node("ParamList", root);
 			add_child($$, $5);
 
-			char str[256];
+			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $2);
 			strcat(str," LIST ");
 
@@ -468,10 +469,19 @@ UnaryExpression:
 	}
 	;
 PrimaryExpression:
-		IDENTIFIER {$$ = new_node($1, root);}
+		IDENTIFIER {
+			$$ = new_node($1, root);
+			if (!variable_was_declared(s_table, scope, $1)) {
+				first_pass_sematic_error_found = true;
+				char err[MAX_BUFFER_SIZE];
+				sprintf(err, "Variable %s not declared.", $1);
+
+				print_error(err);
+			}
+		}
 
 	|   NUM_CONST {
-			char str[256];
+			char str[MAX_BUFFER_SIZE];
 			sprintf(str, "%lf", $1);
 			$$ = new_node(str, root);
 		}
@@ -485,6 +495,15 @@ PrimaryExpression:
 			$$ = new_node("FunctionCall", root);
 			add_child($$, new_node($1, root));
 			add_child($$, $3);
+
+			if (!variable_was_declared(s_table, scope, $1)) {
+				first_pass_sematic_error_found = true;
+				char err[MAX_BUFFER_SIZE];
+				sprintf(err, "Variable %s not declared.", $1);
+
+				print_error(err);
+			}
+
 		}
 		
 	|	NIL {$$ = new_node("NIL", root);}
@@ -506,6 +525,9 @@ syntax_tree* parse() {
 	s_table = new_symbol_table();
 	scope = new_scope_stack();
 	last_f = 0;
+	first_pass_sematic_error_found = false;
+	
+	push_default_functions(s_table, scope, &last_f);
 
     yyparse();
 
@@ -515,7 +537,7 @@ syntax_tree* parse() {
 
 	show_table(s_table);
 
-	char* line = (char*) malloc(1024);
+	char* line = (char*) malloc(MAX_BUFFER_SIZE);
 	line[0] = (char) 0;
 	show_tree(root->element_list[root->tree_size-1], line, true);
 

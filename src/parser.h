@@ -64,8 +64,9 @@ extern int yydebug;
 	symbol_table* s_table;
 	scope_t* scope;
 	uint16_t last_f;
+	bool first_pass_sematic_error_found;
 
-#line 69 "src/parser.h"
+#line 70 "src/parser.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -118,14 +119,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 24 "src/parser.y"
+#line 25 "src/parser.y"
 
-    char string[256];
+    char string[MAX_BUFFER_SIZE/2];
     double num;
     syntax_tree_node* state;
 	syntax_tree* tree;
 
-#line 129 "src/parser.h"
+#line 130 "src/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

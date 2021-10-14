@@ -21,7 +21,7 @@ void push_arg_to_arglist(symbol_table* table, const char* type, uint16_t line) {
     table->n_args[line] = table->n_args[line] + 1;
     table->args[line] = realloc(table->args[line], table->n_args[line] * (sizeof(char*)));
 
-    table->args[line][table->n_args[line]-1] = calloc(256, sizeof(char));
+    table->args[line][table->n_args[line]-1] = calloc(MAX_BUFFER_SIZE, sizeof(char));
     strcpy(table->args[line][table->n_args[line]-1], type);
 }
 
@@ -57,7 +57,7 @@ symbol_table* add_row_symbol_table(symbol_table* table, const char* symbol, cons
 }
 
 char* get_func_args(symbol_table* table, uint16_t line) {
-    char* out_str = calloc(1024, sizeof(char));
+    char* out_str = calloc(MAX_BUFFER_SIZE, sizeof(char));
 
     out_str[0] = '(';
 
@@ -75,7 +75,7 @@ char* get_func_args(symbol_table* table, uint16_t line) {
 }
 
 char* get_scope_stack(symbol_table* table, uint16_t line) {
-    char* out_str = calloc(1024, sizeof(char));
+    char* out_str = calloc(MAX_BUFFER_SIZE, sizeof(char));
 
     int i = 0;
     for (; i < table->scope[line]->stack_size - 1; i++) {
@@ -91,6 +91,20 @@ char* get_scope_stack(symbol_table* table, uint16_t line) {
     return out_str;
 }
 
+bool is_special_function(char* symbol) {
+    return !strcmp(symbol, "write") || !strcmp(symbol, "writeln") || !strcmp(symbol, "read");
+}
+
+char* special_print(char* symbol) {
+    if (is_special_function(symbol)) {
+        char* str = calloc(MAX_BUFFER_SIZE, 1);
+        sprintf(str, "*%s", symbol);
+
+        return str;
+    }
+    return strdup(symbol);
+}
+
 void show_table(symbol_table* table) {
     char* first_row[] = {"Symbol", "Function?", "Args", "Type/Return", "Scope Stack"};
 
@@ -99,12 +113,14 @@ void show_table(symbol_table* table) {
     for (int i = 0; i < table->n_lines; i += 1) {
         char* func_args = table->is_var[i] ? strdup("*") : get_func_args(table, i);
         char* scope_stack = get_scope_stack(table, i);
+        char* sym = special_print(table->symbol[i]);
 
-        printf("%-16s   %-10s   %-32s   %-16s   %-32s\n", table->symbol[i], table->is_var[i] ? "No" : "Yes",
-                                                        func_args, table->type[i], scope_stack);
+        printf("%-16s   %-10s   %-32s   %-16s   %-32s\n", sym, table->is_var[i] ? "No" : "Yes",
+                                                            func_args, table->type[i], scope_stack);
         
         free(func_args);
         free(scope_stack);
+        free(sym);
     }
     printf("\n");
 }

@@ -37,7 +37,7 @@ int print_error(const char* message) {
     return -1;
 }
 
-int analyze_semantics(symbol_table* table, syntax_tree* tree) {
+bool analyze_semantics(symbol_table* table, syntax_tree* tree) {
     char*** vars = (char***) calloc(1, sizeof(char**));
     uint16_t n_vars = 0;
 
@@ -45,15 +45,44 @@ int analyze_semantics(symbol_table* table, syntax_tree* tree) {
 
     if (double_declaration_exists(table, vars, &n_vars)) {
         for (int i = 0; i < n_vars; i++) {
-            fprintf(stderr, "\033[91mSemantic error: Variable %s redeclared\033[0m\n", (*vars)[i]);
+            fprintf(stderr, "\033[91mSemantic error: Variable %s redeclared.\033[0m\n", (*vars)[i]);
         }
 
         free(*vars);
         free(vars);
 
-        return -1;
+        return true;
     }
 
     free(vars);
-    return 0;
+    return false;
+}
+
+bool variable_was_declared(symbol_table* table, scope_t* scope, char* symbol) {
+    uint16_t scope_symbol = scope->stack[0];
+
+    for(int i = 0; i < table->n_lines; i++) {
+        char* cur_symbol = table->symbol[i];
+
+        if(!strcmp(cur_symbol, symbol)) {
+            for (int j = 0; j < scope->stack_size; j++) {
+                if (scope_symbol == scope->stack[j]) return true;
+            }
+        }
+    }
+    return false;
+}
+
+void push_default_functions(symbol_table* table, scope_t* scope, uint16_t* last_f) {
+    add_row_symbol_table(table, "write", "None", scope, false);
+	push_arg_to_arglist(table, "Polymorphic", *last_f);
+	*last_f = *last_f + 1;
+
+	add_row_symbol_table(table, "read", "Polymorphic", scope, false);
+    *last_f = *last_f + 1;
+
+    add_row_symbol_table(table, "writeln", "None", scope, false);
+	push_arg_to_arglist(table, "Polymorphic", *last_f);
+	*last_f = *last_f + 1;  
+
 }

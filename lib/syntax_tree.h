@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#define MAX_BUFFER_SIZE 1024
+
 struct syntax_tree_node {
     char* element;
     struct syntax_tree_node** children;
