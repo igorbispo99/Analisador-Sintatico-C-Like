@@ -4,7 +4,7 @@ symbol_table* new_symbol_table() {
     symbol_table* t = (symbol_table*) malloc(sizeof(symbol_table));
 
     t->symbol = (char**) malloc(sizeof(char*));
-    t->scope = (uint16_t*) malloc(sizeof(uint16_t));
+    t->scope = (scope_t**) malloc(sizeof(scope_t*));
     t->type = (char**) malloc(sizeof(char*));
     t->is_var = (bool*) malloc(sizeof(bool));
 
@@ -25,7 +25,7 @@ void push_arg_to_arglist(symbol_table* table, const char* type, uint16_t line) {
     strcpy(table->args[line][table->n_args[line]-1], type);
 }
 
-symbol_table* add_row_symbol_table(symbol_table* table, const char* symbol, const char* type, uint16_t scope, bool is_var) {
+symbol_table* add_row_symbol_table(symbol_table* table, const char* symbol, const char* type, scope_t* scope, bool is_var) {
     table->n_lines = table->n_lines + 1;
 
     table->symbol = (char**) realloc(table->symbol, sizeof(char*)*table->n_lines);
@@ -36,17 +36,22 @@ symbol_table* add_row_symbol_table(symbol_table* table, const char* symbol, cons
     char* str_type = (char*) calloc(128, sizeof(char));
     strcpy(str_type, type);
 
-    table->scope = (uint16_t*) realloc(table->scope, sizeof(uint16_t)*table->n_lines);
+    table->scope = (scope_t**) realloc(table->scope, sizeof(scope_t*)*table->n_lines);
     table->is_var = (bool*) realloc(table->is_var, sizeof(bool)*table->n_lines);
     table->args = (char***) realloc(table->args, sizeof(char**)*table->n_lines);
     table->n_args = (uint16_t*) realloc(table->n_args, sizeof(uint16_t)*table->n_lines);
 
     table->symbol[table->n_lines - 1] = str_symbol;
     table->type[table->n_lines - 1] = str_type;
-    table->scope[table->n_lines - 1] = scope;
     table->is_var[table->n_lines -1] = is_var;
     table->n_args[table->n_lines -1] = 0;
     table->args[table->n_lines -1] = (char**) malloc(sizeof(char**));
+
+    table->scope[table->n_lines - 1] = (scope_t*) malloc(sizeof(scope_t));
+    table->scope[table->n_lines - 1]->current_n = scope->current_n;
+    table->scope[table->n_lines - 1]->stack_size = scope->stack_size;
+    table->scope[table->n_lines - 1]->stack = (uint16_t *) malloc(sizeof(uint16_t) * scope->stack_size);
+    memcpy(table->scope[table->n_lines - 1]->stack, scope->stack, sizeof(uint16_t) * scope->stack_size);
 
     return table;
 }
@@ -69,18 +74,37 @@ char* get_func_args(symbol_table* table, uint16_t line) {
     return out_str;
 }
 
-void show_table(symbol_table* table) {
-    char* first_row[] = {"Function?", "Args", "Type", "Symbol", "Scope"};
+char* get_scope_stack(symbol_table* table, uint16_t line) {
+    char* out_str = calloc(1024, sizeof(char));
 
-    printf("\n%-10s   %-32s   %-15s   %-32s   %-10s\n", first_row[0], first_row[1], first_row[2], first_row[3], first_row[4]);
+    int i = 0;
+    for (; i < table->scope[line]->stack_size - 1; i++) {
+        char num[128];
+        sprintf(num, "%u -> ", table->scope[line]->stack[i]);
+        strcat(out_str, num);
+    }
+
+    char num[128];
+    sprintf(num, "%u", table->scope[line]->stack[i]);
+    strcat(out_str, num);  
+
+    return out_str;
+}
+
+void show_table(symbol_table* table) {
+    char* first_row[] = {"Symbol", "Function?", "Args", "Type/Return", "Scope Stack"};
+
+    printf("\n%-16s   %-10s   %-32s   %-16s   %-32s\n", first_row[0], first_row[1], first_row[2], first_row[3], first_row[4]);
     printf("\n");
     for (int i = 0; i < table->n_lines; i += 1) {
         char* func_args = table->is_var[i] ? strdup("*") : get_func_args(table, i);
+        char* scope_stack = get_scope_stack(table, i);
 
-        printf("%-10s   %-32s   %-15s   %-32s   %-10u\n", table->is_var[i] ? "No" : "Yes", func_args,
-                                                            table->type[i], table->symbol[i], table->scope[i]);
+        printf("%-16s   %-10s   %-32s   %-16s   %-32s\n", table->symbol[i], table->is_var[i] ? "No" : "Yes",
+                                                        func_args, table->type[i], scope_stack);
         
         free(func_args);
+        free(scope_stack);
     }
     printf("\n");
 }
@@ -97,6 +121,9 @@ void free_table(symbol_table* table) {
         }
 
         free(table->args[i]);
+
+        free(table->scope[i]->stack);
+        free(table->scope[i]);
     }
 
     free(table->scope);

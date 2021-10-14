@@ -5,6 +5,7 @@
     #include "syntax_tree.h"
 	#include "symbol_table.h"
 	#include "lexical.h"
+	#include "semantic_analysis.h"
 
 	extern size_t n_line;
    	extern size_t n_column; 
@@ -36,7 +37,7 @@
 %type <state> GlobalDef GlobalDec Declaration ParamList CompStatement SelStatement JmpStatement LogicalAndExpression
 %type <state> FunctionDefinition Definition Statement StatementExp ExpStatement ItStatement Expression LogicalOrExpression
 %type <state> EqualityExpression RelationalExpression AdditiveExpression MultiplicativeExpression
-%type <state> UnaryExpression PrimaryExpression FunctionHead ExpAtt Params
+%type <state> UnaryExpression PrimaryExpression FunctionHead ExpAtt Params ForHead FunctionArgs
 %type <num> NUM_CONST 
 %type <string> IDENTIFIER TYPE SEMI LIST
 %type <tree> ROOT_TREE
@@ -82,7 +83,7 @@ Declaration:
 		TYPE IDENTIFIER SEMI {
 			char str[256];
 			strcpy(str, $1);
-			add_row_symbol_table(s_table, $2, $1, scope->stack[0], true);
+			add_row_symbol_table(s_table, $2, $1, scope, true);
 			strcat(str, " ");
 			$$ = new_node(strcat(str, $2), root);
 
@@ -92,7 +93,7 @@ Declaration:
 			char str[256];
 			strcpy(str, $1);
 			strcat(str," LIST ");
-			add_row_symbol_table(s_table, $3, str, scope->stack[0], true);
+			add_row_symbol_table(s_table, $3, str, scope, true);
 			$$ = new_node(strcat(str, $3), root);
 
 		}
@@ -111,14 +112,14 @@ Definition:
 		;
  
 FunctionDefinition:
-    FunctionHead LP TYPE IDENTIFIER RP CompStatement{
+    FunctionHead LP FunctionArgs RP CompStatement{
 		$$ = new_node("FunctionDefinition", root);
-		add_child($$, $1);
-		add_child($$, $6);
-		add_row_symbol_table(s_table, $4, $3, scope->stack[0], true);
-		push_arg_to_arglist(s_table, $3, last_f);
-		decrease_depth_scope(scope);
 
+		add_child($$, $1);
+		add_child($$, $3);
+		add_child($$, $5);
+
+		decrease_depth_scope(scope);
 	}
 	|
 	FunctionHead LP RP CompStatement{
@@ -128,22 +129,55 @@ FunctionDefinition:
 		decrease_depth_scope(scope);
 
 	}
-	|
-	FunctionHead LP TYPE IDENTIFIER COM TYPE IDENTIFIER ParamList RP CompStatement{
-		$$ = new_node("FunctionDefinition", root);
-		add_child($$, $1);
-		add_child($$, $8);
-		add_child($$, $10);
-		add_row_symbol_table(s_table, $4, $3, scope->stack[0], true);
-		push_arg_to_arglist(s_table, $3, last_f);
-
-		add_row_symbol_table(s_table, $7, $6, scope->stack[0], true);
-		push_arg_to_arglist(s_table, $6, last_f);
-
-		decrease_depth_scope(scope);
-
-	}
     ;
+
+FunctionArgs:
+	TYPE IDENTIFIER {
+		$$ = new_node("FunctionParameters", root);
+
+		add_row_symbol_table(s_table, $2, $1, scope, true);
+		push_arg_to_arglist(s_table, $1, last_f);
+	}
+	|
+	TYPE IDENTIFIER COM TYPE IDENTIFIER ParamList {
+		$$ = new_node("FunctionParameters", root);
+
+		add_row_symbol_table(s_table, $2, $1, scope, true);
+		push_arg_to_arglist(s_table, $1, last_f);
+
+		add_row_symbol_table(s_table, $5, $4, scope, true);
+		push_arg_to_arglist(s_table, $4, last_f);
+	}
+	|
+	TYPE LIST IDENTIFIER {
+		$$ = new_node("FunctionParameters", root);
+
+		char str[256];
+		strcpy(str, $1);
+		strcat(str," LIST ");
+
+		add_row_symbol_table(s_table, $3, str, scope, true);
+		push_arg_to_arglist(s_table, str, last_f);	
+	}
+	|
+	TYPE LIST IDENTIFIER COM TYPE LIST IDENTIFIER ParamList {
+		$$ = new_node("FunctionParameters", root);
+
+		char arg_1[256];
+		strcpy(arg_1, $1);
+		strcat(arg_1," LIST ");
+
+		add_row_symbol_table(s_table, $3, arg_1, scope, true);
+		push_arg_to_arglist(s_table, arg_1, last_f);
+
+		char arg_2[256];
+		strcpy(arg_2, $5);
+		strcat(arg_2," LIST ");
+
+		add_row_symbol_table(s_table, $7, arg_2, scope, true);
+		push_arg_to_arglist(s_table, arg_2, last_f);
+	}
+	;
 
 FunctionHead:
 	TYPE IDENTIFIER {
@@ -152,7 +186,7 @@ FunctionHead:
 		strcat(str, "()");
 
 		$$ = new_node(str, root);
-		add_row_symbol_table(s_table, $2, $1, scope->stack[0], false);
+		add_row_symbol_table(s_table, $2, $1, scope, false);
 
 		last_f = s_table->n_lines -1;
 
@@ -170,12 +204,11 @@ FunctionHead:
 		char str[256];
 		strcpy(str, $1);
 		strcat(str," LIST ");
-		add_row_symbol_table(s_table, $3, str, scope->stack[0], false);
+		add_row_symbol_table(s_table, $3, str, scope, false);
 
 		last_f = s_table->n_lines -1;
 
 		increase_depth_scope(scope);
-
 	}
 	;
 
@@ -187,7 +220,21 @@ ParamList:
 		COM TYPE IDENTIFIER ParamList {
 			$$ = new_node("ParamList", root);
 			add_child($$, $4);
-			add_row_symbol_table(s_table, $3, $2, scope->stack[0], true);
+
+			add_row_symbol_table(s_table, $3, $2, scope, true);
+			push_arg_to_arglist(s_table, $2, last_f);
+		}
+		|
+		COM TYPE LIST IDENTIFIER ParamList {
+			$$ = new_node("ParamList", root);
+			add_child($$, $5);
+
+			char str[256];
+			strcpy(str, $2);
+			strcat(str," LIST ");
+
+			add_row_symbol_table(s_table, $4, str, scope, true);
+			push_arg_to_arglist(s_table, str, last_f);
 		}
     ;
 
@@ -228,18 +275,33 @@ StatementExp:
 	;
 
  SelStatement:
-		IF LP Expression RP Statement {
+		IfHead LP Expression RP Statement {
 			$$ = new_node("SelStatement", root);
 			add_child($$, $3);
 			add_child($$, $5);
+			decrease_depth_scope(scope);
 		}
-	|	IF LP Expression RP Statement ELSE Statement {
+	|	IfHead LP Expression RP Statement ElseHead Statement {
 			$$ = new_node("SelStatement", root);
 			add_child($$, $3);
 			add_child($$, $5);
 			add_child($$, $7);
+			decrease_depth_scope(scope);
 		}
 		;
+
+IfHead:
+	IF {
+		increase_depth_scope(scope);
+	}
+	;
+
+ElseHead:
+	ELSE {
+		decrease_depth_scope(scope);
+		increase_depth_scope(scope);
+	}
+	;
 
 ExpStatement:
 		SEMI { $$ = NULL; }
@@ -256,14 +318,22 @@ JmpStatement:
 		;
 
 ItStatement:
-		FOR LP ExpAtt SEMI ExpAtt SEMI ExpAtt RP Statement {
+		ForHead LP ExpAtt SEMI ExpAtt SEMI ExpAtt RP Statement {
 			$$ = new_node("FOR", root);
 			add_child($$, $3);
 			add_child($$, $5);
 			add_child($$, $7);
 			add_child($$, $9);
+			decrease_depth_scope(scope);
 		}
 		;
+	
+ForHead:
+		FOR {
+			increase_depth_scope(scope);
+		}
+		;
+
 ExpAtt:
 	Expression {
 		$$ = $1;
@@ -277,6 +347,11 @@ ExpAtt:
 
 Expression:
 		LogicalOrExpression { $$ = $1; }
+
+		| AdditiveExpression TWD IDENTIFIER {
+			$$ = new_node(":", root);
+			add_child($$, $1);
+		}
 		;
 
 LogicalOrExpression:
@@ -305,6 +380,7 @@ EqualityExpression:
 			add_child($$, $1);
 			add_child($$, $3);
 		}
+
 		;
 
 RelationalExpression:
@@ -367,11 +443,7 @@ MultiplicativeExpression:
 			add_child($$, $1);
 			add_child($$, $3);
 	}
-	|   MultiplicativeExpression TWD UnaryExpression {
-			$$ = new_node(":", root);
-			add_child($$, $1);
-			add_child($$, $3);
-	}
+
 	|   MultiplicativeExpression MAP UnaryExpression {
 			$$ = new_node(">>", root);
 			add_child($$, $1);
@@ -397,22 +469,33 @@ UnaryExpression:
 	;
 PrimaryExpression:
 		IDENTIFIER {$$ = new_node($1, root);}
+
 	|   NUM_CONST {
 			char str[256];
 			sprintf(str, "%lf", $1);
 			$$ = new_node(str, root);
 		}
-	|	LP Expression RP {$$ = new_node("PrimaryExpression", root);  add_child($$, $2);}
-	|	IDENTIFIER LP Params RP {$$ = new_node("FunctionCall", root);  add_child($$, $3);}
+
+	|	LP Expression RP {
+			$$ = new_node("PrimaryExpression", root); 
+			add_child($$, $2);
+		}
+
+	|	IDENTIFIER LP Params RP {
+			$$ = new_node("FunctionCall", root);
+			add_child($$, new_node($1, root));
+			add_child($$, $3);
+		}
+		
 	|	NIL {$$ = new_node("NIL", root);}
 	;
 
 Params:
-	%empty {$$ = new_node("Params", root);}
+	%empty {$$ = new_node("Args", root);}
 	|
-	Expression {$$ = new_node("Params", root);}
+	Expression {$$ = new_node("Args", root);}
 	|
-	Params COM Expression {$$ = new_node("Params", root); add_child($$, $1);}
+	Params COM Expression {$$ = new_node("Args", root); add_child($$, $1);}
 ;
 
 %%
@@ -432,6 +515,10 @@ syntax_tree* parse() {
 	line[0] = (char) 0;
 	show_tree(root->element_list[root->tree_size-1], line, true);
 
+	if(!analyze_semantics(s_table, root)) {
+		printf("\nNo semantic errors were found.\n");
+	}
+	
 	free_table(s_table);
 	yylex_destroy();
 	free_tree(root);
@@ -443,5 +530,5 @@ syntax_tree* parse() {
 }
 
  void yyerror (char const *s) {
-   fprintf (stderr, "\x1b[31m%s, at ln %lu col %lu\x1b[0m\n", s, n_line, n_column);
+   fprintf (stderr, "\033[91m%s, at ln %lu col %lu\033[0m\n", s, n_line, n_column);
  }

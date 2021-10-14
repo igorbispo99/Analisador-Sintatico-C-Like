@@ -50,6 +50,7 @@ extern int yydebug;
     #include "syntax_tree.h"
 	#include "symbol_table.h"
 	#include "lexical.h"
+	#include "semantic_analysis.h"
 
 	extern size_t n_line;
    	extern size_t n_column; 
@@ -64,7 +65,7 @@ extern int yydebug;
 	scope_t* scope;
 	uint16_t last_f;
 
-#line 68 "src/parser.h"
+#line 69 "src/parser.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -117,14 +118,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 23 "src/parser.y"
+#line 24 "src/parser.y"
 
     char string[256];
     double num;
     syntax_tree_node* state;
 	syntax_tree* tree;
 
-#line 128 "src/parser.h"
+#line 129 "src/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

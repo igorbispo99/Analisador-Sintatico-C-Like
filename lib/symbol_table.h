@@ -7,9 +7,16 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+typedef struct{
+    uint16_t* stack;
+    uint16_t stack_size;
+    uint16_t current_n;
+} scope_t;
+
+
 typedef struct {
     char** symbol;
-    uint16_t* scope;
+    scope_t** scope;
     char** type;
     char*** args;
     uint16_t* n_args;
@@ -18,15 +25,8 @@ typedef struct {
     uint16_t n_lines;
 } symbol_table;
 
-typedef struct{
-    uint16_t* stack;
-    uint16_t stack_size;
-    uint16_t current_n;
-} scope_t;
-
-
 symbol_table* new_symbol_table();
-symbol_table* add_row_symbol_table(symbol_table* table, const char* symbol, const char* type, uint16_t scope, bool is_var);
+symbol_table* add_row_symbol_table(symbol_table* table, const char* symbol, const char* type, scope_t* scope, bool is_var);
 void push_arg_to_arglist(symbol_table* table, const char* type, uint16_t line);
 void show_table(symbol_table* table);
 void free_table(symbol_table* table);

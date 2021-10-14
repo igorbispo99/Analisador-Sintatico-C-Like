@@ -6,12 +6,45 @@ int mult(int n) {
 	return n * 10;
 }
 
+int list add_list(int list n, int list m) {
+	float list out;
+	float list aux;
+	int list aux2;
+
+	aux2 = m;
+
+	for (aux = n; aux != NIL; aux = !aux) {
+		int element;
+
+		element = ?aux2;
+		aux2 = !aux2;
+
+		int e2;
+		e2 = ?aux;
+
+		out = e2 + element : out;
+	}
+
+	return out;
+}
+
 int main() {
-	int list l;
-	l = 1 : l;
-	l = 2 : l;
-	l = 3 : l;
-	l = 4 : l;
+	int list l1;
+
+	l1 = 1 : l1;
+	l1 = 2 : l1;
+	l1 = 3 : l1;
+	l1 = 4 : l1;
+
+	int list l2;
+
+	l2 = 5 : l2;
+	l2 = 6 : l2;
+	l2 = 7 : l2;
+	l2 = 8 : l2;
+
+	int list l3;
+	l3 = add_list(l1, l2);
 
 	return 0;
 }

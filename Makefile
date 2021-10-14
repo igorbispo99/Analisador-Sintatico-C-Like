@@ -3,13 +3,13 @@
 
 LEX=flex
 YACC = bison
-CFLAGS = -g -I "lib/" -Wall
-OBJ = lexical.o parser.o symbol_table.o syntax_tree.o main.o
+CFLAGS = -g -I "lib/" -Wall -Wpedantic
+OBJ = lexical.o parser.o symbol_table.o syntax_tree.o semantic_analysis.o main.o
 DEPS = lexical.h parser_lib.h symbol_table.h syntax_tree.h
 
 all: bin/parser
 
-bin/parser: obj/parser.o obj/lexical.o obj/main.o obj/symbol_table.o obj/syntax_tree.o
+bin/parser: obj/parser.o obj/lexical.o obj/main.o obj/symbol_table.o obj/syntax_tree.o obj/semantic_analysis.o
 	mkdir -p bin
 	gcc -o $@ $^ $(CFLAGS)
 	cp bin/parser tradutor
@@ -20,6 +20,10 @@ src/parser.c: src/parser.y
 
 src/lexical.c: src/lexical.l
 	flex -o $@ $^
+
+obj/semantic_analysis.o: src/semantic_analysis.c lib/semantic_analysis.h
+	mkdir -p obj
+	gcc -c -o $@ $< $(CFLAGS)
 
 obj/symbol_table.o: src/symbol_table.c lib/symbol_table.h
 	mkdir -p obj
