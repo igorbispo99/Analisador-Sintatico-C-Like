@@ -510,7 +510,7 @@ syntax_tree* parse() {
     yyparse();
 
 	if(!analyze_semantics(s_table, root)) {
-		printf("\nNo semantic errors were found.\n");
+		printf("\n\033[92mNo semantic errors were found.\033[0m\n");
 	}
 
 	show_table(s_table);

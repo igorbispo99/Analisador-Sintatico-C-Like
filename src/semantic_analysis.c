@@ -16,7 +16,7 @@ bool double_declaration_exists(symbol_table* table, char*** vars, uint16_t* n_va
 
         for (int j = 0; j < i; j++) {
             if(!strcmp(table->symbol[j], symbol) && (table->is_var[i] == table->is_var[j])) {
-                if (table->scope[i]->current_n == table->scope[j]->current_n) {
+                if (table->scope[i]->stack[0] == table->scope[j]->stack[0]) {
                     *n_vars = *n_vars + 1;
                     *vars = realloc(*vars, *n_vars * sizeof(char*));
 
