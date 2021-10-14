@@ -3822,16 +3822,16 @@ syntax_tree* parse() {
 
     yyparse();
 
+	if(!analyze_semantics(s_table, root)) {
+		printf("\nNo semantic errors were found.\n");
+	}
+
 	show_table(s_table);
 
 	char* line = (char*) malloc(1024);
 	line[0] = (char) 0;
 	show_tree(root->element_list[root->tree_size-1], line, true);
 
-	if(!analyze_semantics(s_table, root)) {
-		printf("\nNo semantic errors were found.\n");
-	}
-	
 	free_table(s_table);
 	yylex_destroy();
 	free_tree(root);
