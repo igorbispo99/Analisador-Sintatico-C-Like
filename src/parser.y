@@ -31,7 +31,7 @@
 
 %token TYPE IDENTIFIER LIST
 %token LP SEMI COM RCB LCB TWD PLUS MIN MUL LT GT LEQ GEQ DIF MAP FIL DIV TR TNR HD ATT COMP_EQ AND OR RP
-%token NUM_CONST NIL
+%token NUM_CONST NIL STR
 %token IF ELSE FOR RET
 %nonassoc ELSE RP
 
@@ -40,7 +40,7 @@
 %type <state> EqualityExpression RelationalExpression AdditiveExpression MultiplicativeExpression
 %type <state> UnaryExpression PrimaryExpression FunctionHead ExpAtt Params ForHead FunctionArgs
 %type <num> NUM_CONST 
-%type <string> IDENTIFIER TYPE SEMI LIST
+%type <string> IDENTIFIER TYPE SEMI LIST STR
 %type <tree> ROOT_TREE
 
 %left PLUS MIN MUL LEQ GEQ DIF DIV COMP_EQ AND OR 
@@ -111,11 +111,22 @@ Definition:
 			add_child($$, $3);
 
 			if (!variable_was_declared(s_table, scope, $1)) {
-				first_pass_sematic_error_found = true;
 				char err[MAX_BUFFER_SIZE];
 				sprintf(err, "Variable %s not declared, at ln %zu col %zu.", $1, n_line, n_column);
 
 				print_error(err);
+
+				first_pass_sematic_error_found = true;
+			}
+
+			
+			if(!check_type_subtree($$, s_table, scope)) {
+				char err[MAX_BUFFER_SIZE];
+				sprintf(err, "Invalid operand types, at ln %zu col %zu.", n_line, n_column);
+
+				print_error(err);
+
+				first_pass_sematic_error_found = true;
 			}
 		}
 		;
@@ -360,6 +371,8 @@ Expression:
 		| AdditiveExpression TWD IDENTIFIER {
 			$$ = new_node(":", root);
 			add_child($$, $1);
+			add_child($$, new_node($3, root));
+
 		}
 		;
 
@@ -447,12 +460,6 @@ MultiplicativeExpression:
 			add_child($$, $1);
 			add_child($$, $3);
 	}
-	|	MultiplicativeExpression TR UnaryExpression {
-			$$ = new_node("%", root);
-			add_child($$, $1);
-			add_child($$, $3);
-	}
-
 	|   MultiplicativeExpression MAP UnaryExpression {
 			$$ = new_node(">>", root);
 			add_child($$, $1);
@@ -475,6 +482,10 @@ UnaryExpression:
 			$$ = new_node("?", root);
 			add_child($$, $2);
 	}
+	|	TR PrimaryExpression {
+			$$ = new_node("%", root);
+			add_child($$, $2);
+	}
 	;
 PrimaryExpression:
 		IDENTIFIER {
@@ -485,6 +496,8 @@ PrimaryExpression:
 				sprintf(err, "Variable %s not declared, at ln %zu col %zu.", $1, n_line, n_column);
 
 				print_error(err);
+
+				first_pass_sematic_error_found = true;
 			}
 		}
 
@@ -507,9 +520,11 @@ PrimaryExpression:
 			if (!variable_was_declared(s_table, scope, $1)) {
 				first_pass_sematic_error_found = true;
 				char err[MAX_BUFFER_SIZE];
-				sprintf(err, "Variable %s not declared, at ln %zu col %zu.", $1, n_line, n_column);
+				sprintf(err, "Function %s was not declared, at ln %zu col %zu.", $1, n_line, n_column);
 
 				print_error(err);
+
+				first_pass_sematic_error_found = true;
 			}
 
 		}
@@ -520,9 +535,12 @@ PrimaryExpression:
 Params:
 	%empty {$$ = new_node("Args", root);}
 	|
-	Expression {$$ = new_node("Args", root);}
+	Expression {$$ = new_node("Args", root); add_child($$, $1);}
 	|
-	Params COM Expression {$$ = new_node("Args", root); add_child($$, $1);}
+	Params COM Expression {$$ = new_node("Args", root); add_child($$, $1);  add_child($$, $3);}
+	|
+	STR {$$ = new_node("Args", root); add_child($$, new_node($1, root));}
+
 ;
 
 %%
@@ -539,7 +557,8 @@ syntax_tree* parse() {
 
     yyparse();
 
-	if(!analyze_semantics(s_table, root)) {
+	
+	if(!analyze_semantics(s_table, root) && !first_pass_sematic_error_found) {
 		printf("\n\033[92mNo semantic errors were found.\033[0m\n");
 	}
 

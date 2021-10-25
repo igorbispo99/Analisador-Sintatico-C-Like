@@ -49,5 +49,6 @@ int main() {
 	}
 	else writeln("A nova lista não possui elementos.");
 
+	n = 10 + 10 * (1 + 2);
 	return 0;
 }

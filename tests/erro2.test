@@ -4,5 +4,7 @@ int main() {
 		write(i);
 	}
 	
+	int list a;
+	
 	float i;
 }

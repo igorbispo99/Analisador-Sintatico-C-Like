@@ -107,10 +107,11 @@ extern int yydebug;
     RP = 285,                      /* RP  */
     NUM_CONST = 286,               /* NUM_CONST  */
     NIL = 287,                     /* NIL  */
-    IF = 288,                      /* IF  */
-    ELSE = 289,                    /* ELSE  */
-    FOR = 290,                     /* FOR  */
-    RET = 291                      /* RET  */
+    STR = 288,                     /* STR  */
+    IF = 289,                      /* IF  */
+    ELSE = 290,                    /* ELSE  */
+    FOR = 291,                     /* FOR  */
+    RET = 292                      /* RET  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -126,7 +127,7 @@ union YYSTYPE
     syntax_tree_node* state;
 	syntax_tree* tree;
 
-#line 130 "src/parser.h"
+#line 131 "src/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
