@@ -100,19 +100,23 @@ bool equal_to(char* str1, char* str2) {
     return !strcmp(str1, str2);
 }
 
-char* get_type_var(char* symbol, symbol_table* table, scope_t* scope) {
+bool is_func(char* symbol, symbol_table* table, scope_t* scope) {
+    for (int i = table->n_lines-1; i >= 0; i--) {
+        if(!strcmp(table->symbol[i], symbol)) {
+            if(!table->is_var[i])
+                return true;
+        }
+    }
 
+    return false;
+}
+
+char* get_type_var(char* symbol, symbol_table* table, scope_t* scope) {
     if (equal_to(symbol, "NIL")) return "NIL";
 
     for (int i = table->n_lines-1; i >= 0; i--) {
         if(!strcmp(table->symbol[i], symbol)) {
-            if(table->is_var[i]) {
-                return table->type[i];
-            } else {
-                char* str = malloc(MAX_BUFFER_SIZE);
-                sprintf(str, "F %s", table->type[i]);
-                return str;
-            }
+            return table->type[i];
         }
     }
 
@@ -134,7 +138,7 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
     } else if (node->n_children == 1) {
         if (equal_to(node->element, "PrimaryExpression"))
             return check_type_subtree(node->children[0], table, scope);
-            
+
         char* child_type = get_type_var(node->children[0]->element, table, scope);
 
         if (equal_to(node->element, "?")) { 
@@ -184,8 +188,7 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
             if  (equal_to(type_right, "NIL")){
                 return type_left;
             }
-            if ((equal_to(type_left, "int LIST ") || equal_to(type_left, "float LIST ")) ||
-                equal_to(type_left, "F int LIST ") || equal_to(type_left, "F float LIST ")) {
+            if ((equal_to(type_left, "int LIST ") || equal_to(type_left, "float LIST "))) {
                 return "float LIST ";
             }
         } else {
@@ -197,9 +200,12 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
             return "float LIST ";
         }
     } else if (equal_to(node->element, ">>") || equal_to(node->element, "<<")) {
-        if ((equal_to(type_left, "F float") || equal_to(type_left, "F int")) &&
-            (equal_to(type_right, "int LIST ") || equal_to(type_right, "float LIST "))){
-            return "float LIST ";
+        if ((equal_to(type_left, "float") || (equal_to(type_left, "int"))) &&
+            is_func(node->children[0]->element, table, scope))
+            {
+            if  ((equal_to(type_right, "int LIST ") || equal_to(type_right, "float LIST "))){
+                return "float LIST ";
+            }
         } else {
             return NULL;
         }
@@ -223,10 +229,16 @@ void push_default_functions(symbol_table* table, scope_t* scope, uint16_t* last_
 }
 
 void output_tac(symbol_table* table, syntax_tree* root, char* filename) {
-    char* out_filename = strdup(filename);
+    char* out_filename = filename;
 
-    out_filename[strlen(out_filename)-2] = '\0';
-    out_filename = strcat(out_filename, "tac");
+    for (int i = 0; i < strlen(out_filename); i++) {
+        if (out_filename[i] == '.') {
+            out_filename[i] = '\0';
+            break;
+        }
+    }
+
+    out_filename = strcat(out_filename, ".tac");
 
     FILE* fp = fopen(out_filename, "w");
 
@@ -234,9 +246,25 @@ void output_tac(symbol_table* table, syntax_tree* root, char* filename) {
         fprintf(stderr, "Error opening file %s\n", out_filename);
         return;
     }
-}
+
+    fprintf(fp, ".table\n");
+
+    for (int i = 0; i < table->n_lines; i++) {
+        if (table->is_var[i]) {
+            if (equal_to(table->type[i], "int") || equal_to(table->type[i], "float")) {
+                fprintf(fp, "%s %s_%u\n", table->type[i], table->symbol[i], table->scope[i]->stack[0]);
+            } else if (equal_to(table->type[i], "int LIST ")) {
+                fprintf(fp, "int %s_%u[]={0}\n", table->symbol[i], table->scope[i]->stack[0]);
+            } else if (equal_to(table->type[i], "float LIST ")) {
+                fprintf(fp, "float %s_%u[]={0}\n", table->symbol[i], table->scope[i]->stack[0]);
+            }
+        }
+    }    
+
+    fprintf(fp, "\n.code\n");
+    fprintf(fp, "main:\n");
 
     
 
-
-
+    fclose(fp);
+}

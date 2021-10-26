@@ -15,10 +15,12 @@ ID (_|[A-Za-z])([A-Za-z]|[0-9]|_)*
 NL \n
 NUM [-]?[0-9]+(\.[0-9]+)?(E[+-]?[0-9]+)?
 STR ["](([\\]["])|([^"]))*["]
-CHR ('(([\\]['])|([^']))+')
 COM \/\/.*
 WS [ \t\r]
 DEFAULT .
+WRITE write
+WRITE_LN writeln
+READ read
 
 %%
 
@@ -56,6 +58,21 @@ for {n_column += yyleng;return FOR;}
 return {n_column += yyleng;return RET;}
 NIL {n_column += yyleng;return NIL;}
 
+{WRITE} {
+   n_column += yyleng;
+   return WRITE;
+}
+
+{WRITE_LN} {
+   n_column += yyleng;
+   return WRITE_LN;
+}
+
+{READ} {
+   n_column += yyleng;
+   return READ;
+}
+
 {KEY_W} {
 //   printf("Keyword: \"%s\" at Ln %lu, Col %lu\n", yytext, n_line, n_column);
    n_column += yyleng;
@@ -83,11 +100,8 @@ NIL {n_column += yyleng;return NIL;}
 {STR} {
 //   printf("String literal: \"%s\" at Ln %lu, Col %lu\n", yytext, n_line, n_column);
    n_column += yyleng;
-}
-
-{CHR} {
-//   printf("Char literal: \"%s\" at Ln %lu, Col %lu\n", yytext, n_line, n_column);
-   n_column += yyleng;
+   strcpy(yylval.string, yytext);
+   return STR;
 }
 
 {COM} {

@@ -31,7 +31,7 @@
 
 %token TYPE IDENTIFIER LIST
 %token LP SEMI COM RCB LCB TWD PLUS MIN MUL LT GT LEQ GEQ DIF MAP FIL DIV TR TNR HD ATT COMP_EQ AND OR RP
-%token NUM_CONST NIL STR
+%token NUM_CONST NIL STR WRITE READ WRITE_LN
 %token IF ELSE FOR RET
 %nonassoc ELSE RP
 
@@ -43,7 +43,6 @@
 %type <string> IDENTIFIER TYPE SEMI LIST STR
 %type <tree> ROOT_TREE
 
-%left PLUS MIN MUL LEQ GEQ DIF DIV COMP_EQ AND OR 
 %start ROOT_TREE
 
 %precedence IDENTIFIER
@@ -87,7 +86,6 @@ Declaration:
 			add_row_symbol_table(s_table, $2, $1, scope, true);
 			strcat(str, " ");
 			$$ = new_node(strcat(str, $2), root);
-
 		}
 		|
 		TYPE LIST IDENTIFIER SEMI {
@@ -292,6 +290,7 @@ StatementExp:
 			add_child($$, $1);
 			add_child($$, $2);
 		}
+
 	;
 
  SelStatement:
@@ -432,6 +431,16 @@ RelationalExpression:
 				add_child($$, $1);
 				add_child($$, $3);
 	}
+	|   RelationalExpression MAP AdditiveExpression {
+				$$ = new_node(">>", root);
+				add_child($$, $1);
+				add_child($$, $3);
+	}
+	|   RelationalExpression FIL AdditiveExpression {
+				$$ = new_node("<<", root);
+				add_child($$, $1);
+				add_child($$, $3);
+	}
 		;
 
 AdditiveExpression:
@@ -457,16 +466,6 @@ MultiplicativeExpression:
 	}
 	|	MultiplicativeExpression DIV UnaryExpression {
 			$$ = new_node("/", root);
-			add_child($$, $1);
-			add_child($$, $3);
-	}
-	|   MultiplicativeExpression MAP UnaryExpression {
-			$$ = new_node(">>", root);
-			add_child($$, $1);
-			add_child($$, $3);
-	}
-	|   MultiplicativeExpression FIL UnaryExpression {
-			$$ = new_node("<<", root);
 			add_child($$, $1);
 			add_child($$, $3);
 	}
@@ -529,6 +528,28 @@ PrimaryExpression:
 
 		}
 		
+	|	WRITE LP STR RP {
+			$$ = new_node("write_call", root);
+			add_child($$, new_node($3, root));
+
+		}
+	|   WRITE LP Expression RP {
+			$$ = new_node("write_call", root);
+			add_child($$, $3);
+		}
+	|	READ LP IDENTIFIER RP {
+			$$ = new_node("read_call", root);
+			add_child($$, new_node($3, root));
+		}
+	|	WRITE_LN LP STR RP  {
+			$$ = new_node("write_ln_call", root);
+			add_child($$, new_node($3, root));
+		}
+	|	WRITE_LN LP Expression RP  {
+			$$ = new_node("write_ln_call", root);
+			add_child($$, $3);
+		}
+		
 	|	NIL {$$ = new_node("NIL", root);}
 	;
 
@@ -546,7 +567,7 @@ Params:
 %%
 int yydebug = 1;
 
-syntax_tree* parse() {
+syntax_tree* parse(char* filename) {
     root = new_syntax_tree();
 	s_table = new_symbol_table();
 	scope = new_scope_stack();
@@ -556,7 +577,6 @@ syntax_tree* parse() {
 	push_default_functions(s_table, scope, &last_f);
 
     yyparse();
-
 	
 	if(!analyze_semantics(s_table, root) && !first_pass_sematic_error_found) {
 		printf("\n\033[92mNo semantic errors were found.\033[0m\n");
@@ -567,6 +587,8 @@ syntax_tree* parse() {
 	char* line = (char*) malloc(MAX_BUFFER_SIZE);
 	line[0] = (char) 0;
 	show_tree(root->element_list[root->tree_size-1], line, true);
+
+	output_tac(s_table, root, filename);
 
 	free_table(s_table);
 	yylex_destroy();

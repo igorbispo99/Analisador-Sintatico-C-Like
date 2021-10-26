@@ -7,6 +7,6 @@
 #include "syntax_tree.h"
 #include "symbol_table.h"
 
-extern syntax_tree* parse();
+extern syntax_tree* parse(char* filename);
 
 #endif

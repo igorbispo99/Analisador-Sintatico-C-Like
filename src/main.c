@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
     }
 
     yyin = input_file;
-    parse();
+    parse(argv[1]);
 
     fclose(input_file);
     return 0;

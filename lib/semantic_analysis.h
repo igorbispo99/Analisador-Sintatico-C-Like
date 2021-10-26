@@ -15,4 +15,6 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
 
 int print_error(const char* message);
 
+void output_tac(symbol_table* table, syntax_tree* root, char* filename);
+
 #endif
