@@ -115,6 +115,10 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
     char* type_func = NULL;
 
     if (node->n_children > 1) {
+        if (equal_to(node->element, "FunctionCall")) {
+            return get_type_var(node->children[0]->element, table, scope);
+        }
+        
         type_left = check_type_subtree(node->children[0], table, scope);
         type_right = check_type_subtree(node->children[1], table, scope);
 
@@ -123,7 +127,7 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
         }
 
     } else if (node->n_children == 1) {
-        if (equal_to(node->element, "PrimaryExpression"))
+        if (equal_to(node->element, "PrimaryExpression") || equal_to(node->element, "Args"))
             return check_type_subtree(node->children[0], table, scope);
 
         char* child_type = get_type_var(node->children[0]->element, table, scope);
@@ -257,6 +261,22 @@ char** get_function_signature(char* symbol_func, symbol_table* table, scope_t* s
 
     *n_params = table->n_args[func_table_idx];
     return table->args[func_table_idx];
+}
+
+bool check_type_with_casting(char* symbol_1, char* symbol_2) {
+    if (equal_to(symbol_1, "int") && equal_to(symbol_2, "float")) {
+        return true;
+    } else if (equal_to(symbol_1, "float") && equal_to(symbol_2, "int")) {
+        return true;
+    } else if (equal_to(symbol_1, "int LIST ") && equal_to(symbol_2, "float LIST ")) {
+        return true;
+    } else if (equal_to(symbol_1, "float LIST ") && equal_to(symbol_2, "int LIST ")) {
+        return true;
+    }else if (equal_to(symbol_1, symbol_2)) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 bool check_function_arg(char* type_exp, char* symbol_func, uint16_t param_idx, symbol_table* table, scope_t* scope, uint16_t* n_params) {

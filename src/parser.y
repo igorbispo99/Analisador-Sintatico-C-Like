@@ -432,6 +432,7 @@ JmpStatement:
 				printf("\033[91mSemantic error at line %d, column %d: Incompatible return type.\033[0m\n", @2.first_line, @2.first_column);
 				first_pass_sematic_error_found = true;
 			}
+			
 		}
 		;
 
@@ -631,8 +632,8 @@ PrimaryExpression:
 
 			bool compatible_args = true;
 
-			for (size_t i = 0, j = args_count-1; j >= 0 && i < n_args; i++) {
-				if (!equal_to(args[i], args_last_f[j])) {
+			for (size_t i = 0, j = args_count-1; j >= 0 && i < n_args; i++, j--) {
+				if (!check_type_with_casting(args[i], args_last_f[j])) {
 					compatible_args = false;
 					break;
 				}

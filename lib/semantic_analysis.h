@@ -15,7 +15,7 @@ bool check_function_arg(char* type_exp, char* symbol_func,uint16_t param_idx, sy
 char** get_function_signature(char* symbol_func, symbol_table* table, scope_t* scope, uint16_t* n_params);
 void push_param_to_paramlist(symbol_table* table, const char* type, char*** paramlist, uint16_t* n_params);
 bool analyze_semantics(symbol_table* table, syntax_tree* root);
-
+bool check_type_with_casting(char* symbol_1, char* symbol_2);
 
 bool equal_to(char* str1, char* str2);
 
