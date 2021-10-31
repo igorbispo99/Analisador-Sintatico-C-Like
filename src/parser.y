@@ -21,6 +21,8 @@
 	extern scope_t* scope;
 	extern uint16_t last_f;
 	extern bool first_pass_sematic_error_found;
+	extern char** args_last_f;
+	extern uint16_t args_count;
 }
 
 %union{
@@ -30,7 +32,7 @@
 	syntax_tree* tree;
 }
 
-%token TYPE IDENTIFIER LIST
+%token TYPE IDENTIFIER LIST 
 %token LP SEMI COM RCB LCB TWD PLUS MIN MUL LT GT LEQ GEQ DIF MAP FIL DIV TR TNR HD ATT COMP_EQ AND OR RP
 %token NUM_CONST NIL STR WRITE READ WRITE_LN
 %token IF ELSE FOR RET
@@ -138,6 +140,37 @@ Definition:
 				first_pass_sematic_error_found = true;
 			}
 		}
+		|
+		IDENTIFIER ATT MIN NUM_CONST {
+			$$ = new_node("=", root);
+
+			char str[MAX_BUFFER_SIZE];
+			strcpy(str, $1);
+
+			add_child($$, new_node(str, root));
+			sprintf(str, "-%lf", $4);
+
+			add_child($$, new_node(str, root));
+
+			if (!variable_was_declared(s_table, scope, $1)) {
+				char err[MAX_BUFFER_SIZE];
+				sprintf(err, "Variable %s not declared, at ln %d col %d.", $1, @1.first_line, @1.first_column);
+
+				print_error(err);
+
+				first_pass_sematic_error_found = true;
+			}
+
+			
+			if(!check_type_subtree($$, s_table, scope)) {
+				char err[MAX_BUFFER_SIZE];
+				sprintf(err, "Invalid expression type, at ln %d col %d.", @4.first_line, @4.first_column);
+
+				print_error(err);
+
+				first_pass_sematic_error_found = true;
+			}
+		}
 		;
  
 FunctionDefinition:
@@ -157,6 +190,7 @@ FunctionDefinition:
 		add_child($$, $4);
 		decrease_depth_scope(scope);
 
+		push_arg_to_arglist(s_table, "None", last_f);
 	}
     ;
 
@@ -591,8 +625,89 @@ PrimaryExpression:
 				first_pass_sematic_error_found = true;
 			}
 
+	        uint16_t n_args = 0;
+
+	        char** args = get_function_signature($1, s_table, scope, &n_args);
+
+			bool compatible_args = true;
+
+			for (size_t i = 0, j = args_count-1; j >= 0 && i < n_args; i++) {
+				if (!equal_to(args[i], args_last_f[j])) {
+					compatible_args = false;
+					break;
+				}
+			}
+
+			if (!compatible_args) {
+				first_pass_sematic_error_found = true;
+				char err[MAX_BUFFER_SIZE*2];
+				sprintf(err, "Invalid function call, function %s expect parameters ", $1);
+
+				for (size_t i = 0; i < n_args; i++) {
+					strcat(err, args[i]);
+					if (i != n_args - 1) {
+						strcat(err, ", ");
+					}
+				}
+
+				char err_tail[MAX_BUFFER_SIZE];
+				sprintf(err_tail, " at ln %d col %d.", @1.first_line, @1.first_column);
+				strcat(err, err_tail);
+
+				print_error(err);
+				first_pass_sematic_error_found = true;
+			}
+
+			for (size_t i = 0; i < args_count; i++) {
+				free(args_last_f[i]);
+			}
+
+			free(args_last_f);
+
+			args_count = 0;
+
 		}
-		
+	|	IDENTIFIER LP RP {
+			$$ = new_node("FunctionCall", root);
+			add_child($$, new_node($1, root));
+			add_child($$, new_node("", root));
+
+			if (!variable_was_declared(s_table, scope, $1)) {
+				first_pass_sematic_error_found = true;
+				char err[MAX_BUFFER_SIZE];
+				sprintf(err, "Function %s was not declared, at ln %d col %d.", $1, @1.first_line, @1.first_column);
+
+				print_error(err);
+
+				first_pass_sematic_error_found = true;
+			}
+
+	        uint16_t n_args = 0;
+
+			if (!check_function_arg("None", $1, 0, s_table, scope, &n_args)) {
+				first_pass_sematic_error_found = true;
+				char err[MAX_BUFFER_SIZE*2];
+
+		        char** args = get_function_signature($1, s_table, scope, &n_args);
+
+				sprintf(err, "Invalid function call, function %s expect parameters ", $1);
+
+				for (uint16_t i = 0; i < n_args; i++) {
+					strcat(err, args[i]);
+					if (i != n_args - 1) {
+						strcat(err, ", ");
+					}
+				}
+
+				char err_tail[MAX_BUFFER_SIZE];
+
+				sprintf(err_tail, ", at ln %d col %d.", @1.first_line, @1.first_column);
+				strcat(err, err_tail);
+
+				print_error(err);
+
+			}
+	}		
 	|	WRITE LP STR RP {
 			$$ = new_node("write_call", root);
 			add_child($$, new_node($3, root));
@@ -619,14 +734,18 @@ PrimaryExpression:
 	;
 
 Params:
-	%empty {$$ = new_node("Args", root);}
+	Expression {
+		$$ = new_node("Args", root);
+		add_child($$, $1);
+		push_param_to_paramlist(s_table, check_type_subtree($1, s_table, scope), &args_last_f, &args_count);
+	}
 	|
-	Expression {$$ = new_node("Args", root); add_child($$, $1);}
-	|
-	Params COM Expression {$$ = new_node("Args", root); add_child($$, $1);  add_child($$, $3);}
-	|
-	STR {$$ = new_node("Args", root); add_child($$, new_node($1, root));}
-
+	Params COM Expression {
+		$$ = new_node("Args", root);
+		add_child($$, $1); 
+		add_child($$, $3);
+		push_param_to_paramlist(s_table, check_type_subtree($3, s_table, scope), &args_last_f, &args_count);
+	}
 ;
 
 %%
@@ -638,6 +757,8 @@ syntax_tree* parse(char* filename) {
 	scope = new_scope_stack();
 	last_f = 0;
 	first_pass_sematic_error_found = false;
+
+	args_count = 0;
 
 	//push_default_functions(s_table, scope, &last_f);
 

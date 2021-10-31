@@ -9,6 +9,10 @@ int mult(int n) {
 	return n * 10 + (n*n + (a-2));
 }
 
+int write_hello() {
+	writeln("Ola mundo.");
+}
+
 int list add_list(int list n, int list m) {
 	float list out;
 	float list aux;
@@ -32,6 +36,8 @@ int list add_list(int list n, int list m) {
 }
 
 int main() {
+	write_hello();
+
 	int list l1;
 
 	l1 = 1 : l1;

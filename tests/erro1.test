@@ -12,11 +12,19 @@ int invalido(int n) {
 	return m;
 }
 
+int write_hello() {
+	writeln("Ola mundo.");
+}
+
 int invalido() {}
 
 int main() {
 	int n;
 	n = 1+1;
+
+	soma();
+
+	write_hello(1);
 
 	if (n == 2 {
 		write("Correto");

@@ -545,10 +545,12 @@ char *yytext;
 	scope_t* scope;
 	uint16_t last_f;
 	bool first_pass_sematic_error_found;
+   uint16_t args_count;
+   char** args_last_f;
 
    #include "parser.h"
-#line 551 "src/lexical.c"
-#line 552 "src/lexical.c"
+#line 553 "src/lexical.c"
+#line 554 "src/lexical.c"
 
 #define INITIAL 0
 
@@ -763,10 +765,10 @@ YY_DECL
 		}
 
 	{
-#line 33 "src/lexical.l"
+#line 35 "src/lexical.l"
 
 
-#line 770 "src/lexical.c"
+#line 772 "src/lexical.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -835,167 +837,167 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 35 "src/lexical.l"
+#line 37 "src/lexical.l"
 {strcpy(yylval.string, yytext);yylloc.first_column=n_column;n_column += yyleng;return TYPE;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 36 "src/lexical.l"
+#line 38 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return LIST;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 37 "src/lexical.l"
+#line 39 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return LP;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 38 "src/lexical.l"
+#line 40 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return RP;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 39 "src/lexical.l"
+#line 41 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return COM;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 40 "src/lexical.l"
+#line 42 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return SEMI;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 41 "src/lexical.l"
+#line 43 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return RCB;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 42 "src/lexical.l"
+#line 44 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return LCB;}   
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 43 "src/lexical.l"
+#line 45 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return TWD;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 44 "src/lexical.l"
+#line 46 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return PLUS;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 45 "src/lexical.l"
+#line 47 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return MIN;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 46 "src/lexical.l"
+#line 48 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return MUL;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 47 "src/lexical.l"
+#line 49 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return LT;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 48 "src/lexical.l"
+#line 50 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return GT;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 49 "src/lexical.l"
+#line 51 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return LEQ;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 50 "src/lexical.l"
+#line 52 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return GEQ;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 51 "src/lexical.l"
+#line 53 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return DIF;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 52 "src/lexical.l"
+#line 54 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return MAP;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 53 "src/lexical.l"
+#line 55 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return FIL;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 54 "src/lexical.l"
+#line 56 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return DIV;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 55 "src/lexical.l"
+#line 57 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return TR;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 56 "src/lexical.l"
+#line 58 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return TNR;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 57 "src/lexical.l"
+#line 59 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return HD;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 58 "src/lexical.l"
+#line 60 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return ATT;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 59 "src/lexical.l"
+#line 61 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return COMP_EQ;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 60 "src/lexical.l"
+#line 62 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return AND;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 61 "src/lexical.l"
+#line 63 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return OR;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 63 "src/lexical.l"
+#line 65 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return IF;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 64 "src/lexical.l"
+#line 66 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return ELSE;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 65 "src/lexical.l"
+#line 67 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return FOR;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 66 "src/lexical.l"
+#line 68 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return RET;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 67 "src/lexical.l"
+#line 69 "src/lexical.l"
 {yylloc.first_column=n_column;n_column += yyleng;return NIL;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 69 "src/lexical.l"
+#line 71 "src/lexical.l"
 {
    yylloc.first_column=n_column;
    n_column += yyleng;
@@ -1004,7 +1006,7 @@ YY_RULE_SETUP
 case 34:
 /* rule 34 can match eol */
 YY_RULE_SETUP
-#line 74 "src/lexical.l"
+#line 76 "src/lexical.l"
 {
    n_line += 1;
    n_column = 1;
@@ -1015,7 +1017,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 82 "src/lexical.l"
+#line 84 "src/lexical.l"
 {
    yylloc.first_column=n_column;
    n_column += yyleng;
@@ -1024,7 +1026,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 88 "src/lexical.l"
+#line 90 "src/lexical.l"
 {
    yylloc.first_column=n_column;
    n_column += yyleng;
@@ -1033,7 +1035,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 94 "src/lexical.l"
+#line 96 "src/lexical.l"
 {
    yylloc.first_column=n_column;
    n_column += yyleng;
@@ -1042,7 +1044,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 100 "src/lexical.l"
+#line 102 "src/lexical.l"
 {
    //printf("Identifier: \"%s\" at Ln %d, Col %d\n", yytext, yylineno , yy_bs_column );
    yylloc.first_column=n_column;
@@ -1054,7 +1056,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 109 "src/lexical.l"
+#line 111 "src/lexical.l"
 {
 //   printf("Operator: \"%s\" at Ln %lu, Col %lu\n", yytext, n_line, n_column);
    yylloc.first_column=n_column;
@@ -1064,7 +1066,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 116 "src/lexical.l"
+#line 118 "src/lexical.l"
 {
 //  printf("Numerical constant: \"%s\" at Ln %lu, Col %lu\n", yytext, n_line, n_column);
    yylloc.first_column=n_column;
@@ -1077,7 +1079,7 @@ YY_RULE_SETUP
 case 41:
 /* rule 41 can match eol */
 YY_RULE_SETUP
-#line 125 "src/lexical.l"
+#line 127 "src/lexical.l"
 {
 //   printf("String literal: \"%s\" at Ln %lu, Col %lu\n", yytext, n_line, n_column);
    yylloc.first_column=n_column;
@@ -1089,7 +1091,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 134 "src/lexical.l"
+#line 136 "src/lexical.l"
 {
 //   printf("Comment: \"%s\" at Ln %lu, Col %lu\n", yytext, n_line, n_column);
    yylloc.first_column=n_column;
@@ -1099,7 +1101,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 141 "src/lexical.l"
+#line 143 "src/lexical.l"
 {
    printf("\x1b[31mInvalid token: \"%s\" at Ln %lu, Col %lu\x1b[0m\n", yytext, n_line, n_column);
    yylloc.first_column=n_column;
@@ -1110,10 +1112,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 149 "src/lexical.l"
+#line 151 "src/lexical.l"
 ECHO;
 	YY_BREAK
-#line 1117 "src/lexical.c"
+#line 1119 "src/lexical.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2089,6 +2091,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 149 "src/lexical.l"
+#line 151 "src/lexical.l"
 
 

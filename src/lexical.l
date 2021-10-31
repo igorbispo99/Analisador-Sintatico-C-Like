@@ -14,6 +14,8 @@
 	scope_t* scope;
 	uint16_t last_f;
 	bool first_pass_sematic_error_found;
+   uint16_t args_count;
+   char** args_last_f;
 
    #include "parser.h"
 %}

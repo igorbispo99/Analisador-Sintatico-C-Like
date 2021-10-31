@@ -147,7 +147,7 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
             if ((equal_to(type_exp, "float") || equal_to(type_exp, "int")) &&
             (equal_to(type_func, "float") || equal_to(type_func, "int"))) {
                 return type_exp;
-            } else if ((equal_to(type_exp, "float LIST ") || equal_to(type_exp, "float LIST ")) &&
+            } else if ((equal_to(type_exp, "int LIST ") || equal_to(type_exp, "float LIST ")) &&
             (equal_to(type_func, "int LIST ") || equal_to(type_func, "float LIST "))) {
                 return type_exp;
             } else {
@@ -210,9 +210,81 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
         } else {
             return NULL;
         }
+    } else if (equal_to(node->element, "==")) {
+        if ((equal_to(type_left, "int") || equal_to(type_left, "float")) &&
+            (equal_to(type_right, "int") || equal_to(type_right, "float")))
+            {
+                return "int";
+            } else {
+                return NULL;
+            }
+    } else if (equal_to(node->element, "!=")) {
+        if ((equal_to(type_left, "int") || equal_to(type_left, "float")) &&
+            (equal_to(type_right, "int") || equal_to(type_right, "float")))
+            {
+                return "int";
+            } else {
+                return NULL;
+            }
+    } else if (equal_to(node->element, ">") || equal_to(node->element, "<") ||
+        equal_to(node->element, ">=") || equal_to(node->element, "<=")) {
+        if ((equal_to(type_left, "int") || equal_to(type_left, "float")) &&
+            (equal_to(type_right, "int") || equal_to(type_right, "float")))
+            {
+                return "int";
+            } else {
+                return NULL;
+            }
     }
 
     return "0";
+}
+
+char** get_function_signature(char* symbol_func, symbol_table* table, scope_t* scope, uint16_t* n_params) {
+    int func_table_idx;
+
+    for (func_table_idx = 0; func_table_idx < table->n_lines; func_table_idx++) {
+        if (equal_to(table->symbol[func_table_idx], symbol_func) &&
+            variable_was_declared(table, scope, symbol_func) &&
+            !table->is_var[func_table_idx]){
+            break;
+        }
+    }
+
+    if (func_table_idx == table->n_lines) {
+        return NULL;
+    }
+
+    *n_params = table->n_args[func_table_idx];
+    return table->args[func_table_idx];
+}
+
+bool check_function_arg(char* type_exp, char* symbol_func, uint16_t param_idx, symbol_table* table, scope_t* scope, uint16_t* n_params) {
+    char** func_signature = get_function_signature(symbol_func, table, scope, n_params);
+    char* param_type = func_signature[param_idx];
+
+    if (equal_to(type_exp, param_type)) {
+        return true;
+    } else if ((equal_to(param_type, "float") || equal_to(param_type, "int")) && (equal_to(type_exp, "int") || equal_to(type_exp, "float"))) {
+        return true;
+    } else if ((equal_to(param_type, "int LIST ") || equal_to(param_type, "float LIST ")) &&
+        (equal_to(type_exp, "int LIST ") || equal_to(type_exp, "float LIST "))) {
+        return true;
+    }
+
+    return false;
+}
+
+void push_param_to_paramlist(symbol_table* table, const char* type, char*** paramlist, uint16_t* n_params) {
+    if (*n_params == 0) {
+        *paramlist = (char**) malloc(sizeof(char*));
+    }
+
+    *n_params = *n_params + 1;
+    *paramlist = realloc(*paramlist, *n_params * (sizeof(char*)));
+
+    (*paramlist)[*n_params-1] = calloc(MAX_BUFFER_SIZE, sizeof(char));
+    strcpy((*paramlist)[*n_params-1], type);
 }
 
 void push_default_functions(symbol_table* table, scope_t* scope, uint16_t* last_f) {
