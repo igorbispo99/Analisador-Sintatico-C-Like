@@ -1,11 +1,16 @@
 int a;
 int list b;
 
-int exp_func(int n) {
-	return ((n*10) - 5) == 0;
+int is_odd(int n) {
+	return (n / 2 == 0);
 }
 
 int mult(int n) {
+        int i;
+        for (i = 0; i < 10 + 2 * (1-0)/2; i = i +1){
+               n + i;
+        }
+
 	return n * 10 + (n*n + (a-2));
 }
 
@@ -49,14 +54,11 @@ int main() {
 	int list l3;
 	l3 = add_list(l1, l2);
 
+     mult >> l3;
+
 	int n;
 	read(n);
 
-	
-	if (exp_func(n))
-		write("Ok\n");
-	else
-		writeln("Nao ok");
-
 	return 0;
+
 }

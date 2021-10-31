@@ -4,12 +4,15 @@ int soma(int n1, float n2) {
 
 int invalido(int n) {
 	int list n;
+	n = 10;
 	int list m;
 
 	a = 10;
 
 	return m;
 }
+
+int invalido() {}
 
 int main() {
 	int n;
@@ -20,5 +23,9 @@ int main() {
 	} else {
 		write("Errado")
 	}
+
+	float n;
+	n = -n;
+	
 	return 0; 
 }

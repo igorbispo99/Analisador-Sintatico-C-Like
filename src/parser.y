@@ -1,3 +1,4 @@
+%locations
 %define lr.type canonical-lr
 %define parse.error verbose
 
@@ -15,11 +16,11 @@
     int yylex(void);
     void yyerror(const char *);
 
-	syntax_tree* root;
-	symbol_table* s_table;
-	scope_t* scope;
-	uint16_t last_f;
-	bool first_pass_sematic_error_found;
+	extern syntax_tree* root;
+	extern symbol_table* s_table;
+	extern scope_t* scope;
+	extern uint16_t last_f;
+	extern bool first_pass_sematic_error_found;
 }
 
 %union{
@@ -83,7 +84,11 @@ Declaration:
 		TYPE IDENTIFIER SEMI {
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $1);
-			add_row_symbol_table(s_table, $2, $1, scope, true);
+			if(!add_row_symbol_table(s_table, $2, $1, scope, true))
+			{
+				printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @2.first_line, @2.first_column, $2);
+				first_pass_sematic_error_found = true;
+			}
 			strcat(str, " ");
 			$$ = new_node(strcat(str, $2), root);
 		}
@@ -92,7 +97,13 @@ Declaration:
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $1);
 			strcat(str," LIST ");
-			add_row_symbol_table(s_table, $3, str, scope, true);
+			
+			if(!add_row_symbol_table(s_table, $3, str, scope, true))
+			{
+				printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @3.first_line, @3.first_column, $3);
+				first_pass_sematic_error_found = true;
+			}
+
 			$$ = new_node(strcat(str, $3), root);
 
 		}
@@ -110,7 +121,7 @@ Definition:
 
 			if (!variable_was_declared(s_table, scope, $1)) {
 				char err[MAX_BUFFER_SIZE];
-				sprintf(err, "Variable %s not declared, at ln %zu col %zu.", $1, n_line, n_column);
+				sprintf(err, "Variable %s not declared, at ln %d col %d.", $1, @1.first_line, @1.first_column);
 
 				print_error(err);
 
@@ -120,7 +131,7 @@ Definition:
 			
 			if(!check_type_subtree($$, s_table, scope)) {
 				char err[MAX_BUFFER_SIZE];
-				sprintf(err, "Invalid operand types, at ln %zu col %zu.", n_line, n_column);
+				sprintf(err, "Invalid operand types, at ln %lu col %lu.", n_line, n_column);
 
 				print_error(err);
 
@@ -153,17 +164,30 @@ FunctionArgs:
 	TYPE IDENTIFIER {
 		$$ = new_node("FunctionParameters", root);
 
-		add_row_symbol_table(s_table, $2, $1, scope, true);
+		if(!add_row_symbol_table(s_table, $2, $1, scope, true))
+		{
+			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @2.first_line, @2.first_column, $2);
+			first_pass_sematic_error_found = true;
+		}
 		push_arg_to_arglist(s_table, $1, last_f);
 	}
 	|
 	TYPE IDENTIFIER COM TYPE IDENTIFIER ParamList {
 		$$ = new_node("FunctionParameters", root);
 
-		add_row_symbol_table(s_table, $2, $1, scope, true);
+		if(!add_row_symbol_table(s_table, $2, $1, scope, true))
+		{
+			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @2.first_line, @2.first_column, $2);
+			first_pass_sematic_error_found = true;
+		}
 		push_arg_to_arglist(s_table, $1, last_f);
 
-		add_row_symbol_table(s_table, $5, $4, scope, true);
+
+		if(!add_row_symbol_table(s_table, $5, $4, scope, true))
+		{
+			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @5.first_line, @5.first_column, $5);
+			first_pass_sematic_error_found = true;
+		}
 		push_arg_to_arglist(s_table, $4, last_f);
 	}
 	|
@@ -174,7 +198,12 @@ FunctionArgs:
 		strcpy(str, $1);
 		strcat(str," LIST ");
 
-		add_row_symbol_table(s_table, $3, str, scope, true);
+		if(!add_row_symbol_table(s_table, $3, str, scope, true))
+		{
+			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @3.first_line, @3.first_column, $3);
+			first_pass_sematic_error_found = true;
+		}
+
 		push_arg_to_arglist(s_table, str, last_f);	
 	}
 	|
@@ -185,14 +214,24 @@ FunctionArgs:
 		strcpy(arg_1, $1);
 		strcat(arg_1," LIST ");
 
-		add_row_symbol_table(s_table, $3, arg_1, scope, true);
+		if(!add_row_symbol_table(s_table, $3, arg_1, scope, true))
+		{
+			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @3.first_line, @3.first_column, $3);
+			first_pass_sematic_error_found = true;
+		}
+
 		push_arg_to_arglist(s_table, arg_1, last_f);
 
 		char arg_2[MAX_BUFFER_SIZE];
 		strcpy(arg_2, $5);
 		strcat(arg_2," LIST ");
 
-		add_row_symbol_table(s_table, $7, arg_2, scope, true);
+		if(!add_row_symbol_table(s_table, $7, arg_2, scope, true))
+		{
+			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @7.first_line, @7.first_column, $7);
+			first_pass_sematic_error_found = true;
+		}
+
 		push_arg_to_arglist(s_table, arg_2, last_f);
 	}
 	;
@@ -204,7 +243,12 @@ FunctionHead:
 		strcat(str, "()");
 
 		$$ = new_node(str, root);
-		add_row_symbol_table(s_table, $2, $1, scope, false);
+
+		if(!add_row_symbol_table(s_table, $2, $1, scope, false))
+		{
+			printf("\033[91mSemantic error at line %d, column %d: Function %s already declared\033[0m\n", @2.first_line, @2.first_column, $2);
+			first_pass_sematic_error_found = true;
+		}
 
 		last_f = s_table->n_lines -1;
 
@@ -222,7 +266,12 @@ FunctionHead:
 		char str[MAX_BUFFER_SIZE];
 		strcpy(str, $1);
 		strcat(str," LIST ");
-		add_row_symbol_table(s_table, $3, str, scope, false);
+
+		if(!add_row_symbol_table(s_table, $3, str, scope, false))
+		{
+			printf("\033[91mSemantic error at line %d, column %d: Function %s already declared\033[0m\n", @3.first_line, @3.first_column, f_name);
+			first_pass_sematic_error_found = true;
+		}
 
 		last_f = s_table->n_lines -1;
 
@@ -239,7 +288,12 @@ ParamList:
 			$$ = new_node("ParamList", root);
 			add_child($$, $4);
 
-			add_row_symbol_table(s_table, $3, $2, scope, true);
+			if (!add_row_symbol_table(s_table, $3, $2, scope, true))
+			{
+				printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @3.first_line, @3.first_column, $3);
+				first_pass_sematic_error_found = true;
+			}
+
 			push_arg_to_arglist(s_table, $2, last_f);
 		}
 		|
@@ -251,7 +305,12 @@ ParamList:
 			strcpy(str, $2);
 			strcat(str," LIST ");
 
-			add_row_symbol_table(s_table, $4, str, scope, true);
+			if(!add_row_symbol_table(s_table, $4, str, scope, true))
+			{
+				printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @4.first_line, @4.first_column, $4);
+				first_pass_sematic_error_found = true;
+			}
+
 			push_arg_to_arglist(s_table, str, last_f);
 		}
     ;
@@ -333,6 +392,12 @@ JmpStatement:
 		RET ExpStatement {
 			$$ = new_node("RETURN", root);
 			add_child($$, $2);
+
+			if (!check_type_subtree($$, s_table, scope))
+			{
+				printf("\033[91mSemantic error at line %d, column %d: Incompatible return type.\033[0m\n", @2.first_line, @2.first_column);
+				first_pass_sematic_error_found = true;
+			}
 		}
 		;
 
@@ -492,7 +557,7 @@ PrimaryExpression:
 			if (!variable_was_declared(s_table, scope, $1)) {
 				first_pass_sematic_error_found = true;
 				char err[MAX_BUFFER_SIZE];
-				sprintf(err, "Variable %s not declared, at ln %zu col %zu.", $1, n_line, n_column);
+				sprintf(err, "Variable %s not declared, at ln %d col %d.", $1, @1.first_line, @1.first_column);
 
 				print_error(err);
 
@@ -519,7 +584,7 @@ PrimaryExpression:
 			if (!variable_was_declared(s_table, scope, $1)) {
 				first_pass_sematic_error_found = true;
 				char err[MAX_BUFFER_SIZE];
-				sprintf(err, "Function %s was not declared, at ln %zu col %zu.", $1, n_line, n_column);
+				sprintf(err, "Function %s was not declared, at ln %d col %d.", $1, @1.first_line, @1.first_column);
 
 				print_error(err);
 
@@ -574,7 +639,7 @@ syntax_tree* parse(char* filename) {
 	last_f = 0;
 	first_pass_sematic_error_found = false;
 
-	push_default_functions(s_table, scope, &last_f);
+	//push_default_functions(s_table, scope, &last_f);
 
     yyparse();
 	
@@ -605,5 +670,5 @@ syntax_tree* parse(char* filename) {
 	strcpy(str, s);
 	str[0] = 'S';
 
-	fprintf (stderr, "\033[91m%s, at ln %lu col %lu\033[0m\n", str, n_line, n_column);
+	fprintf (stderr, "\033[91m%s, at ln %d col %d\033[0m\n", str, yylloc.first_line, yylloc.first_column);
  }

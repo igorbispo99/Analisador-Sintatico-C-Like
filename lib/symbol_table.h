@@ -28,7 +28,7 @@ typedef struct {
 } symbol_table;
 
 symbol_table* new_symbol_table();
-symbol_table* add_row_symbol_table(symbol_table* table, const char* symbol, const char* type, scope_t* scope, bool is_var);
+bool add_row_symbol_table(symbol_table* table, const char* symbol, const char* type, scope_t* scope, bool is_var);
 void push_arg_to_arglist(symbol_table* table, const char* type, uint16_t line);
 void show_table(symbol_table* table);
 void free_table(symbol_table* table);

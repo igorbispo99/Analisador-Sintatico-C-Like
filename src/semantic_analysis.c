@@ -38,23 +38,8 @@ int print_error(const char* message) {
 }
 
 bool analyze_semantics(symbol_table* table, syntax_tree* tree) {
-    char*** vars = (char***) calloc(1, sizeof(char**));
-    uint16_t n_vars = 0;
-
     if (!main_exists(table)) return print_error("No main function found.");
 
-    if (double_declaration_exists(table, vars, &n_vars)) {
-        for (int i = 0; i < n_vars; i++) {
-            fprintf(stderr, "\033[91mSemantic error: Variable %s redeclared.\033[0m\n", (*vars)[i]);
-        }
-
-        free(*vars);
-        free(vars);
-
-        return true;
-    }
-
-    free(vars);
     return false;
 }
 
@@ -126,6 +111,8 @@ char* get_type_var(char* symbol, symbol_table* table, scope_t* scope) {
 char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* scope) {
     char* type_left = NULL;
     char* type_right = NULL;
+    char* type_exp = NULL;
+    char* type_func = NULL;
 
     if (node->n_children > 1) {
         type_left = check_type_subtree(node->children[0], table, scope);
@@ -153,6 +140,20 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
             } else {
                 return NULL;
             }
+        } else if (equal_to(node->element, "RETURN")) {
+            type_exp = check_type_subtree(node->children[0], table, scope);
+            type_func = table->type[last_f];
+
+            if ((equal_to(type_exp, "float") || equal_to(type_exp, "int")) &&
+            (equal_to(type_func, "float") || equal_to(type_func, "int"))) {
+                return type_exp;
+            } else if ((equal_to(type_exp, "float LIST ") || equal_to(type_exp, "float LIST ")) &&
+            (equal_to(type_func, "int LIST ") || equal_to(type_func, "float LIST "))) {
+                return type_exp;
+            } else {
+                return NULL;
+            }
+
         }
         return child_type;
     } else {

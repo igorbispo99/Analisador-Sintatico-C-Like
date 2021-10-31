@@ -13,6 +13,7 @@ int e2_4
 int l1_5[]={0}
 int l2_5[]={0}
 int l3_5[]={0}
+int n_5
 
 .code
 main:

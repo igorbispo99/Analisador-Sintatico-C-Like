@@ -1,0 +1,43 @@
+int list L1;
+int list L2;
+int n;
+
+int filter_func(float x) {
+	return x > 10 && x < 5 || (x/2 < 7) || x;
+}
+
+int map_func(int x) {
+	n = 10;
+	return (x*x - n)/n + 2*n;
+}
+
+int main () {
+	int list l1;
+
+	l1 = 1 : l1;
+	l1 = 2 : l1;
+	l1 = 3 : l1;
+	l1 = 4 : l1;
+
+	int list l2;
+
+	l2 = 5 : l2;
+	l2 = 6 : l2;
+	l2 = 7 : l2;
+	l2 = 8 : l2;
+
+	int list l3;
+	l3 = map_func >> l1;
+	writeln(l3);
+	write(?l3);
+	write(!l3);
+	write(%l3);
+
+	l3 = filter_func << l2;
+	writeln(l3);
+	write(?l3);
+	write(!l3);
+	write(%l3);	
+
+	return 0;
+}

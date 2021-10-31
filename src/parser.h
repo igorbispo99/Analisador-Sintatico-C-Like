@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 4 "src/parser.y"
+#line 5 "src/parser.y"
 
     #include "syntax_tree.h"
 	#include "symbol_table.h"
@@ -60,11 +60,11 @@ extern int yydebug;
     int yylex(void);
     void yyerror(const char *);
 
-	syntax_tree* root;
-	symbol_table* s_table;
-	scope_t* scope;
-	uint16_t last_f;
-	bool first_pass_sematic_error_found;
+	extern syntax_tree* root;
+	extern symbol_table* s_table;
+	extern scope_t* scope;
+	extern uint16_t last_f;
+	extern bool first_pass_sematic_error_found;
 
 #line 70 "src/parser.h"
 
@@ -123,7 +123,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 25 "src/parser.y"
+#line 26 "src/parser.y"
 
     char string[MAX_BUFFER_SIZE/2];
     double num;
@@ -138,9 +138,23 @@ typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
+/* Location type.  */
+#if ! defined YYLTYPE && ! defined YYLTYPE_IS_DECLARED
+typedef struct YYLTYPE YYLTYPE;
+struct YYLTYPE
+{
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
+};
+# define YYLTYPE_IS_DECLARED 1
+# define YYLTYPE_IS_TRIVIAL 1
+#endif
+
 
 extern YYSTYPE yylval;
-
+extern YYLTYPE yylloc;
 
 int yyparse (void);
 

@@ -1,4 +1,4 @@
-%option noyywrap noinput nounput
+%option noyywrap noinput nounput yylineno
 %{
    // Igor Bispo de Moraes - 170050432
    // Tradutores 2021/1
@@ -6,14 +6,22 @@
    size_t n_line = 1;
    size_t n_column = 1;
 
+   #include "syntax_tree.h"
+   #include "symbol_table.h"
+
+   syntax_tree* root;
+	symbol_table* s_table;
+	scope_t* scope;
+	uint16_t last_f;
+	bool first_pass_sematic_error_found;
+
    #include "parser.h"
 %}
 
-KEY_W int|float|list|if|else|exists|return|for
 OP [+\-*\/<>=!(){};:?%]|"+="|"-="|"=="|"*="|"!="|">>"|"<<"|"<="|"||"|"&&"
 ID (_|[A-Za-z])([A-Za-z]|[0-9]|_)*
 NL \n
-NUM [-]?[0-9]+(\.[0-9]+)?(E[+-]?[0-9]+)?
+NUM [0-9]+(\.[0-9]+)?(E[+-]?[0-9]+)?
 STR ["](([\\]["])|([^"]))*["]
 COM \/\/.*
 WS [ \t\r]
@@ -24,62 +32,75 @@ READ read
 
 %%
 
-int|float {strcpy(yylval.string, yytext);n_column += yyleng;return TYPE;}
-list {n_column += yyleng;return LIST;}
-[(] {n_column += yyleng;return LP;}
-[)] {n_column += yyleng;return RP;}
-[,] {n_column += yyleng;return COM;}
-[;] {n_column += yyleng;return SEMI;}
-[}] {n_column += yyleng;return RCB;}
-[{] {n_column += yyleng;return LCB;}   
-[:] {n_column += yyleng;return TWD;}
-[+] {n_column += yyleng;return PLUS;}
-[-] {n_column += yyleng;return MIN;}
-[*] {n_column += yyleng;return MUL;}
-[<] {n_column += yyleng;return LT;}
-[>] {n_column += yyleng;return GT;}
-[<][=] {n_column += yyleng;return LEQ;}
-[>][=] {n_column += yyleng;return GEQ;}
-[!][=] {n_column += yyleng;return DIF;}
-[>][>] {n_column += yyleng;return MAP;}
-[<][<] {n_column += yyleng;return FIL;}
-[\/] {n_column += yyleng;return DIV;}
-[%] {n_column += yyleng;return TR;}
-[!] {n_column += yyleng;return TNR;}
-[?] {n_column += yyleng;return HD;}
-[=] {n_column += yyleng; return ATT;}
-[=][=] {n_column += yyleng;return COMP_EQ;}
-[&][&] {n_column += yyleng;return AND;}
-[|][|] {n_column += yyleng;return OR;}
+int|float {strcpy(yylval.string, yytext);yylloc.first_column=n_column;n_column += yyleng;return TYPE;}
+list {yylloc.first_column=n_column;n_column += yyleng;return LIST;}
+[(] {yylloc.first_column=n_column;n_column += yyleng;return LP;}
+[)] {yylloc.first_column=n_column;n_column += yyleng;return RP;}
+[,] {yylloc.first_column=n_column;n_column += yyleng;return COM;}
+[;] {yylloc.first_column=n_column;n_column += yyleng;return SEMI;}
+[}] {yylloc.first_column=n_column;n_column += yyleng;return RCB;}
+[{] {yylloc.first_column=n_column;n_column += yyleng;return LCB;}   
+[:] {yylloc.first_column=n_column;n_column += yyleng;return TWD;}
+[+] {yylloc.first_column=n_column;n_column += yyleng;return PLUS;}
+[-] {yylloc.first_column=n_column;n_column += yyleng;return MIN;}
+[*] {yylloc.first_column=n_column;n_column += yyleng;return MUL;}
+[<] {yylloc.first_column=n_column;n_column += yyleng;return LT;}
+[>] {yylloc.first_column=n_column;n_column += yyleng;return GT;}
+[<][=] {yylloc.first_column=n_column;n_column += yyleng;return LEQ;}
+[>][=] {yylloc.first_column=n_column;n_column += yyleng;return GEQ;}
+[!][=] {yylloc.first_column=n_column;n_column += yyleng;return DIF;}
+[>][>] {yylloc.first_column=n_column;n_column += yyleng;return MAP;}
+[<][<] {yylloc.first_column=n_column;n_column += yyleng;return FIL;}
+[\/] {yylloc.first_column=n_column;n_column += yyleng;return DIV;}
+[%] {yylloc.first_column=n_column;n_column += yyleng;return TR;}
+[!] {yylloc.first_column=n_column;n_column += yyleng;return TNR;}
+[?] {yylloc.first_column=n_column;n_column += yyleng;return HD;}
+[=] {yylloc.first_column=n_column;n_column += yyleng;return ATT;}
+[=][=] {yylloc.first_column=n_column;n_column += yyleng;return COMP_EQ;}
+[&][&] {yylloc.first_column=n_column;n_column += yyleng;return AND;}
+[|][|] {yylloc.first_column=n_column;n_column += yyleng;return OR;}
 
-if {n_column += yyleng;return IF;}
-else {n_column += yyleng;return ELSE;}
-for {n_column += yyleng;return FOR;}
-return {n_column += yyleng;return RET;}
-NIL {n_column += yyleng;return NIL;}
+if {yylloc.first_column=n_column;n_column += yyleng;return IF;}
+else {yylloc.first_column=n_column;n_column += yyleng;return ELSE;}
+for {yylloc.first_column=n_column;n_column += yyleng;return FOR;}
+return {yylloc.first_column=n_column;n_column += yyleng;return RET;}
+NIL {yylloc.first_column=n_column;n_column += yyleng;return NIL;}
+
+{WS} {
+   yylloc.first_column=n_column;
+   n_column += yyleng;
+}
+
+{NL} {
+   n_line += 1;
+   n_column = 1;
+   
+   yylloc.first_line=n_line;
+   yylloc.first_column=n_column;
+}
 
 {WRITE} {
+   yylloc.first_column=n_column;
    n_column += yyleng;
    return WRITE;
 }
 
 {WRITE_LN} {
+   yylloc.first_column=n_column;
    n_column += yyleng;
    return WRITE_LN;
 }
 
 {READ} {
+   yylloc.first_column=n_column;
    n_column += yyleng;
    return READ;
 }
 
-{KEY_W} {
-//   printf("Keyword: \"%s\" at Ln %lu, Col %lu\n", yytext, n_line, n_column);
-   n_column += yyleng;
-}
-
 {ID} {
-//   printf("Identifier: \"%s\" at Ln %lu, Col %lu\n", yytext, n_line, n_column);
+   //printf("Identifier: \"%s\" at Ln %d, Col %d\n", yytext, yylineno , yy_bs_column );
+   yylloc.first_column=n_column;
+
    n_column += yyleng;
    strcpy(yylval.string, yytext);
    return IDENTIFIER;
@@ -87,11 +108,15 @@ NIL {n_column += yyleng;return NIL;}
 
 {OP} {
 //   printf("Operator: \"%s\" at Ln %lu, Col %lu\n", yytext, n_line, n_column);
+   yylloc.first_column=n_column;
+
    n_column += yyleng;
 }
 
 {NUM} {
 //  printf("Numerical constant: \"%s\" at Ln %lu, Col %lu\n", yytext, n_line, n_column);
+   yylloc.first_column=n_column;
+
    n_column += yyleng;
    yylval.num = strtol(yytext, NULL, 0);
    return NUM_CONST;
@@ -99,6 +124,8 @@ NIL {n_column += yyleng;return NIL;}
 
 {STR} {
 //   printf("String literal: \"%s\" at Ln %lu, Col %lu\n", yytext, n_line, n_column);
+   yylloc.first_column=n_column;
+
    n_column += yyleng;
    strcpy(yylval.string, yytext);
    return STR;
@@ -106,20 +133,15 @@ NIL {n_column += yyleng;return NIL;}
 
 {COM} {
 //   printf("Comment: \"%s\" at Ln %lu, Col %lu\n", yytext, n_line, n_column);
-   n_column += yyleng;
-}
+   yylloc.first_column=n_column;
 
-{WS} {
    n_column += yyleng;
-}
-
-{NL} {
-   n_line += 1;
-   n_column = 1;
 }
 
 {DEFAULT} {
    printf("\x1b[31mInvalid token: \"%s\" at Ln %lu, Col %lu\x1b[0m\n", yytext, n_line, n_column);
+   yylloc.first_column=n_column;
+
    n_column += yyleng;
 
 }

@@ -4,6 +4,8 @@
 #include "symbol_table.h"
 #include "syntax_tree.h"
 
+extern uint16_t last_f;
+
 void push_default_functions(symbol_table* table, scope_t* scope, uint16_t* last_f);
 
 bool main_exists(symbol_table* table);

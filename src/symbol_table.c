@@ -25,7 +25,7 @@ void push_arg_to_arglist(symbol_table* table, const char* type, uint16_t line) {
     strcpy(table->args[line][table->n_args[line]-1], type);
 }
 
-symbol_table* add_row_symbol_table(symbol_table* table, const char* symbol, const char* type, scope_t* scope, bool is_var) {
+bool add_row_symbol_table(symbol_table* table, const char* symbol, const char* type, scope_t* scope, bool is_var) {
     table->n_lines = table->n_lines + 1;
 
     table->symbol = (char**) realloc(table->symbol, sizeof(char*)*table->n_lines);
@@ -53,7 +53,15 @@ symbol_table* add_row_symbol_table(symbol_table* table, const char* symbol, cons
     table->scope[table->n_lines - 1]->stack = (uint16_t *) malloc(sizeof(uint16_t) * scope->stack_size);
     memcpy(table->scope[table->n_lines - 1]->stack, scope->stack, sizeof(uint16_t) * scope->stack_size);
 
-    return table;
+    for (int i = 0; i < table->n_lines - 1; i++) {
+        if(!strcmp(table->symbol[i], symbol) && (table->is_var[i] == is_var)) {
+            if (table->scope[i]->stack[0] == scope->stack[0]) {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 char* get_func_args(symbol_table* table, uint16_t line) {
