@@ -1,0 +1,8 @@
+int g(int i) {return i;}
+int main() {
+  int list h;
+  int list k;
+  k = 1 : 2 : 3 : 4 : 5 : NIL;
+  h = (?h):(?h >= ?!h):(?!k):(g >> k);
+  return 0;
+}

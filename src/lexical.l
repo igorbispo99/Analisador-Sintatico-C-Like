@@ -120,7 +120,7 @@ NIL {yylloc.first_column=n_column;n_column += yyleng;return NIL;}
    yylloc.first_column=n_column;
 
    n_column += yyleng;
-   yylval.num = strtol(yytext, NULL, 0);
+   yylval.num = strtof(yytext, NULL);
    return NUM_CONST;
 }
 

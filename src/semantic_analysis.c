@@ -97,7 +97,7 @@ bool is_func(char* symbol, symbol_table* table, scope_t* scope) {
 }
 
 char* get_type_var(char* symbol, symbol_table* table, scope_t* scope) {
-    if (equal_to(symbol, "NIL")) return "NIL";
+    if (equal_to(symbol, "NIL")) return "float LIST ";
 
     for (int i = table->n_lines-1; i >= 0; i--) {
         if(!strcmp(table->symbol[i], symbol)) {
@@ -114,11 +114,13 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
     char* type_exp = NULL;
     char* type_func = NULL;
 
+    if(!node) return NULL;
+
     if (node->n_children > 1) {
         if (equal_to(node->element, "FunctionCall")) {
             return get_type_var(node->children[0]->element, table, scope);
         }
-        
+
         type_left = check_type_subtree(node->children[0], table, scope);
         type_right = check_type_subtree(node->children[1], table, scope);
 
@@ -127,12 +129,12 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
         }
 
     } else if (node->n_children == 1) {
+        char* child_type = check_type_subtree(node->children[0], table, scope);
+
         if (equal_to(node->element, "PrimaryExpression") || equal_to(node->element, "Args"))
-            return check_type_subtree(node->children[0], table, scope);
+            return child_type;
 
-        char* child_type = get_type_var(node->children[0]->element, table, scope);
-
-        if (equal_to(node->element, "?")) { 
+        if (equal_to(node->element, "?")) {
             if (equal_to(child_type, "float LIST ") || equal_to(child_type, "int LIST ")) {
                 return "float";
             } else {
@@ -140,12 +142,12 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
             }
         } else if (equal_to(node->element, "%") || equal_to(node->element, "!")) {
             if (equal_to(child_type, "float LIST ") || equal_to(child_type, "int LIST ")) {
-                return "float LIST";
+                return "float LIST ";
             } else {
                 return NULL;
             }
         } else if (equal_to(node->element, "RETURN")) {
-            type_exp = check_type_subtree(node->children[0], table, scope);
+            type_exp = child_type;
             type_func = table->type[last_f];
 
             if ((equal_to(type_exp, "float") || equal_to(type_exp, "int")) &&
@@ -190,20 +192,12 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
             (equal_to(type_right, "int") || equal_to(type_right, "float"))){
             return "float";
         } else if ((equal_to(type_left, "int LIST ") || equal_to(type_left, "float LIST "))) {
-            if  (equal_to(type_right, "NIL")){
-                return type_left;
-            }
-            if ((equal_to(type_left, "int LIST ") || equal_to(type_left, "float LIST "))) {
                 return "float LIST ";
-            }
         } else {
             return NULL;
         }
     } else if (equal_to(node->element, ":")) {
-        if ((equal_to(type_right, "int LIST ") || equal_to(type_right, "float LIST ")) &&  
-            (equal_to(type_left, "int") || equal_to(type_left, "float"))){
-            return "float LIST ";
-        }
+        return "float LIST ";
     } else if (equal_to(node->element, ">>") || equal_to(node->element, "<<")) {
         if ((equal_to(type_left, "float") || (equal_to(type_left, "int"))) &&
             is_func(node->children[0]->element, table, scope))
@@ -356,6 +350,7 @@ void output_tac(symbol_table* table, syntax_tree* root, char* filename) {
 
     fprintf(fp, "\n.code\n");
     fprintf(fp, "main:\n");
+
 
     
 

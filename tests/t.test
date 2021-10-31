@@ -1,0 +1,2 @@
+int list f (int list g, int b)
+{ return g; }

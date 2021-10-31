@@ -5,7 +5,7 @@ int n_2
 int n_2[]={0}
 int m_2[]={0}
 int n_5
-float n_6
+float n_5
 
 .code
 main:

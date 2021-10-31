@@ -1,0 +1,3366 @@
+Starting parse
+Entering state 0
+Stack now 0
+Reading a token
+Next token is token TYPE (1.1: )
+Shifting token TYPE (1.1: )
+Entering state 2
+Stack now 0 2
+Reading a token
+Next token is token IDENTIFIER (1.5: )
+Shifting token IDENTIFIER (1.5: )
+Entering state 9
+Stack now 0 2 9
+Reading a token
+Next token is token LP (1.9: )
+Reducing stack by rule 17 (line 274):
+   $1 = token TYPE (1.1: )
+   $2 = token IDENTIFIER (1.5: )
+-> $$ = nterm FunctionHead (1.1: )
+Entering state 8
+Stack now 0 8
+Next token is token LP (1.9: )
+Shifting token LP (1.9: )
+Entering state 13
+Stack now 0 8 13
+Reading a token
+Next token is token RP (1.10: )
+Shifting token RP (1.10: )
+Entering state 17
+Stack now 0 8 13 17
+Reading a token
+Next token is token LCB (1.12: )
+Shifting token LCB (1.12: )
+Entering state 22
+Stack now 0 8 13 17 22
+Reading a token
+Next token is token TYPE (3.3: )
+Shifting token TYPE (3.3: )
+Entering state 28
+Stack now 0 8 13 17 22 28
+Reading a token
+Next token is token LIST (3.9: )
+Shifting token LIST (3.9: )
+Entering state 68
+Stack now 0 8 13 17 22 28 68
+Reading a token
+Next token is token IDENTIFIER (3.14: )
+Shifting token IDENTIFIER (3.14: )
+Entering state 103
+Stack now 0 8 13 17 22 28 68 103
+Reading a token
+Next token is token SEMI (3.19: )
+Shifting token SEMI (3.19: )
+Entering state 237
+Stack now 0 8 13 17 22 28 68 103 237
+Reading a token
+Next token is token IDENTIFIER (4.3: )
+Reducing stack by rule 8 (line 98):
+   $1 = token TYPE (3.3: )
+   $2 = token LIST (3.9: )
+   $3 = token IDENTIFIER (3.14: )
+   $4 = token SEMI (3.19: )
+-> $$ = nterm Declaration (3.3: )
+Entering state 44
+Stack now 0 8 13 17 22 44
+Next token is token IDENTIFIER (4.3: )
+Shifting token IDENTIFIER (4.3: )
+Entering state 29
+Stack now 0 8 13 17 22 44 29
+Reading a token
+Next token is token ATT (4.9: )
+Shifting token ATT (4.9: )
+Entering state 70
+Stack now 0 8 13 17 22 44 29 70
+Reading a token
+Next token is token NIL (4.11: )
+Shifting token NIL (4.11: )
+Entering state 210
+Stack now 0 8 13 17 22 44 29 70 210
+Reading a token
+Next token is token SEMI (4.14: )
+Reducing stack by rule 80 (line 734):
+   $1 = token NIL (4.11: )
+-> $$ = nterm PrimaryExpression (4.11: )
+Entering state 221
+Stack now 0 8 13 17 22 44 29 70 221
+Next token is token SEMI (4.14: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (4.11: )
+-> $$ = nterm UnaryExpression (4.11: )
+Entering state 220
+Stack now 0 8 13 17 22 44 29 70 220
+Next token is token SEMI (4.14: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (4.11: )
+-> $$ = nterm MultiplicativeExpression (4.11: )
+Entering state 219
+Stack now 0 8 13 17 22 44 29 70 219
+Next token is token SEMI (4.14: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (4.11: )
+-> $$ = nterm AdditiveExpression (4.11: )
+Entering state 218
+Stack now 0 8 13 17 22 44 29 70 218
+Next token is token SEMI (4.14: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (4.11: )
+-> $$ = nterm RelationalExpression (4.11: )
+Entering state 217
+Stack now 0 8 13 17 22 44 29 70 217
+Next token is token SEMI (4.14: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (4.11: )
+-> $$ = nterm EqualityExpression (4.11: )
+Entering state 216
+Stack now 0 8 13 17 22 44 29 70 216
+Next token is token SEMI (4.14: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (4.11: )
+-> $$ = nterm LogicalAndExpression (4.11: )
+Entering state 215
+Stack now 0 8 13 17 22 44 29 70 215
+Next token is token SEMI (4.14: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (4.11: )
+-> $$ = nterm LogicalOrExpression (4.11: )
+Entering state 214
+Stack now 0 8 13 17 22 44 29 70 214
+Next token is token SEMI (4.14: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (4.11: )
+-> $$ = nterm Expression (4.11: )
+Entering state 108
+Stack now 0 8 13 17 22 44 29 70 108
+Next token is token SEMI (4.14: )
+Reducing stack by rule 9 (line 115):
+   $1 = token IDENTIFIER (4.3: )
+   $2 = token ATT (4.9: )
+   $3 = nterm Expression (4.11: )
+-> $$ = nterm Definition (4.3: )
+Entering state 45
+Stack now 0 8 13 17 22 44 45
+Next token is token SEMI (4.14: )
+Shifting token SEMI (4.14: )
+Entering state 31
+Stack now 0 8 13 17 22 44 45 31
+Reading a token
+Next token is token TYPE (5.3: )
+Reducing stack by rule 37 (line 419):
+   $1 = token SEMI (4.14: )
+-> $$ = nterm ExpStatement (4.14: )
+Entering state 51
+Stack now 0 8 13 17 22 44 45 51
+Next token is token TYPE (5.3: )
+Reducing stack by rule 26 (line 359):
+   $1 = nterm ExpStatement (4.14: )
+-> $$ = nterm Statement (4.14: )
+Entering state 46
+Stack now 0 8 13 17 22 44 45 46
+Next token is token TYPE (5.3: )
+Shifting token TYPE (5.3: )
+Entering state 28
+Stack now 0 8 13 17 22 44 45 46 28
+Reading a token
+Next token is token IDENTIFIER (5.7: )
+Shifting token IDENTIFIER (5.7: )
+Entering state 67
+Stack now 0 8 13 17 22 44 45 46 28 67
+Reading a token
+Next token is token SEMI (5.8: )
+Shifting token SEMI (5.8: )
+Entering state 185
+Stack now 0 8 13 17 22 44 45 46 28 67 185
+Reading a token
+Next token is token WRITE_LN (7.2: )
+Reducing stack by rule 7 (line 86):
+   $1 = token TYPE (5.3: )
+   $2 = token IDENTIFIER (5.7: )
+   $3 = token SEMI (5.8: )
+-> $$ = nterm Declaration (5.3: )
+Entering state 44
+Stack now 0 8 13 17 22 44 45 46 44
+Next token is token WRITE_LN (7.2: )
+Shifting token WRITE_LN (7.2: )
+Entering state 40
+Stack now 0 8 13 17 22 44 45 46 44 40
+Reading a token
+Next token is token LP (7.9: )
+Shifting token LP (7.9: )
+Entering state 78
+Stack now 0 8 13 17 22 44 45 46 44 40 78
+Reading a token
+Next token is token STR (7.10: )
+Shifting token STR (7.10: )
+Entering state 113
+Stack now 0 8 13 17 22 44 45 46 44 40 78 113
+Reading a token
+Next token is token RP (7.37: )
+Shifting token RP (7.37: )
+Entering state 144
+Stack now 0 8 13 17 22 44 45 46 44 40 78 113 144
+Reading a token
+Next token is token SEMI (7.38: )
+Reducing stack by rule 78 (line 725):
+   $1 = token WRITE_LN (7.2: )
+   $2 = token LP (7.9: )
+   $3 = token STR (7.10: )
+   $4 = token RP (7.37: )
+-> $$ = nterm PrimaryExpression (7.2: )
+Entering state 63
+Stack now 0 8 13 17 22 44 45 46 44 63
+Next token is token SEMI (7.38: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (7.2: )
+-> $$ = nterm UnaryExpression (7.2: )
+Entering state 62
+Stack now 0 8 13 17 22 44 45 46 44 62
+Next token is token SEMI (7.38: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (7.2: )
+-> $$ = nterm MultiplicativeExpression (7.2: )
+Entering state 61
+Stack now 0 8 13 17 22 44 45 46 44 61
+Next token is token SEMI (7.38: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (7.2: )
+-> $$ = nterm AdditiveExpression (7.2: )
+Entering state 60
+Stack now 0 8 13 17 22 44 45 46 44 60
+Next token is token SEMI (7.38: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (7.2: )
+-> $$ = nterm RelationalExpression (7.2: )
+Entering state 59
+Stack now 0 8 13 17 22 44 45 46 44 59
+Next token is token SEMI (7.38: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (7.2: )
+-> $$ = nterm EqualityExpression (7.2: )
+Entering state 58
+Stack now 0 8 13 17 22 44 45 46 44 58
+Next token is token SEMI (7.38: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (7.2: )
+-> $$ = nterm LogicalAndExpression (7.2: )
+Entering state 57
+Stack now 0 8 13 17 22 44 45 46 44 57
+Next token is token SEMI (7.38: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (7.2: )
+-> $$ = nterm LogicalOrExpression (7.2: )
+Entering state 56
+Stack now 0 8 13 17 22 44 45 46 44 56
+Next token is token SEMI (7.38: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (7.2: )
+-> $$ = nterm Expression (7.2: )
+Entering state 55
+Stack now 0 8 13 17 22 44 45 46 44 55
+Next token is token SEMI (7.38: )
+Shifting token SEMI (7.38: )
+Entering state 85
+Stack now 0 8 13 17 22 44 45 46 44 55 85
+Reading a token
+Next token is token READ (7.40: )
+Reducing stack by rule 38 (line 420):
+   $1 = nterm Expression (7.2: )
+   $2 = token SEMI (7.38: )
+-> $$ = nterm ExpStatement (7.2: )
+Entering state 51
+Stack now 0 8 13 17 22 44 45 46 44 51
+Next token is token READ (7.40: )
+Reducing stack by rule 26 (line 359):
+   $1 = nterm ExpStatement (7.2: )
+-> $$ = nterm Statement (7.2: )
+Entering state 46
+Stack now 0 8 13 17 22 44 45 46 44 46
+Next token is token READ (7.40: )
+Shifting token READ (7.40: )
+Entering state 39
+Stack now 0 8 13 17 22 44 45 46 44 46 39
+Reading a token
+Next token is token LP (7.44: )
+Shifting token LP (7.44: )
+Entering state 77
+Stack now 0 8 13 17 22 44 45 46 44 46 39 77
+Reading a token
+Next token is token IDENTIFIER (7.45: )
+Shifting token IDENTIFIER (7.45: )
+Entering state 112
+Stack now 0 8 13 17 22 44 45 46 44 46 39 77 112
+Reading a token
+Next token is token RP (7.46: )
+Shifting token RP (7.46: )
+Entering state 143
+Stack now 0 8 13 17 22 44 45 46 44 46 39 77 112 143
+Reading a token
+Next token is token SEMI (7.47: )
+Reducing stack by rule 77 (line 721):
+   $1 = token READ (7.40: )
+   $2 = token LP (7.44: )
+   $3 = token IDENTIFIER (7.45: )
+   $4 = token RP (7.46: )
+-> $$ = nterm PrimaryExpression (7.40: )
+Entering state 63
+Stack now 0 8 13 17 22 44 45 46 44 46 63
+Next token is token SEMI (7.47: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (7.40: )
+-> $$ = nterm UnaryExpression (7.40: )
+Entering state 62
+Stack now 0 8 13 17 22 44 45 46 44 46 62
+Next token is token SEMI (7.47: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (7.40: )
+-> $$ = nterm MultiplicativeExpression (7.40: )
+Entering state 61
+Stack now 0 8 13 17 22 44 45 46 44 46 61
+Next token is token SEMI (7.47: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (7.40: )
+-> $$ = nterm AdditiveExpression (7.40: )
+Entering state 60
+Stack now 0 8 13 17 22 44 45 46 44 46 60
+Next token is token SEMI (7.47: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (7.40: )
+-> $$ = nterm RelationalExpression (7.40: )
+Entering state 59
+Stack now 0 8 13 17 22 44 45 46 44 46 59
+Next token is token SEMI (7.47: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (7.40: )
+-> $$ = nterm EqualityExpression (7.40: )
+Entering state 58
+Stack now 0 8 13 17 22 44 45 46 44 46 58
+Next token is token SEMI (7.47: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (7.40: )
+-> $$ = nterm LogicalAndExpression (7.40: )
+Entering state 57
+Stack now 0 8 13 17 22 44 45 46 44 46 57
+Next token is token SEMI (7.47: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (7.40: )
+-> $$ = nterm LogicalOrExpression (7.40: )
+Entering state 56
+Stack now 0 8 13 17 22 44 45 46 44 46 56
+Next token is token SEMI (7.47: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (7.40: )
+-> $$ = nterm Expression (7.40: )
+Entering state 55
+Stack now 0 8 13 17 22 44 45 46 44 46 55
+Next token is token SEMI (7.47: )
+Shifting token SEMI (7.47: )
+Entering state 85
+Stack now 0 8 13 17 22 44 45 46 44 46 55 85
+Reading a token
+Next token is token TYPE (9.2: )
+Reducing stack by rule 38 (line 420):
+   $1 = nterm Expression (7.40: )
+   $2 = token SEMI (7.47: )
+-> $$ = nterm ExpStatement (7.40: )
+Entering state 51
+Stack now 0 8 13 17 22 44 45 46 44 46 51
+Next token is token TYPE (9.2: )
+Reducing stack by rule 26 (line 359):
+   $1 = nterm ExpStatement (7.40: )
+-> $$ = nterm Statement (7.40: )
+Entering state 46
+Stack now 0 8 13 17 22 44 45 46 44 46 46
+Next token is token TYPE (9.2: )
+Shifting token TYPE (9.2: )
+Entering state 28
+Stack now 0 8 13 17 22 44 45 46 44 46 46 28
+Reading a token
+Next token is token IDENTIFIER (9.6: )
+Shifting token IDENTIFIER (9.6: )
+Entering state 67
+Stack now 0 8 13 17 22 44 45 46 44 46 46 28 67
+Reading a token
+Next token is token SEMI (9.7: )
+Shifting token SEMI (9.7: )
+Entering state 185
+Stack now 0 8 13 17 22 44 45 46 44 46 46 28 67 185
+Reading a token
+Next token is token FOR (11.2: )
+Reducing stack by rule 7 (line 86):
+   $1 = token TYPE (9.2: )
+   $2 = token IDENTIFIER (9.6: )
+   $3 = token SEMI (9.7: )
+-> $$ = nterm Declaration (9.2: )
+Entering state 44
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44
+Next token is token FOR (11.2: )
+Shifting token FOR (11.2: )
+Entering state 42
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 42
+Reading a token
+Next token is token LP (11.6: )
+Reducing stack by rule 41 (line 451):
+   $1 = token FOR (11.2: )
+-> $$ = nterm ForHead (11.2: )
+Entering state 54
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54
+Next token is token LP (11.6: )
+Shifting token LP (11.6: )
+Entering state 84
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84
+Reading a token
+Next token is token IDENTIFIER (11.7: )
+Shifting token IDENTIFIER (11.7: )
+Entering state 223
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 223
+Reading a token
+Next token is token ATT (11.9: )
+Shifting token ATT (11.9: )
+Entering state 330
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 223 330
+Reading a token
+Next token is token NUM_CONST (11.11: )
+Shifting token NUM_CONST (11.11: )
+Entering state 36
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 223 330 36
+Reading a token
+Next token is token SEMI (11.12: )
+Reducing stack by rule 71 (line 603):
+   $1 = token NUM_CONST (11.11: )
+-> $$ = nterm PrimaryExpression (11.11: )
+Entering state 63
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 223 330 63
+Next token is token SEMI (11.12: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (11.11: )
+-> $$ = nterm UnaryExpression (11.11: )
+Entering state 62
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 223 330 62
+Next token is token SEMI (11.12: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (11.11: )
+-> $$ = nterm MultiplicativeExpression (11.11: )
+Entering state 61
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 223 330 61
+Next token is token SEMI (11.12: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (11.11: )
+-> $$ = nterm AdditiveExpression (11.11: )
+Entering state 60
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 223 330 60
+Next token is token SEMI (11.12: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (11.11: )
+-> $$ = nterm RelationalExpression (11.11: )
+Entering state 59
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 223 330 59
+Next token is token SEMI (11.12: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (11.11: )
+-> $$ = nterm EqualityExpression (11.11: )
+Entering state 58
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 223 330 58
+Next token is token SEMI (11.12: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (11.11: )
+-> $$ = nterm LogicalAndExpression (11.11: )
+Entering state 57
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 223 330 57
+Next token is token SEMI (11.12: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (11.11: )
+-> $$ = nterm LogicalOrExpression (11.11: )
+Entering state 56
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 223 330 56
+Next token is token SEMI (11.12: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (11.11: )
+-> $$ = nterm Expression (11.11: )
+Entering state 467
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 223 330 467
+Next token is token SEMI (11.12: )
+Reducing stack by rule 9 (line 115):
+   $1 = token IDENTIFIER (11.7: )
+   $2 = token ATT (11.9: )
+   $3 = nterm Expression (11.11: )
+-> $$ = nterm Definition (11.7: )
+Entering state 116
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 116
+Next token is token SEMI (11.12: )
+Reducing stack by rule 43 (line 461):
+   $1 = nterm Definition (11.7: )
+-> $$ = nterm ExpAtt (11.7: )
+Entering state 117
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117
+Next token is token SEMI (11.12: )
+Shifting token SEMI (11.12: )
+Entering state 147
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147
+Reading a token
+Next token is token IDENTIFIER (11.14: )
+Shifting token IDENTIFIER (11.14: )
+Entering state 223
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 223
+Reading a token
+Next token is token LT (11.16: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (11.14: )
+-> $$ = nterm PrimaryExpression (11.14: )
+Entering state 63
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 63
+Next token is token LT (11.16: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (11.14: )
+-> $$ = nterm UnaryExpression (11.14: )
+Entering state 62
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 62
+Next token is token LT (11.16: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (11.14: )
+-> $$ = nterm MultiplicativeExpression (11.14: )
+Entering state 61
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 61
+Next token is token LT (11.16: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (11.14: )
+-> $$ = nterm AdditiveExpression (11.14: )
+Entering state 60
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 60
+Next token is token LT (11.16: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (11.14: )
+-> $$ = nterm RelationalExpression (11.14: )
+Entering state 59
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 59
+Next token is token LT (11.16: )
+Shifting token LT (11.16: )
+Entering state 89
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 59 89
+Reading a token
+Next token is token IDENTIFIER (11.18: )
+Shifting token IDENTIFIER (11.18: )
+Entering state 224
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 59 89 224
+Reading a token
+Next token is token SEMI (11.19: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (11.18: )
+-> $$ = nterm PrimaryExpression (11.18: )
+Entering state 236
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 59 89 236
+Next token is token SEMI (11.19: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (11.18: )
+-> $$ = nterm UnaryExpression (11.18: )
+Entering state 235
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 59 89 235
+Next token is token SEMI (11.19: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (11.18: )
+-> $$ = nterm MultiplicativeExpression (11.18: )
+Entering state 234
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 59 89 234
+Next token is token SEMI (11.19: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (11.18: )
+-> $$ = nterm AdditiveExpression (11.18: )
+Entering state 123
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 59 89 123
+Next token is token SEMI (11.19: )
+Reducing stack by rule 55 (line 519):
+   $1 = nterm RelationalExpression (11.14: )
+   $2 = token LT (11.16: )
+   $3 = nterm AdditiveExpression (11.18: )
+-> $$ = nterm RelationalExpression (11.14: )
+Entering state 59
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 59
+Next token is token SEMI (11.19: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (11.14: )
+-> $$ = nterm EqualityExpression (11.14: )
+Entering state 58
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 58
+Next token is token SEMI (11.19: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (11.14: )
+-> $$ = nterm LogicalAndExpression (11.14: )
+Entering state 57
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 57
+Next token is token SEMI (11.19: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (11.14: )
+-> $$ = nterm LogicalOrExpression (11.14: )
+Entering state 56
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 56
+Next token is token SEMI (11.19: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (11.14: )
+-> $$ = nterm Expression (11.14: )
+Entering state 118
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 118
+Next token is token SEMI (11.19: )
+Reducing stack by rule 42 (line 457):
+   $1 = nterm Expression (11.14: )
+-> $$ = nterm ExpAtt (11.14: )
+Entering state 152
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152
+Next token is token SEMI (11.19: )
+Shifting token SEMI (11.19: )
+Entering state 158
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158
+Reading a token
+Next token is token IDENTIFIER (11.21: )
+Shifting token IDENTIFIER (11.21: )
+Entering state 252
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252
+Reading a token
+Next token is token ATT (11.23: )
+Shifting token ATT (11.23: )
+Entering state 352
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352
+Reading a token
+Next token is token IDENTIFIER (11.25: )
+Shifting token IDENTIFIER (11.25: )
+Entering state 71
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 71
+Reading a token
+Next token is token PLUS (11.27: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (11.25: )
+-> $$ = nterm PrimaryExpression (11.25: )
+Entering state 183
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 183
+Next token is token PLUS (11.27: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (11.25: )
+-> $$ = nterm UnaryExpression (11.25: )
+Entering state 182
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 182
+Next token is token PLUS (11.27: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (11.25: )
+-> $$ = nterm MultiplicativeExpression (11.25: )
+Entering state 181
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 181
+Next token is token PLUS (11.27: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (11.25: )
+-> $$ = nterm AdditiveExpression (11.25: )
+Entering state 180
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 180
+Next token is token PLUS (11.27: )
+Shifting token PLUS (11.27: )
+Entering state 278
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 180 278
+Reading a token
+Next token is token NUM_CONST (11.29: )
+Shifting token NUM_CONST (11.29: )
+Entering state 171
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 180 278 171
+Reading a token
+Next token is token RP (11.30: )
+Reducing stack by rule 71 (line 603):
+   $1 = token NUM_CONST (11.29: )
+-> $$ = nterm PrimaryExpression (11.29: )
+Entering state 183
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 180 278 183
+Next token is token RP (11.30: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (11.29: )
+-> $$ = nterm UnaryExpression (11.29: )
+Entering state 182
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 180 278 182
+Next token is token RP (11.30: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (11.29: )
+-> $$ = nterm MultiplicativeExpression (11.29: )
+Entering state 387
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 180 278 387
+Next token is token RP (11.30: )
+Reducing stack by rule 61 (line 548):
+   $1 = nterm AdditiveExpression (11.25: )
+   $2 = token PLUS (11.27: )
+   $3 = nterm MultiplicativeExpression (11.29: )
+-> $$ = nterm AdditiveExpression (11.25: )
+Entering state 180
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 180
+Next token is token RP (11.30: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (11.25: )
+-> $$ = nterm RelationalExpression (11.25: )
+Entering state 179
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 179
+Next token is token RP (11.30: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (11.25: )
+-> $$ = nterm EqualityExpression (11.25: )
+Entering state 178
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 178
+Next token is token RP (11.30: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (11.25: )
+-> $$ = nterm LogicalAndExpression (11.25: )
+Entering state 177
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 177
+Next token is token RP (11.30: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (11.25: )
+-> $$ = nterm LogicalOrExpression (11.25: )
+Entering state 176
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 176
+Next token is token RP (11.30: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (11.25: )
+-> $$ = nterm Expression (11.25: )
+Entering state 484
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 252 352 484
+Next token is token RP (11.30: )
+Reducing stack by rule 9 (line 115):
+   $1 = token IDENTIFIER (11.21: )
+   $2 = token ATT (11.23: )
+   $3 = nterm Expression (11.25: )
+-> $$ = nterm Definition (11.21: )
+Entering state 253
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 253
+Next token is token RP (11.30: )
+Reducing stack by rule 43 (line 461):
+   $1 = nterm Definition (11.21: )
+-> $$ = nterm ExpAtt (11.21: )
+Entering state 162
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162
+Next token is token RP (11.30: )
+Shifting token RP (11.30: )
+Entering state 164
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164
+Reading a token
+Next token is token LCB (11.32: )
+Shifting token LCB (11.32: )
+Entering state 166
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166
+Reading a token
+Next token is token TYPE (12.4: )
+Shifting token TYPE (12.4: )
+Entering state 28
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 28
+Reading a token
+Next token is token IDENTIFIER (12.10: )
+Shifting token IDENTIFIER (12.10: )
+Entering state 67
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 28 67
+Reading a token
+Next token is token SEMI (12.14: )
+Shifting token SEMI (12.14: )
+Entering state 185
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 28 67 185
+Reading a token
+Next token is token WRITE (14.4: )
+Reducing stack by rule 7 (line 86):
+   $1 = token TYPE (12.4: )
+   $2 = token IDENTIFIER (12.10: )
+   $3 = token SEMI (12.14: )
+-> $$ = nterm Declaration (12.4: )
+Entering state 256
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256
+Next token is token WRITE (14.4: )
+Shifting token WRITE (14.4: )
+Entering state 38
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 38
+Reading a token
+Next token is token LP (14.9: )
+Shifting token LP (14.9: )
+Entering state 76
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 38 76
+Reading a token
+Next token is token STR (14.10: )
+Shifting token STR (14.10: )
+Entering state 110
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 38 76 110
+Reading a token
+Next token is token RP (14.35: )
+Shifting token RP (14.35: )
+Entering state 141
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 38 76 110 141
+Reading a token
+Next token is token SEMI (14.36: )
+Reducing stack by rule 75 (line 712):
+   $1 = token WRITE (14.4: )
+   $2 = token LP (14.9: )
+   $3 = token STR (14.10: )
+   $4 = token RP (14.35: )
+-> $$ = nterm PrimaryExpression (14.4: )
+Entering state 63
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 63
+Next token is token SEMI (14.36: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (14.4: )
+-> $$ = nterm UnaryExpression (14.4: )
+Entering state 62
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 62
+Next token is token SEMI (14.36: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (14.4: )
+-> $$ = nterm MultiplicativeExpression (14.4: )
+Entering state 61
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 61
+Next token is token SEMI (14.36: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (14.4: )
+-> $$ = nterm AdditiveExpression (14.4: )
+Entering state 60
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 60
+Next token is token SEMI (14.36: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (14.4: )
+-> $$ = nterm RelationalExpression (14.4: )
+Entering state 59
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 59
+Next token is token SEMI (14.36: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (14.4: )
+-> $$ = nterm EqualityExpression (14.4: )
+Entering state 58
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 58
+Next token is token SEMI (14.36: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (14.4: )
+-> $$ = nterm LogicalAndExpression (14.4: )
+Entering state 57
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 57
+Next token is token SEMI (14.36: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (14.4: )
+-> $$ = nterm LogicalOrExpression (14.4: )
+Entering state 56
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 56
+Next token is token SEMI (14.36: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (14.4: )
+-> $$ = nterm Expression (14.4: )
+Entering state 55
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 55
+Next token is token SEMI (14.36: )
+Shifting token SEMI (14.36: )
+Entering state 85
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 55 85
+Reading a token
+Next token is token WRITE (14.38: )
+Reducing stack by rule 38 (line 420):
+   $1 = nterm Expression (14.4: )
+   $2 = token SEMI (14.36: )
+-> $$ = nterm ExpStatement (14.4: )
+Entering state 51
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 51
+Next token is token WRITE (14.38: )
+Reducing stack by rule 26 (line 359):
+   $1 = nterm ExpStatement (14.4: )
+-> $$ = nterm Statement (14.4: )
+Entering state 258
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258
+Next token is token WRITE (14.38: )
+Shifting token WRITE (14.38: )
+Entering state 38
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 38
+Reading a token
+Next token is token LP (14.43: )
+Shifting token LP (14.43: )
+Entering state 76
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 38 76
+Reading a token
+Next token is token IDENTIFIER (14.44: )
+Shifting token IDENTIFIER (14.44: )
+Entering state 71
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 38 76 71
+Reading a token
+Next token is token RP (14.45: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (14.44: )
+-> $$ = nterm PrimaryExpression (14.44: )
+Entering state 183
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 38 76 183
+Next token is token RP (14.45: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (14.44: )
+-> $$ = nterm UnaryExpression (14.44: )
+Entering state 182
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 38 76 182
+Next token is token RP (14.45: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (14.44: )
+-> $$ = nterm MultiplicativeExpression (14.44: )
+Entering state 181
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 38 76 181
+Next token is token RP (14.45: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (14.44: )
+-> $$ = nterm AdditiveExpression (14.44: )
+Entering state 180
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 38 76 180
+Next token is token RP (14.45: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (14.44: )
+-> $$ = nterm RelationalExpression (14.44: )
+Entering state 179
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 38 76 179
+Next token is token RP (14.45: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (14.44: )
+-> $$ = nterm EqualityExpression (14.44: )
+Entering state 178
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 38 76 178
+Next token is token RP (14.45: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (14.44: )
+-> $$ = nterm LogicalAndExpression (14.44: )
+Entering state 177
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 38 76 177
+Next token is token RP (14.45: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (14.44: )
+-> $$ = nterm LogicalOrExpression (14.44: )
+Entering state 176
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 38 76 176
+Next token is token RP (14.45: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (14.44: )
+-> $$ = nterm Expression (14.44: )
+Entering state 111
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 38 76 111
+Next token is token RP (14.45: )
+Shifting token RP (14.45: )
+Entering state 142
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 38 76 111 142
+Reading a token
+Next token is token SEMI (14.46: )
+Reducing stack by rule 76 (line 717):
+   $1 = token WRITE (14.38: )
+   $2 = token LP (14.43: )
+   $3 = nterm Expression (14.44: )
+   $4 = token RP (14.45: )
+-> $$ = nterm PrimaryExpression (14.38: )
+Entering state 63
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 63
+Next token is token SEMI (14.46: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (14.38: )
+-> $$ = nterm UnaryExpression (14.38: )
+Entering state 62
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 62
+Next token is token SEMI (14.46: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (14.38: )
+-> $$ = nterm MultiplicativeExpression (14.38: )
+Entering state 61
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 61
+Next token is token SEMI (14.46: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (14.38: )
+-> $$ = nterm AdditiveExpression (14.38: )
+Entering state 60
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 60
+Next token is token SEMI (14.46: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (14.38: )
+-> $$ = nterm RelationalExpression (14.38: )
+Entering state 59
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 59
+Next token is token SEMI (14.46: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (14.38: )
+-> $$ = nterm EqualityExpression (14.38: )
+Entering state 58
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 58
+Next token is token SEMI (14.46: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (14.38: )
+-> $$ = nterm LogicalAndExpression (14.38: )
+Entering state 57
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 57
+Next token is token SEMI (14.46: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (14.38: )
+-> $$ = nterm LogicalOrExpression (14.38: )
+Entering state 56
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 56
+Next token is token SEMI (14.46: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (14.38: )
+-> $$ = nterm Expression (14.38: )
+Entering state 55
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 55
+Next token is token SEMI (14.46: )
+Shifting token SEMI (14.46: )
+Entering state 85
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 55 85
+Reading a token
+Next token is token WRITE_LN (14.48: )
+Reducing stack by rule 38 (line 420):
+   $1 = nterm Expression (14.38: )
+   $2 = token SEMI (14.46: )
+-> $$ = nterm ExpStatement (14.38: )
+Entering state 51
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 51
+Next token is token WRITE_LN (14.48: )
+Reducing stack by rule 26 (line 359):
+   $1 = nterm ExpStatement (14.38: )
+-> $$ = nterm Statement (14.38: )
+Entering state 258
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258
+Next token is token WRITE_LN (14.48: )
+Shifting token WRITE_LN (14.48: )
+Entering state 40
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 40
+Reading a token
+Next token is token LP (14.55: )
+Shifting token LP (14.55: )
+Entering state 78
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 40 78
+Reading a token
+Next token is token STR (14.56: )
+Shifting token STR (14.56: )
+Entering state 113
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 40 78 113
+Reading a token
+Next token is token RP (14.59: )
+Shifting token RP (14.59: )
+Entering state 144
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 40 78 113 144
+Reading a token
+Next token is token SEMI (14.60: )
+Reducing stack by rule 78 (line 725):
+   $1 = token WRITE_LN (14.48: )
+   $2 = token LP (14.55: )
+   $3 = token STR (14.56: )
+   $4 = token RP (14.59: )
+-> $$ = nterm PrimaryExpression (14.48: )
+Entering state 63
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 63
+Next token is token SEMI (14.60: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (14.48: )
+-> $$ = nterm UnaryExpression (14.48: )
+Entering state 62
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 62
+Next token is token SEMI (14.60: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (14.48: )
+-> $$ = nterm MultiplicativeExpression (14.48: )
+Entering state 61
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 61
+Next token is token SEMI (14.60: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (14.48: )
+-> $$ = nterm AdditiveExpression (14.48: )
+Entering state 60
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 60
+Next token is token SEMI (14.60: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (14.48: )
+-> $$ = nterm RelationalExpression (14.48: )
+Entering state 59
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 59
+Next token is token SEMI (14.60: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (14.48: )
+-> $$ = nterm EqualityExpression (14.48: )
+Entering state 58
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 58
+Next token is token SEMI (14.60: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (14.48: )
+-> $$ = nterm LogicalAndExpression (14.48: )
+Entering state 57
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 57
+Next token is token SEMI (14.60: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (14.48: )
+-> $$ = nterm LogicalOrExpression (14.48: )
+Entering state 56
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 56
+Next token is token SEMI (14.60: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (14.48: )
+-> $$ = nterm Expression (14.48: )
+Entering state 55
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 55
+Next token is token SEMI (14.60: )
+Shifting token SEMI (14.60: )
+Entering state 85
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 55 85
+Reading a token
+Next token is token READ (15.4: )
+Reducing stack by rule 38 (line 420):
+   $1 = nterm Expression (14.48: )
+   $2 = token SEMI (14.60: )
+-> $$ = nterm ExpStatement (14.48: )
+Entering state 51
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 51
+Next token is token READ (15.4: )
+Reducing stack by rule 26 (line 359):
+   $1 = nterm ExpStatement (14.48: )
+-> $$ = nterm Statement (14.48: )
+Entering state 258
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258
+Next token is token READ (15.4: )
+Shifting token READ (15.4: )
+Entering state 39
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 39
+Reading a token
+Next token is token LP (15.8: )
+Shifting token LP (15.8: )
+Entering state 77
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 39 77
+Reading a token
+Next token is token IDENTIFIER (15.9: )
+Shifting token IDENTIFIER (15.9: )
+Entering state 112
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 39 77 112
+Reading a token
+Next token is token RP (15.13: )
+Shifting token RP (15.13: )
+Entering state 143
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 39 77 112 143
+Reading a token
+Next token is token SEMI (15.14: )
+Reducing stack by rule 77 (line 721):
+   $1 = token READ (15.4: )
+   $2 = token LP (15.8: )
+   $3 = token IDENTIFIER (15.9: )
+   $4 = token RP (15.13: )
+-> $$ = nterm PrimaryExpression (15.4: )
+Entering state 63
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 63
+Next token is token SEMI (15.14: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (15.4: )
+-> $$ = nterm UnaryExpression (15.4: )
+Entering state 62
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 62
+Next token is token SEMI (15.14: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (15.4: )
+-> $$ = nterm MultiplicativeExpression (15.4: )
+Entering state 61
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 61
+Next token is token SEMI (15.14: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (15.4: )
+-> $$ = nterm AdditiveExpression (15.4: )
+Entering state 60
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 60
+Next token is token SEMI (15.14: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (15.4: )
+-> $$ = nterm RelationalExpression (15.4: )
+Entering state 59
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 59
+Next token is token SEMI (15.14: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (15.4: )
+-> $$ = nterm EqualityExpression (15.4: )
+Entering state 58
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 58
+Next token is token SEMI (15.14: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (15.4: )
+-> $$ = nterm LogicalAndExpression (15.4: )
+Entering state 57
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 57
+Next token is token SEMI (15.14: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (15.4: )
+-> $$ = nterm LogicalOrExpression (15.4: )
+Entering state 56
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 56
+Next token is token SEMI (15.14: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (15.4: )
+-> $$ = nterm Expression (15.4: )
+Entering state 55
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 55
+Next token is token SEMI (15.14: )
+Shifting token SEMI (15.14: )
+Entering state 85
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 55 85
+Reading a token
+Next token is token IDENTIFIER (16.4: )
+Reducing stack by rule 38 (line 420):
+   $1 = nterm Expression (15.4: )
+   $2 = token SEMI (15.14: )
+-> $$ = nterm ExpStatement (15.4: )
+Entering state 51
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 51
+Next token is token IDENTIFIER (16.4: )
+Reducing stack by rule 26 (line 359):
+   $1 = nterm ExpStatement (15.4: )
+-> $$ = nterm Statement (15.4: )
+Entering state 258
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258
+Next token is token IDENTIFIER (16.4: )
+Shifting token IDENTIFIER (16.4: )
+Entering state 29
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 29
+Reading a token
+Next token is token ATT (16.10: )
+Shifting token ATT (16.10: )
+Entering state 70
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 29 70
+Reading a token
+Next token is token IDENTIFIER (16.12: )
+Shifting token IDENTIFIER (16.12: )
+Entering state 204
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 29 70 204
+Reading a token
+Next token is token TWD (16.17: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (16.12: )
+-> $$ = nterm PrimaryExpression (16.12: )
+Entering state 221
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 29 70 221
+Next token is token TWD (16.17: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (16.12: )
+-> $$ = nterm UnaryExpression (16.12: )
+Entering state 220
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 29 70 220
+Next token is token TWD (16.17: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (16.12: )
+-> $$ = nterm MultiplicativeExpression (16.12: )
+Entering state 219
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 29 70 219
+Next token is token TWD (16.17: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (16.12: )
+-> $$ = nterm AdditiveExpression (16.12: )
+Entering state 218
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 29 70 218
+Next token is token TWD (16.17: )
+Shifting token TWD (16.17: )
+Entering state 323
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 29 70 218 323
+Reading a token
+Next token is token IDENTIFIER (16.19: )
+Shifting token IDENTIFIER (16.19: )
+Entering state 460
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 29 70 218 323 460
+Reading a token
+Next token is token SEMI (16.24: )
+Reducing stack by rule 45 (line 470):
+   $1 = nterm AdditiveExpression (16.12: )
+   $2 = token TWD (16.17: )
+   $3 = token IDENTIFIER (16.19: )
+-> $$ = nterm Expression (16.12: )
+Entering state 108
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 29 70 108
+Next token is token SEMI (16.24: )
+Reducing stack by rule 9 (line 115):
+   $1 = token IDENTIFIER (16.4: )
+   $2 = token ATT (16.10: )
+   $3 = nterm Expression (16.12: )
+-> $$ = nterm Definition (16.4: )
+Entering state 257
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 257
+Next token is token SEMI (16.24: )
+Shifting token SEMI (16.24: )
+Entering state 31
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 257 31
+Reading a token
+Next token is token RCB (17.2: )
+Reducing stack by rule 37 (line 419):
+   $1 = token SEMI (16.24: )
+-> $$ = nterm ExpStatement (16.24: )
+Entering state 51
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 257 51
+Next token is token RCB (17.2: )
+Reducing stack by rule 26 (line 359):
+   $1 = nterm ExpStatement (16.24: )
+-> $$ = nterm Statement (16.24: )
+Entering state 258
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 257 258
+Next token is token RCB (17.2: )
+Shifting token RCB (17.2: )
+Entering state 255
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 257 258 255
+Reading a token
+Next token is token TYPE (19.2: )
+Reducing stack by rule 29 (line 370):
+   $1 = token RCB (17.2: )
+-> $$ = nterm StatementExp (17.2: )
+Entering state 355
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 257 258 355
+Next token is token TYPE (19.2: )
+Reducing stack by rule 32 (line 381):
+   $1 = nterm Statement (16.24: )
+   $2 = nterm StatementExp (17.2: )
+-> $$ = nterm StatementExp (16.24: )
+Entering state 354
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 257 354
+Next token is token TYPE (19.2: )
+Reducing stack by rule 31 (line 376):
+   $1 = nterm Definition (16.4: )
+   $2 = nterm StatementExp (16.24: )
+-> $$ = nterm StatementExp (16.4: )
+Entering state 355
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 258 355
+Next token is token TYPE (19.2: )
+Reducing stack by rule 32 (line 381):
+   $1 = nterm Statement (15.4: )
+   $2 = nterm StatementExp (16.4: )
+-> $$ = nterm StatementExp (15.4: )
+Entering state 355
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 258 355
+Next token is token TYPE (19.2: )
+Reducing stack by rule 32 (line 381):
+   $1 = nterm Statement (14.48: )
+   $2 = nterm StatementExp (15.4: )
+-> $$ = nterm StatementExp (14.48: )
+Entering state 355
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 258 355
+Next token is token TYPE (19.2: )
+Reducing stack by rule 32 (line 381):
+   $1 = nterm Statement (14.38: )
+   $2 = nterm StatementExp (14.48: )
+-> $$ = nterm StatementExp (14.38: )
+Entering state 355
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 258 355
+Next token is token TYPE (19.2: )
+Reducing stack by rule 32 (line 381):
+   $1 = nterm Statement (14.4: )
+   $2 = nterm StatementExp (14.38: )
+-> $$ = nterm StatementExp (14.4: )
+Entering state 353
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 256 353
+Next token is token TYPE (19.2: )
+Reducing stack by rule 30 (line 371):
+   $1 = nterm Declaration (12.4: )
+   $2 = nterm StatementExp (14.4: )
+-> $$ = nterm StatementExp (12.4: )
+Entering state 259
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 166 259
+Next token is token TYPE (19.2: )
+Reducing stack by rule 28 (line 364):
+   $1 = token LCB (11.32: )
+   $2 = nterm StatementExp (12.4: )
+-> $$ = nterm CompStatement (11.32: )
+Entering state 47
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 47
+Next token is token TYPE (19.2: )
+Reducing stack by rule 22 (line 355):
+   $1 = nterm CompStatement (11.32: )
+-> $$ = nterm Statement (11.32: )
+Entering state 165
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 54 84 117 147 152 158 162 164 165
+Next token is token TYPE (19.2: )
+Reducing stack by rule 40 (line 440):
+   $1 = nterm ForHead (11.2: )
+   $2 = token LP (11.6: )
+   $3 = nterm ExpAtt (11.7: )
+   $4 = token SEMI (11.12: )
+   $5 = nterm ExpAtt (11.14: )
+   $6 = token SEMI (11.19: )
+   $7 = nterm ExpAtt (11.21: )
+   $8 = token RP (11.30: )
+   $9 = nterm Statement (11.32: )
+-> $$ = nterm ItStatement (11.2: )
+Entering state 53
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 53
+Next token is token TYPE (19.2: )
+Reducing stack by rule 25 (line 358):
+   $1 = nterm ItStatement (11.2: )
+-> $$ = nterm Statement (11.2: )
+Entering state 46
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46
+Next token is token TYPE (19.2: )
+Shifting token TYPE (19.2: )
+Entering state 28
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 28
+Reading a token
+Next token is token IDENTIFIER (19.8: )
+Shifting token IDENTIFIER (19.8: )
+Entering state 67
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 28 67
+Reading a token
+Next token is token SEMI (19.12: )
+Shifting token SEMI (19.12: )
+Entering state 185
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 28 67 185
+Reading a token
+Next token is token IDENTIFIER (19.14: )
+Reducing stack by rule 7 (line 86):
+   $1 = token TYPE (19.2: )
+   $2 = token IDENTIFIER (19.8: )
+   $3 = token SEMI (19.12: )
+-> $$ = nterm Declaration (19.2: )
+Entering state 44
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44
+Next token is token IDENTIFIER (19.14: )
+Shifting token IDENTIFIER (19.14: )
+Entering state 29
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 29
+Reading a token
+Next token is token ATT (19.19: )
+Shifting token ATT (19.19: )
+Entering state 70
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 29 70
+Reading a token
+Next token is token NUM_CONST (19.21: )
+Shifting token NUM_CONST (19.21: )
+Entering state 209
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 29 70 209
+Reading a token
+Next token is token SEMI (19.22: )
+Reducing stack by rule 71 (line 603):
+   $1 = token NUM_CONST (19.21: )
+-> $$ = nterm PrimaryExpression (19.21: )
+Entering state 221
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 29 70 221
+Next token is token SEMI (19.22: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (19.21: )
+-> $$ = nterm UnaryExpression (19.21: )
+Entering state 220
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 29 70 220
+Next token is token SEMI (19.22: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (19.21: )
+-> $$ = nterm MultiplicativeExpression (19.21: )
+Entering state 219
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 29 70 219
+Next token is token SEMI (19.22: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (19.21: )
+-> $$ = nterm AdditiveExpression (19.21: )
+Entering state 218
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 29 70 218
+Next token is token SEMI (19.22: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (19.21: )
+-> $$ = nterm RelationalExpression (19.21: )
+Entering state 217
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 29 70 217
+Next token is token SEMI (19.22: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (19.21: )
+-> $$ = nterm EqualityExpression (19.21: )
+Entering state 216
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 29 70 216
+Next token is token SEMI (19.22: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (19.21: )
+-> $$ = nterm LogicalAndExpression (19.21: )
+Entering state 215
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 29 70 215
+Next token is token SEMI (19.22: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (19.21: )
+-> $$ = nterm LogicalOrExpression (19.21: )
+Entering state 214
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 29 70 214
+Next token is token SEMI (19.22: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (19.21: )
+-> $$ = nterm Expression (19.21: )
+Entering state 108
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 29 70 108
+Next token is token SEMI (19.22: )
+Reducing stack by rule 9 (line 115):
+   $1 = token IDENTIFIER (19.14: )
+   $2 = token ATT (19.19: )
+   $3 = nterm Expression (19.21: )
+-> $$ = nterm Definition (19.14: )
+Entering state 45
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45
+Next token is token SEMI (19.22: )
+Shifting token SEMI (19.22: )
+Entering state 31
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 31
+Reading a token
+Next token is token TYPE (20.2: )
+Reducing stack by rule 37 (line 419):
+   $1 = token SEMI (19.22: )
+-> $$ = nterm ExpStatement (19.22: )
+Entering state 51
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 51
+Next token is token TYPE (20.2: )
+Reducing stack by rule 26 (line 359):
+   $1 = nterm ExpStatement (19.22: )
+-> $$ = nterm Statement (19.22: )
+Entering state 46
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46
+Next token is token TYPE (20.2: )
+Shifting token TYPE (20.2: )
+Entering state 28
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 28
+Reading a token
+Next token is token LIST (20.8: )
+Shifting token LIST (20.8: )
+Entering state 68
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 28 68
+Reading a token
+Next token is token IDENTIFIER (20.13: )
+Shifting token IDENTIFIER (20.13: )
+Entering state 103
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 28 68 103
+Reading a token
+Next token is token SEMI (20.16: )
+Shifting token SEMI (20.16: )
+Entering state 237
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 28 68 103 237
+Reading a token
+Next token is token FOR (22.2: )
+Reducing stack by rule 8 (line 98):
+   $1 = token TYPE (20.2: )
+   $2 = token LIST (20.8: )
+   $3 = token IDENTIFIER (20.13: )
+   $4 = token SEMI (20.16: )
+-> $$ = nterm Declaration (20.2: )
+Entering state 44
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44
+Next token is token FOR (22.2: )
+Shifting token FOR (22.2: )
+Entering state 42
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 42
+Reading a token
+Next token is token LP (22.6: )
+Reducing stack by rule 41 (line 451):
+   $1 = token FOR (22.2: )
+-> $$ = nterm ForHead (22.2: )
+Entering state 54
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54
+Next token is token LP (22.6: )
+Shifting token LP (22.6: )
+Entering state 84
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84
+Reading a token
+Next token is token IDENTIFIER (22.7: )
+Shifting token IDENTIFIER (22.7: )
+Entering state 223
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 223
+Reading a token
+Next token is token ATT (22.10: )
+Shifting token ATT (22.10: )
+Entering state 330
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 223 330
+Reading a token
+Next token is token IDENTIFIER (22.11: )
+Shifting token IDENTIFIER (22.11: )
+Entering state 184
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 223 330 184
+Reading a token
+Next token is token SEMI (22.16: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (22.11: )
+-> $$ = nterm PrimaryExpression (22.11: )
+Entering state 63
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 223 330 63
+Next token is token SEMI (22.16: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (22.11: )
+-> $$ = nterm UnaryExpression (22.11: )
+Entering state 62
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 223 330 62
+Next token is token SEMI (22.16: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (22.11: )
+-> $$ = nterm MultiplicativeExpression (22.11: )
+Entering state 61
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 223 330 61
+Next token is token SEMI (22.16: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (22.11: )
+-> $$ = nterm AdditiveExpression (22.11: )
+Entering state 60
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 223 330 60
+Next token is token SEMI (22.16: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (22.11: )
+-> $$ = nterm RelationalExpression (22.11: )
+Entering state 59
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 223 330 59
+Next token is token SEMI (22.16: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (22.11: )
+-> $$ = nterm EqualityExpression (22.11: )
+Entering state 58
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 223 330 58
+Next token is token SEMI (22.16: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (22.11: )
+-> $$ = nterm LogicalAndExpression (22.11: )
+Entering state 57
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 223 330 57
+Next token is token SEMI (22.16: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (22.11: )
+-> $$ = nterm LogicalOrExpression (22.11: )
+Entering state 56
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 223 330 56
+Next token is token SEMI (22.16: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (22.11: )
+-> $$ = nterm Expression (22.11: )
+Entering state 467
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 223 330 467
+Next token is token SEMI (22.16: )
+Reducing stack by rule 9 (line 115):
+   $1 = token IDENTIFIER (22.7: )
+   $2 = token ATT (22.10: )
+   $3 = nterm Expression (22.11: )
+-> $$ = nterm Definition (22.7: )
+Entering state 116
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 116
+Next token is token SEMI (22.16: )
+Reducing stack by rule 43 (line 461):
+   $1 = nterm Definition (22.7: )
+-> $$ = nterm ExpAtt (22.7: )
+Entering state 117
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117
+Next token is token SEMI (22.16: )
+Shifting token SEMI (22.16: )
+Entering state 147
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147
+Reading a token
+Next token is token IDENTIFIER (22.18: )
+Shifting token IDENTIFIER (22.18: )
+Entering state 223
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 223
+Reading a token
+Next token is token DIF (22.22: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (22.18: )
+-> $$ = nterm PrimaryExpression (22.18: )
+Entering state 63
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 63
+Next token is token DIF (22.22: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (22.18: )
+-> $$ = nterm UnaryExpression (22.18: )
+Entering state 62
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 62
+Next token is token DIF (22.22: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (22.18: )
+-> $$ = nterm MultiplicativeExpression (22.18: )
+Entering state 61
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 61
+Next token is token DIF (22.22: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (22.18: )
+-> $$ = nterm AdditiveExpression (22.18: )
+Entering state 60
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 60
+Next token is token DIF (22.22: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (22.18: )
+-> $$ = nterm RelationalExpression (22.18: )
+Entering state 59
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 59
+Next token is token DIF (22.22: )
+Shifting token DIF (22.22: )
+Entering state 93
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 59 93
+Reading a token
+Next token is token NIL (22.25: )
+Shifting token NIL (22.25: )
+Entering state 230
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 59 93 230
+Reading a token
+Next token is token SEMI (22.28: )
+Reducing stack by rule 80 (line 734):
+   $1 = token NIL (22.25: )
+-> $$ = nterm PrimaryExpression (22.25: )
+Entering state 236
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 59 93 236
+Next token is token SEMI (22.28: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (22.25: )
+-> $$ = nterm UnaryExpression (22.25: )
+Entering state 235
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 59 93 235
+Next token is token SEMI (22.28: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (22.25: )
+-> $$ = nterm MultiplicativeExpression (22.25: )
+Entering state 234
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 59 93 234
+Next token is token SEMI (22.28: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (22.25: )
+-> $$ = nterm AdditiveExpression (22.25: )
+Entering state 127
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 59 93 127
+Next token is token SEMI (22.28: )
+Reducing stack by rule 57 (line 529):
+   $1 = nterm RelationalExpression (22.18: )
+   $2 = token DIF (22.22: )
+   $3 = nterm AdditiveExpression (22.25: )
+-> $$ = nterm RelationalExpression (22.18: )
+Entering state 59
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 59
+Next token is token SEMI (22.28: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (22.18: )
+-> $$ = nterm EqualityExpression (22.18: )
+Entering state 58
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 58
+Next token is token SEMI (22.28: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (22.18: )
+-> $$ = nterm LogicalAndExpression (22.18: )
+Entering state 57
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 57
+Next token is token SEMI (22.28: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (22.18: )
+-> $$ = nterm LogicalOrExpression (22.18: )
+Entering state 56
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 56
+Next token is token SEMI (22.28: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (22.18: )
+-> $$ = nterm Expression (22.18: )
+Entering state 118
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 118
+Next token is token SEMI (22.28: )
+Reducing stack by rule 42 (line 457):
+   $1 = nterm Expression (22.18: )
+-> $$ = nterm ExpAtt (22.18: )
+Entering state 152
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152
+Next token is token SEMI (22.28: )
+Shifting token SEMI (22.28: )
+Entering state 158
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158
+Reading a token
+Next token is token IDENTIFIER (22.30: )
+Shifting token IDENTIFIER (22.30: )
+Entering state 252
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 252
+Reading a token
+Next token is token ATT (22.34: )
+Shifting token ATT (22.34: )
+Entering state 352
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 252 352
+Reading a token
+Next token is token TNR (22.36: )
+Shifting token TNR (22.36: )
+Entering state 169
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 252 352 169
+Reading a token
+Next token is token IDENTIFIER (22.37: )
+Shifting token IDENTIFIER (22.37: )
+Entering state 71
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 252 352 169 71
+Reading a token
+Next token is token RP (22.40: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (22.37: )
+-> $$ = nterm PrimaryExpression (22.37: )
+Entering state 262
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 252 352 169 262
+Next token is token RP (22.40: )
+Reducing stack by rule 67 (line 576):
+   $1 = token TNR (22.36: )
+   $2 = nterm PrimaryExpression (22.37: )
+-> $$ = nterm UnaryExpression (22.36: )
+Entering state 182
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 252 352 182
+Next token is token RP (22.40: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (22.36: )
+-> $$ = nterm MultiplicativeExpression (22.36: )
+Entering state 181
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 252 352 181
+Next token is token RP (22.40: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (22.36: )
+-> $$ = nterm AdditiveExpression (22.36: )
+Entering state 180
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 252 352 180
+Next token is token RP (22.40: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (22.36: )
+-> $$ = nterm RelationalExpression (22.36: )
+Entering state 179
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 252 352 179
+Next token is token RP (22.40: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (22.36: )
+-> $$ = nterm EqualityExpression (22.36: )
+Entering state 178
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 252 352 178
+Next token is token RP (22.40: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (22.36: )
+-> $$ = nterm LogicalAndExpression (22.36: )
+Entering state 177
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 252 352 177
+Next token is token RP (22.40: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (22.36: )
+-> $$ = nterm LogicalOrExpression (22.36: )
+Entering state 176
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 252 352 176
+Next token is token RP (22.40: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (22.36: )
+-> $$ = nterm Expression (22.36: )
+Entering state 484
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 252 352 484
+Next token is token RP (22.40: )
+Reducing stack by rule 9 (line 115):
+   $1 = token IDENTIFIER (22.30: )
+   $2 = token ATT (22.34: )
+   $3 = nterm Expression (22.36: )
+-> $$ = nterm Definition (22.30: )
+Entering state 253
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 253
+Next token is token RP (22.40: )
+Reducing stack by rule 43 (line 461):
+   $1 = nterm Definition (22.30: )
+-> $$ = nterm ExpAtt (22.30: )
+Entering state 162
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 162
+Next token is token RP (22.40: )
+Shifting token RP (22.40: )
+Entering state 164
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 162 164
+Reading a token
+Next token is token IDENTIFIER (23.5: )
+Shifting token IDENTIFIER (23.5: )
+Entering state 184
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 162 164 184
+Reading a token
+Next token is token ATT (23.10: )
+[91mSyntax error, unexpected ATT, at ln 23 col 10[0m
+Error: popping token IDENTIFIER (23.5: )
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 162 164
+Shifting token error (23.5: )
+Entering state 27
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 162 164 27
+Next token is token ATT (23.10: )
+Error: discarding token ATT (23.10: )
+Error: popping token error (23.5: )
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 162 164
+Shifting token error (23.5: )
+Entering state 27
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 162 164 27
+Reading a token
+Next token is token IDENTIFIER (23.12: )
+Reducing stack by rule 27 (line 360):
+   $1 = token error (23.5: )
+-> $$ = nterm Statement (23.5: )
+Entering state 165
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 54 84 117 147 152 158 162 164 165
+Next token is token IDENTIFIER (23.12: )
+Reducing stack by rule 40 (line 440):
+   $1 = nterm ForHead (22.2: )
+   $2 = token LP (22.6: )
+   $3 = nterm ExpAtt (22.7: )
+   $4 = token SEMI (22.16: )
+   $5 = nterm ExpAtt (22.18: )
+   $6 = token SEMI (22.28: )
+   $7 = nterm ExpAtt (22.30: )
+   $8 = token RP (22.40: )
+   $9 = nterm Statement (23.5: )
+-> $$ = nterm ItStatement (22.2: )
+Entering state 53
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 53
+Next token is token IDENTIFIER (23.12: )
+Reducing stack by rule 25 (line 358):
+   $1 = nterm ItStatement (22.2: )
+-> $$ = nterm Statement (22.2: )
+Entering state 46
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46
+Next token is token IDENTIFIER (23.12: )
+Shifting token IDENTIFIER (23.12: )
+Entering state 29
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 29
+Reading a token
+Next token is token PLUS (23.17: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (23.12: )
+-> $$ = nterm PrimaryExpression (23.12: )
+Entering state 63
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 63
+Next token is token PLUS (23.17: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (23.12: )
+-> $$ = nterm UnaryExpression (23.12: )
+Entering state 62
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 62
+Next token is token PLUS (23.17: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (23.12: )
+-> $$ = nterm MultiplicativeExpression (23.12: )
+Entering state 61
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 61
+Next token is token PLUS (23.17: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (23.12: )
+-> $$ = nterm AdditiveExpression (23.12: )
+Entering state 60
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 60
+Next token is token PLUS (23.17: )
+Shifting token PLUS (23.17: )
+Entering state 97
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 60 97
+Reading a token
+Next token is token HD (23.19: )
+Shifting token HD (23.19: )
+Entering state 35
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 60 97 35
+Reading a token
+Next token is token IDENTIFIER (23.20: )
+Shifting token IDENTIFIER (23.20: )
+Entering state 184
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 60 97 35 184
+Reading a token
+Next token is token SEMI (23.23: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (23.20: )
+-> $$ = nterm PrimaryExpression (23.20: )
+Entering state 75
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 60 97 35 75
+Next token is token SEMI (23.23: )
+Reducing stack by rule 68 (line 580):
+   $1 = token HD (23.19: )
+   $2 = nterm PrimaryExpression (23.20: )
+-> $$ = nterm UnaryExpression (23.19: )
+Entering state 62
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 60 97 62
+Next token is token SEMI (23.23: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (23.19: )
+-> $$ = nterm MultiplicativeExpression (23.19: )
+Entering state 131
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 60 97 131
+Next token is token SEMI (23.23: )
+Reducing stack by rule 61 (line 548):
+   $1 = nterm AdditiveExpression (23.12: )
+   $2 = token PLUS (23.17: )
+   $3 = nterm MultiplicativeExpression (23.19: )
+-> $$ = nterm AdditiveExpression (23.12: )
+Entering state 60
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 60
+Next token is token SEMI (23.23: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (23.12: )
+-> $$ = nterm RelationalExpression (23.12: )
+Entering state 59
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 59
+Next token is token SEMI (23.23: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (23.12: )
+-> $$ = nterm EqualityExpression (23.12: )
+Entering state 58
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 58
+Next token is token SEMI (23.23: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (23.12: )
+-> $$ = nterm LogicalAndExpression (23.12: )
+Entering state 57
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 57
+Next token is token SEMI (23.23: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (23.12: )
+-> $$ = nterm LogicalOrExpression (23.12: )
+Entering state 56
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 56
+Next token is token SEMI (23.23: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (23.12: )
+-> $$ = nterm Expression (23.12: )
+Entering state 55
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 55
+Next token is token SEMI (23.23: )
+Shifting token SEMI (23.23: )
+Entering state 85
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 55 85
+Reading a token
+Next token is token TYPE (25.2: )
+Reducing stack by rule 38 (line 420):
+   $1 = nterm Expression (23.12: )
+   $2 = token SEMI (23.23: )
+-> $$ = nterm ExpStatement (23.12: )
+Entering state 51
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 51
+Next token is token TYPE (25.2: )
+Reducing stack by rule 26 (line 359):
+   $1 = nterm ExpStatement (23.12: )
+-> $$ = nterm Statement (23.12: )
+Entering state 46
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46
+Next token is token TYPE (25.2: )
+Shifting token TYPE (25.2: )
+Entering state 28
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 28
+Reading a token
+Next token is token IDENTIFIER (25.8: )
+Shifting token IDENTIFIER (25.8: )
+Entering state 67
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 28 67
+Reading a token
+Next token is token SEMI (25.14: )
+Shifting token SEMI (25.14: )
+Entering state 185
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 28 67 185
+Reading a token
+Next token is token TYPE (25.16: )
+Reducing stack by rule 7 (line 86):
+   $1 = token TYPE (25.2: )
+   $2 = token IDENTIFIER (25.8: )
+   $3 = token SEMI (25.14: )
+-> $$ = nterm Declaration (25.2: )
+Entering state 44
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44
+Next token is token TYPE (25.16: )
+Shifting token TYPE (25.16: )
+Entering state 28
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 28
+Reading a token
+Next token is token IDENTIFIER (25.22: )
+Shifting token IDENTIFIER (25.22: )
+Entering state 67
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 28 67
+Reading a token
+Next token is token SEMI (25.28: )
+Shifting token SEMI (25.28: )
+Entering state 185
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 28 67 185
+Reading a token
+Next token is token IDENTIFIER (27.2: )
+Reducing stack by rule 7 (line 86):
+   $1 = token TYPE (25.16: )
+   $2 = token IDENTIFIER (25.22: )
+   $3 = token SEMI (25.28: )
+-> $$ = nterm Declaration (25.16: )
+Entering state 44
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44
+Next token is token IDENTIFIER (27.2: )
+Shifting token IDENTIFIER (27.2: )
+Entering state 29
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29
+Reading a token
+Next token is token ATT (27.9: )
+Shifting token ATT (27.9: )
+Entering state 70
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70
+Reading a token
+Next token is token IDENTIFIER (27.11: )
+Shifting token IDENTIFIER (27.11: )
+Entering state 204
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 204
+Reading a token
+Next token is token DIV (27.15: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (27.11: )
+-> $$ = nterm PrimaryExpression (27.11: )
+Entering state 221
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 221
+Next token is token DIV (27.15: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (27.11: )
+-> $$ = nterm UnaryExpression (27.11: )
+Entering state 220
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 220
+Next token is token DIV (27.15: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (27.11: )
+-> $$ = nterm MultiplicativeExpression (27.11: )
+Entering state 219
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 219
+Next token is token DIV (27.15: )
+Shifting token DIV (27.15: )
+Entering state 327
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 219 327
+Reading a token
+Next token is token IDENTIFIER (27.16: )
+Shifting token IDENTIFIER (27.16: )
+Entering state 204
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 219 327 204
+Reading a token
+Next token is token MIN (27.18: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (27.16: )
+-> $$ = nterm PrimaryExpression (27.16: )
+Entering state 221
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 219 327 221
+Next token is token MIN (27.18: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (27.16: )
+-> $$ = nterm UnaryExpression (27.16: )
+Entering state 464
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 219 327 464
+Next token is token MIN (27.18: )
+Reducing stack by rule 65 (line 567):
+   $1 = nterm MultiplicativeExpression (27.11: )
+   $2 = token DIV (27.15: )
+   $3 = nterm UnaryExpression (27.16: )
+-> $$ = nterm MultiplicativeExpression (27.11: )
+Entering state 219
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 219
+Next token is token MIN (27.18: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (27.11: )
+-> $$ = nterm AdditiveExpression (27.11: )
+Entering state 218
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218
+Next token is token MIN (27.18: )
+Shifting token MIN (27.18: )
+Entering state 325
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325
+Reading a token
+Next token is token NUM_CONST (27.20: )
+Shifting token NUM_CONST (27.20: )
+Entering state 209
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 209
+Reading a token
+Next token is token MUL (27.23: )
+Reducing stack by rule 71 (line 603):
+   $1 = token NUM_CONST (27.20: )
+-> $$ = nterm PrimaryExpression (27.20: )
+Entering state 221
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 221
+Next token is token MUL (27.23: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (27.20: )
+-> $$ = nterm UnaryExpression (27.20: )
+Entering state 220
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 220
+Next token is token MUL (27.23: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (27.20: )
+-> $$ = nterm MultiplicativeExpression (27.20: )
+Entering state 462
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462
+Next token is token MUL (27.23: )
+Shifting token MUL (27.23: )
+Entering state 326
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326
+Reading a token
+Next token is token LP (27.25: )
+Shifting token LP (27.25: )
+Entering state 205
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205
+Reading a token
+Next token is token NUM_CONST (27.26: )
+Shifting token NUM_CONST (27.26: )
+Entering state 171
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 171
+Reading a token
+Next token is token DIV (27.27: )
+Reducing stack by rule 71 (line 603):
+   $1 = token NUM_CONST (27.26: )
+-> $$ = nterm PrimaryExpression (27.26: )
+Entering state 183
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 183
+Next token is token DIV (27.27: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (27.26: )
+-> $$ = nterm UnaryExpression (27.26: )
+Entering state 182
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 182
+Next token is token DIV (27.27: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (27.26: )
+-> $$ = nterm MultiplicativeExpression (27.26: )
+Entering state 181
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 181
+Next token is token DIV (27.27: )
+Shifting token DIV (27.27: )
+Entering state 281
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 181 281
+Reading a token
+Next token is token NUM_CONST (27.28: )
+Shifting token NUM_CONST (27.28: )
+Entering state 171
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 181 281 171
+Reading a token
+Next token is token RP (27.30: )
+Reducing stack by rule 71 (line 603):
+   $1 = token NUM_CONST (27.28: )
+-> $$ = nterm PrimaryExpression (27.28: )
+Entering state 183
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 181 281 183
+Next token is token RP (27.30: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (27.28: )
+-> $$ = nterm UnaryExpression (27.28: )
+Entering state 390
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 181 281 390
+Next token is token RP (27.30: )
+Reducing stack by rule 65 (line 567):
+   $1 = nterm MultiplicativeExpression (27.26: )
+   $2 = token DIV (27.27: )
+   $3 = nterm UnaryExpression (27.28: )
+-> $$ = nterm MultiplicativeExpression (27.26: )
+Entering state 181
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 181
+Next token is token RP (27.30: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (27.26: )
+-> $$ = nterm AdditiveExpression (27.26: )
+Entering state 180
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 180
+Next token is token RP (27.30: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (27.26: )
+-> $$ = nterm RelationalExpression (27.26: )
+Entering state 179
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 179
+Next token is token RP (27.30: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (27.26: )
+-> $$ = nterm EqualityExpression (27.26: )
+Entering state 178
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 178
+Next token is token RP (27.30: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (27.26: )
+-> $$ = nterm LogicalAndExpression (27.26: )
+Entering state 177
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 177
+Next token is token RP (27.30: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (27.26: )
+-> $$ = nterm LogicalOrExpression (27.26: )
+Entering state 176
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 176
+Next token is token RP (27.30: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (27.26: )
+-> $$ = nterm Expression (27.26: )
+Entering state 306
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 306
+Next token is token RP (27.30: )
+Shifting token RP (27.30: )
+Entering state 430
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 205 306 430
+Reading a token
+Next token is token SEMI (27.31: )
+Reducing stack by rule 72 (line 609):
+   $1 = token LP (27.25: )
+   $2 = nterm Expression (27.26: )
+   $3 = token RP (27.30: )
+-> $$ = nterm PrimaryExpression (27.25: )
+Entering state 221
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 221
+Next token is token SEMI (27.31: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (27.25: )
+-> $$ = nterm UnaryExpression (27.25: )
+Entering state 463
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462 326 463
+Next token is token SEMI (27.31: )
+Reducing stack by rule 64 (line 562):
+   $1 = nterm MultiplicativeExpression (27.20: )
+   $2 = token MUL (27.23: )
+   $3 = nterm UnaryExpression (27.25: )
+-> $$ = nterm MultiplicativeExpression (27.20: )
+Entering state 462
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218 325 462
+Next token is token SEMI (27.31: )
+Reducing stack by rule 62 (line 553):
+   $1 = nterm AdditiveExpression (27.11: )
+   $2 = token MIN (27.18: )
+   $3 = nterm MultiplicativeExpression (27.20: )
+-> $$ = nterm AdditiveExpression (27.11: )
+Entering state 218
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 218
+Next token is token SEMI (27.31: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (27.11: )
+-> $$ = nterm RelationalExpression (27.11: )
+Entering state 217
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 217
+Next token is token SEMI (27.31: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (27.11: )
+-> $$ = nterm EqualityExpression (27.11: )
+Entering state 216
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 216
+Next token is token SEMI (27.31: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (27.11: )
+-> $$ = nterm LogicalAndExpression (27.11: )
+Entering state 215
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 215
+Next token is token SEMI (27.31: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (27.11: )
+-> $$ = nterm LogicalOrExpression (27.11: )
+Entering state 214
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 214
+Next token is token SEMI (27.31: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (27.11: )
+-> $$ = nterm Expression (27.11: )
+Entering state 108
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 29 70 108
+Next token is token SEMI (27.31: )
+Reducing stack by rule 9 (line 115):
+   $1 = token IDENTIFIER (27.2: )
+   $2 = token ATT (27.9: )
+   $3 = nterm Expression (27.11: )
+-> $$ = nterm Definition (27.2: )
+Entering state 45
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45
+Next token is token SEMI (27.31: )
+Shifting token SEMI (27.31: )
+Entering state 31
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 31
+Reading a token
+Next token is token IDENTIFIER (28.2: )
+Reducing stack by rule 37 (line 419):
+   $1 = token SEMI (27.31: )
+-> $$ = nterm ExpStatement (27.31: )
+Entering state 51
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 51
+Next token is token IDENTIFIER (28.2: )
+Reducing stack by rule 26 (line 359):
+   $1 = nterm ExpStatement (27.31: )
+-> $$ = nterm Statement (27.31: )
+Entering state 46
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46
+Next token is token IDENTIFIER (28.2: )
+Shifting token IDENTIFIER (28.2: )
+Entering state 29
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29
+Reading a token
+Next token is token ATT (28.9: )
+Shifting token ATT (28.9: )
+Entering state 70
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70
+Reading a token
+Next token is token IDENTIFIER (28.11: )
+Shifting token IDENTIFIER (28.11: )
+Entering state 204
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70 204
+Reading a token
+Next token is token DIV (28.15: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (28.11: )
+-> $$ = nterm PrimaryExpression (28.11: )
+Entering state 221
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70 221
+Next token is token DIV (28.15: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (28.11: )
+-> $$ = nterm UnaryExpression (28.11: )
+Entering state 220
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70 220
+Next token is token DIV (28.15: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (28.11: )
+-> $$ = nterm MultiplicativeExpression (28.11: )
+Entering state 219
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70 219
+Next token is token DIV (28.15: )
+Shifting token DIV (28.15: )
+Entering state 327
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70 219 327
+Reading a token
+Next token is token IDENTIFIER (28.16: )
+Shifting token IDENTIFIER (28.16: )
+Entering state 204
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70 219 327 204
+Reading a token
+Next token is token SEMI (28.17: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (28.16: )
+-> $$ = nterm PrimaryExpression (28.16: )
+Entering state 221
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70 219 327 221
+Next token is token SEMI (28.17: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (28.16: )
+-> $$ = nterm UnaryExpression (28.16: )
+Entering state 464
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70 219 327 464
+Next token is token SEMI (28.17: )
+Reducing stack by rule 65 (line 567):
+   $1 = nterm MultiplicativeExpression (28.11: )
+   $2 = token DIV (28.15: )
+   $3 = nterm UnaryExpression (28.16: )
+-> $$ = nterm MultiplicativeExpression (28.11: )
+Entering state 219
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70 219
+Next token is token SEMI (28.17: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (28.11: )
+-> $$ = nterm AdditiveExpression (28.11: )
+Entering state 218
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70 218
+Next token is token SEMI (28.17: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (28.11: )
+-> $$ = nterm RelationalExpression (28.11: )
+Entering state 217
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70 217
+Next token is token SEMI (28.17: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (28.11: )
+-> $$ = nterm EqualityExpression (28.11: )
+Entering state 216
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70 216
+Next token is token SEMI (28.17: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (28.11: )
+-> $$ = nterm LogicalAndExpression (28.11: )
+Entering state 215
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70 215
+Next token is token SEMI (28.17: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (28.11: )
+-> $$ = nterm LogicalOrExpression (28.11: )
+Entering state 214
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70 214
+Next token is token SEMI (28.17: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (28.11: )
+-> $$ = nterm Expression (28.11: )
+Entering state 108
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 29 70 108
+Next token is token SEMI (28.17: )
+Reducing stack by rule 9 (line 115):
+   $1 = token IDENTIFIER (28.2: )
+   $2 = token ATT (28.9: )
+   $3 = nterm Expression (28.11: )
+-> $$ = nterm Definition (28.2: )
+Entering state 45
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45
+Next token is token SEMI (28.17: )
+Shifting token SEMI (28.17: )
+Entering state 31
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 31
+Reading a token
+Next token is token IF (30.2: )
+Reducing stack by rule 37 (line 419):
+   $1 = token SEMI (28.17: )
+-> $$ = nterm ExpStatement (28.17: )
+Entering state 51
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 51
+Next token is token IF (30.2: )
+Reducing stack by rule 26 (line 359):
+   $1 = nterm ExpStatement (28.17: )
+-> $$ = nterm Statement (28.17: )
+Entering state 46
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46
+Next token is token IF (30.2: )
+Shifting token IF (30.2: )
+Entering state 41
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 41
+Reading a token
+Next token is token LP (30.5: )
+Reducing stack by rule 35 (line 406):
+   $1 = token IF (30.2: )
+-> $$ = nterm IfHead (30.2: )
+Entering state 50
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50
+Next token is token LP (30.5: )
+Shifting token LP (30.5: )
+Entering state 83
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83
+Reading a token
+Next token is token IDENTIFIER (30.6: )
+Shifting token IDENTIFIER (30.6: )
+Entering state 71
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 71
+Reading a token
+Next token is token DIF (30.13: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (30.6: )
+-> $$ = nterm PrimaryExpression (30.6: )
+Entering state 183
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 183
+Next token is token DIF (30.13: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (30.6: )
+-> $$ = nterm UnaryExpression (30.6: )
+Entering state 182
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 182
+Next token is token DIF (30.13: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (30.6: )
+-> $$ = nterm MultiplicativeExpression (30.6: )
+Entering state 181
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 181
+Next token is token DIF (30.13: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (30.6: )
+-> $$ = nterm AdditiveExpression (30.6: )
+Entering state 180
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 180
+Next token is token DIF (30.13: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (30.6: )
+-> $$ = nterm RelationalExpression (30.6: )
+Entering state 179
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 179
+Next token is token DIF (30.13: )
+Shifting token DIF (30.13: )
+Entering state 274
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 179 274
+Reading a token
+Next token is token IDENTIFIER (30.16: )
+Shifting token IDENTIFIER (30.16: )
+Entering state 362
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 179 274 362
+Reading a token
+Next token is token RP (30.22: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (30.16: )
+-> $$ = nterm PrimaryExpression (30.16: )
+Entering state 376
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 179 274 376
+Next token is token RP (30.22: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (30.16: )
+-> $$ = nterm UnaryExpression (30.16: )
+Entering state 375
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 179 274 375
+Next token is token RP (30.22: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (30.16: )
+-> $$ = nterm MultiplicativeExpression (30.16: )
+Entering state 374
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 179 274 374
+Next token is token RP (30.22: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (30.16: )
+-> $$ = nterm AdditiveExpression (30.16: )
+Entering state 383
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 179 274 383
+Next token is token RP (30.22: )
+Reducing stack by rule 57 (line 529):
+   $1 = nterm RelationalExpression (30.6: )
+   $2 = token DIF (30.13: )
+   $3 = nterm AdditiveExpression (30.16: )
+-> $$ = nterm RelationalExpression (30.6: )
+Entering state 179
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 179
+Next token is token RP (30.22: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (30.6: )
+-> $$ = nterm EqualityExpression (30.6: )
+Entering state 178
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 178
+Next token is token RP (30.22: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (30.6: )
+-> $$ = nterm LogicalAndExpression (30.6: )
+Entering state 177
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 177
+Next token is token RP (30.22: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (30.6: )
+-> $$ = nterm LogicalOrExpression (30.6: )
+Entering state 176
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 176
+Next token is token RP (30.22: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (30.6: )
+-> $$ = nterm Expression (30.6: )
+Entering state 115
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115
+Next token is token RP (30.22: )
+Shifting token RP (30.22: )
+Entering state 146
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146
+Reading a token
+Next token is token WRITE_LN (30.24: )
+Shifting token WRITE_LN (30.24: )
+Entering state 40
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 40
+Reading a token
+Next token is token LP (30.31: )
+Shifting token LP (30.31: )
+Entering state 78
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 40 78
+Reading a token
+Next token is token STR (30.32: )
+Shifting token STR (30.32: )
+Entering state 113
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 40 78 113
+Reading a token
+Next token is token RP (30.71: )
+Shifting token RP (30.71: )
+Entering state 144
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 40 78 113 144
+Reading a token
+Next token is token SEMI (30.72: )
+Reducing stack by rule 78 (line 725):
+   $1 = token WRITE_LN (30.24: )
+   $2 = token LP (30.31: )
+   $3 = token STR (30.32: )
+   $4 = token RP (30.71: )
+-> $$ = nterm PrimaryExpression (30.24: )
+Entering state 63
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 63
+Next token is token SEMI (30.72: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (30.24: )
+-> $$ = nterm UnaryExpression (30.24: )
+Entering state 62
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 62
+Next token is token SEMI (30.72: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (30.24: )
+-> $$ = nterm MultiplicativeExpression (30.24: )
+Entering state 61
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 61
+Next token is token SEMI (30.72: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (30.24: )
+-> $$ = nterm AdditiveExpression (30.24: )
+Entering state 60
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 60
+Next token is token SEMI (30.72: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (30.24: )
+-> $$ = nterm RelationalExpression (30.24: )
+Entering state 59
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 59
+Next token is token SEMI (30.72: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (30.24: )
+-> $$ = nterm EqualityExpression (30.24: )
+Entering state 58
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 58
+Next token is token SEMI (30.72: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (30.24: )
+-> $$ = nterm LogicalAndExpression (30.24: )
+Entering state 57
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 57
+Next token is token SEMI (30.72: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (30.24: )
+-> $$ = nterm LogicalOrExpression (30.24: )
+Entering state 56
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 56
+Next token is token SEMI (30.72: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (30.24: )
+-> $$ = nterm Expression (30.24: )
+Entering state 251
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 251
+Next token is token SEMI (30.72: )
+Shifting token SEMI (30.72: )
+Entering state 351
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 251 351
+Reading a token
+Next token is token ELSE (31.2: )
+Reducing stack by rule 38 (line 420):
+   $1 = nterm Expression (30.24: )
+   $2 = token SEMI (30.72: )
+-> $$ = nterm ExpStatement (30.24: )
+Entering state 247
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 247
+Next token is token ELSE (31.2: )
+Reducing stack by rule 26 (line 359):
+   $1 = nterm ExpStatement (30.24: )
+-> $$ = nterm Statement (30.24: )
+Entering state 151
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151
+Next token is token ELSE (31.2: )
+Shifting token ELSE (31.2: )
+Entering state 156
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 156
+Reading a token
+Next token is token IF (31.7: )
+Reducing stack by rule 36 (line 412):
+   $1 = token ELSE (31.2: )
+-> $$ = nterm ElseHead (31.2: )
+Entering state 157
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157
+Next token is token IF (31.7: )
+Shifting token IF (31.7: )
+Entering state 41
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 41
+Reading a token
+Next token is token LP (31.10: )
+Reducing stack by rule 35 (line 406):
+   $1 = token IF (31.7: )
+-> $$ = nterm IfHead (31.7: )
+Entering state 50
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50
+Next token is token LP (31.10: )
+Shifting token LP (31.10: )
+Entering state 83
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83
+Reading a token
+Next token is token IDENTIFIER (31.11: )
+Shifting token IDENTIFIER (31.11: )
+Entering state 71
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 71
+Reading a token
+Next token is token COMP_EQ (31.18: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (31.11: )
+-> $$ = nterm PrimaryExpression (31.11: )
+Entering state 183
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 183
+Next token is token COMP_EQ (31.18: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (31.11: )
+-> $$ = nterm UnaryExpression (31.11: )
+Entering state 182
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 182
+Next token is token COMP_EQ (31.18: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (31.11: )
+-> $$ = nterm MultiplicativeExpression (31.11: )
+Entering state 181
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 181
+Next token is token COMP_EQ (31.18: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (31.11: )
+-> $$ = nterm AdditiveExpression (31.11: )
+Entering state 180
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 180
+Next token is token COMP_EQ (31.18: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (31.11: )
+-> $$ = nterm RelationalExpression (31.11: )
+Entering state 179
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 179
+Next token is token COMP_EQ (31.18: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (31.11: )
+-> $$ = nterm EqualityExpression (31.11: )
+Entering state 178
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 178
+Next token is token COMP_EQ (31.18: )
+Shifting token COMP_EQ (31.18: )
+Entering state 269
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 178 269
+Reading a token
+Next token is token IDENTIFIER (31.21: )
+Shifting token IDENTIFIER (31.21: )
+Entering state 362
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 178 269 362
+Reading a token
+Next token is token AND (32.5: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (31.21: )
+-> $$ = nterm PrimaryExpression (31.21: )
+Entering state 376
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 178 269 376
+Next token is token AND (32.5: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (31.21: )
+-> $$ = nterm UnaryExpression (31.21: )
+Entering state 375
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 178 269 375
+Next token is token AND (32.5: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (31.21: )
+-> $$ = nterm MultiplicativeExpression (31.21: )
+Entering state 374
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 178 269 374
+Next token is token AND (32.5: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (31.21: )
+-> $$ = nterm AdditiveExpression (31.21: )
+Entering state 373
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 178 269 373
+Next token is token AND (32.5: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (31.21: )
+-> $$ = nterm RelationalExpression (31.21: )
+Entering state 378
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 178 269 378
+Next token is token AND (32.5: )
+Reducing stack by rule 51 (line 499):
+   $1 = nterm EqualityExpression (31.11: )
+   $2 = token COMP_EQ (31.18: )
+   $3 = nterm RelationalExpression (31.21: )
+-> $$ = nterm EqualityExpression (31.11: )
+Entering state 178
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 178
+Next token is token AND (32.5: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (31.11: )
+-> $$ = nterm LogicalAndExpression (31.11: )
+Entering state 177
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177
+Next token is token AND (32.5: )
+Shifting token AND (32.5: )
+Entering state 268
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177 268
+Reading a token
+Next token is token IDENTIFIER (32.8: )
+Shifting token IDENTIFIER (32.8: )
+Entering state 362
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177 268 362
+Reading a token
+Next token is token GEQ (32.15: )
+Reducing stack by rule 70 (line 590):
+   $1 = token IDENTIFIER (32.8: )
+-> $$ = nterm PrimaryExpression (32.8: )
+Entering state 376
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177 268 376
+Next token is token GEQ (32.15: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (32.8: )
+-> $$ = nterm UnaryExpression (32.8: )
+Entering state 375
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177 268 375
+Next token is token GEQ (32.15: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (32.8: )
+-> $$ = nterm MultiplicativeExpression (32.8: )
+Entering state 374
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177 268 374
+Next token is token GEQ (32.15: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (32.8: )
+-> $$ = nterm AdditiveExpression (32.8: )
+Entering state 373
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177 268 373
+Next token is token GEQ (32.15: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (32.8: )
+-> $$ = nterm RelationalExpression (32.8: )
+Entering state 179
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177 268 179
+Next token is token GEQ (32.15: )
+Shifting token GEQ (32.15: )
+Entering state 273
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177 268 179 273
+Reading a token
+Next token is token NUM_CONST (32.18: )
+Shifting token NUM_CONST (32.18: )
+Entering state 367
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177 268 179 273 367
+Reading a token
+Next token is token RP (32.19: )
+Reducing stack by rule 71 (line 603):
+   $1 = token NUM_CONST (32.18: )
+-> $$ = nterm PrimaryExpression (32.18: )
+Entering state 376
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177 268 179 273 376
+Next token is token RP (32.19: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (32.18: )
+-> $$ = nterm UnaryExpression (32.18: )
+Entering state 375
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177 268 179 273 375
+Next token is token RP (32.19: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (32.18: )
+-> $$ = nterm MultiplicativeExpression (32.18: )
+Entering state 374
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177 268 179 273 374
+Next token is token RP (32.19: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (32.18: )
+-> $$ = nterm AdditiveExpression (32.18: )
+Entering state 382
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177 268 179 273 382
+Next token is token RP (32.19: )
+Reducing stack by rule 54 (line 514):
+   $1 = nterm RelationalExpression (32.8: )
+   $2 = token GEQ (32.15: )
+   $3 = nterm AdditiveExpression (32.18: )
+-> $$ = nterm RelationalExpression (32.8: )
+Entering state 179
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177 268 179
+Next token is token RP (32.19: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (32.8: )
+-> $$ = nterm EqualityExpression (32.8: )
+Entering state 377
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177 268 377
+Next token is token RP (32.19: )
+Reducing stack by rule 49 (line 490):
+   $1 = nterm LogicalAndExpression (31.11: )
+   $2 = token AND (32.5: )
+   $3 = nterm EqualityExpression (32.8: )
+-> $$ = nterm LogicalAndExpression (31.11: )
+Entering state 177
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 177
+Next token is token RP (32.19: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (31.11: )
+-> $$ = nterm LogicalOrExpression (31.11: )
+Entering state 176
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 176
+Next token is token RP (32.19: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (31.11: )
+-> $$ = nterm Expression (31.11: )
+Entering state 115
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115
+Next token is token RP (32.19: )
+Shifting token RP (32.19: )
+Entering state 146
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146
+Reading a token
+Next token is token WRITE_LN (32.21: )
+Shifting token WRITE_LN (32.21: )
+Entering state 40
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 40
+Reading a token
+Next token is token LP (32.28: )
+Shifting token LP (32.28: )
+Entering state 78
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 40 78
+Reading a token
+Next token is token STR (32.29: )
+Shifting token STR (32.29: )
+Entering state 113
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 40 78 113
+Reading a token
+Next token is token RP (32.41: )
+Shifting token RP (32.41: )
+Entering state 144
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 40 78 113 144
+Reading a token
+Next token is token SEMI (32.42: )
+Reducing stack by rule 78 (line 725):
+   $1 = token WRITE_LN (32.21: )
+   $2 = token LP (32.28: )
+   $3 = token STR (32.29: )
+   $4 = token RP (32.41: )
+-> $$ = nterm PrimaryExpression (32.21: )
+Entering state 63
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 63
+Next token is token SEMI (32.42: )
+Reducing stack by rule 66 (line 575):
+   $1 = nterm PrimaryExpression (32.21: )
+-> $$ = nterm UnaryExpression (32.21: )
+Entering state 62
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 62
+Next token is token SEMI (32.42: )
+Reducing stack by rule 63 (line 561):
+   $1 = nterm UnaryExpression (32.21: )
+-> $$ = nterm MultiplicativeExpression (32.21: )
+Entering state 61
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 61
+Next token is token SEMI (32.42: )
+Reducing stack by rule 60 (line 547):
+   $1 = nterm MultiplicativeExpression (32.21: )
+-> $$ = nterm AdditiveExpression (32.21: )
+Entering state 60
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 60
+Next token is token SEMI (32.42: )
+Reducing stack by rule 52 (line 508):
+   $1 = nterm AdditiveExpression (32.21: )
+-> $$ = nterm RelationalExpression (32.21: )
+Entering state 59
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 59
+Next token is token SEMI (32.42: )
+Reducing stack by rule 50 (line 498):
+   $1 = nterm RelationalExpression (32.21: )
+-> $$ = nterm EqualityExpression (32.21: )
+Entering state 58
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 58
+Next token is token SEMI (32.42: )
+Reducing stack by rule 48 (line 489):
+   $1 = nterm EqualityExpression (32.21: )
+-> $$ = nterm LogicalAndExpression (32.21: )
+Entering state 57
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 57
+Next token is token SEMI (32.42: )
+Reducing stack by rule 46 (line 479):
+   $1 = nterm LogicalAndExpression (32.21: )
+-> $$ = nterm LogicalOrExpression (32.21: )
+Entering state 56
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 56
+Next token is token SEMI (32.42: )
+Reducing stack by rule 44 (line 468):
+   $1 = nterm LogicalOrExpression (32.21: )
+-> $$ = nterm Expression (32.21: )
+Entering state 251
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 251
+Next token is token SEMI (32.42: )
+Shifting token SEMI (32.42: )
+Entering state 351
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 251 351
+Reading a token
+Next token is token RCB (33.1: )
+Reducing stack by rule 38 (line 420):
+   $1 = nterm Expression (32.21: )
+   $2 = token SEMI (32.42: )
+-> $$ = nterm ExpStatement (32.21: )
+Entering state 247
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 247
+Next token is token RCB (33.1: )
+Reducing stack by rule 26 (line 359):
+   $1 = nterm ExpStatement (32.21: )
+-> $$ = nterm Statement (32.21: )
+Entering state 151
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 50 83 115 146 151
+Next token is token RCB (33.1: )
+Reducing stack by rule 33 (line 390):
+   $1 = nterm IfHead (31.7: )
+   $2 = token LP (31.10: )
+   $3 = nterm Expression (31.11: )
+   $4 = token RP (32.19: )
+   $5 = nterm Statement (32.21: )
+-> $$ = nterm SelStatement (31.7: )
+Entering state 49
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 49
+Next token is token RCB (33.1: )
+Reducing stack by rule 24 (line 357):
+   $1 = nterm SelStatement (31.7: )
+-> $$ = nterm Statement (31.7: )
+Entering state 161
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 50 83 115 146 151 157 161
+Next token is token RCB (33.1: )
+Reducing stack by rule 34 (line 396):
+   $1 = nterm IfHead (30.2: )
+   $2 = token LP (30.5: )
+   $3 = nterm Expression (30.6: )
+   $4 = token RP (30.22: )
+   $5 = nterm Statement (30.24: )
+   $6 = nterm ElseHead (31.2: )
+   $7 = nterm Statement (31.7: )
+-> $$ = nterm SelStatement (30.2: )
+Entering state 49
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 49
+Next token is token RCB (33.1: )
+Reducing stack by rule 24 (line 357):
+   $1 = nterm SelStatement (30.2: )
+-> $$ = nterm Statement (30.2: )
+Entering state 46
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 46
+Next token is token RCB (33.1: )
+Shifting token RCB (33.1: )
+Entering state 32
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 46 32
+Reading a token
+Now at end of input.
+Reducing stack by rule 29 (line 370):
+   $1 = token RCB (33.1: )
+-> $$ = nterm StatementExp (33.1: )
+Entering state 82
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 46 82
+Now at end of input.
+Reducing stack by rule 32 (line 381):
+   $1 = nterm Statement (30.2: )
+   $2 = nterm StatementExp (33.1: )
+-> $$ = nterm StatementExp (30.2: )
+Entering state 82
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 46 82
+Now at end of input.
+Reducing stack by rule 32 (line 381):
+   $1 = nterm Statement (28.17: )
+   $2 = nterm StatementExp (30.2: )
+-> $$ = nterm StatementExp (28.17: )
+Entering state 81
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 45 81
+Now at end of input.
+Reducing stack by rule 31 (line 376):
+   $1 = nterm Definition (28.2: )
+   $2 = nterm StatementExp (28.17: )
+-> $$ = nterm StatementExp (28.2: )
+Entering state 82
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 46 82
+Now at end of input.
+Reducing stack by rule 32 (line 381):
+   $1 = nterm Statement (27.31: )
+   $2 = nterm StatementExp (28.2: )
+-> $$ = nterm StatementExp (27.31: )
+Entering state 81
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 45 81
+Now at end of input.
+Reducing stack by rule 31 (line 376):
+   $1 = nterm Definition (27.2: )
+   $2 = nterm StatementExp (27.31: )
+-> $$ = nterm StatementExp (27.2: )
+Entering state 80
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 44 80
+Now at end of input.
+Reducing stack by rule 30 (line 371):
+   $1 = nterm Declaration (25.16: )
+   $2 = nterm StatementExp (27.2: )
+-> $$ = nterm StatementExp (25.16: )
+Entering state 80
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 44 80
+Now at end of input.
+Reducing stack by rule 30 (line 371):
+   $1 = nterm Declaration (25.2: )
+   $2 = nterm StatementExp (25.16: )
+-> $$ = nterm StatementExp (25.2: )
+Entering state 82
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 46 82
+Now at end of input.
+Reducing stack by rule 32 (line 381):
+   $1 = nterm Statement (23.12: )
+   $2 = nterm StatementExp (25.2: )
+-> $$ = nterm StatementExp (23.12: )
+Entering state 82
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 46 82
+Now at end of input.
+Reducing stack by rule 32 (line 381):
+   $1 = nterm Statement (22.2: )
+   $2 = nterm StatementExp (23.12: )
+-> $$ = nterm StatementExp (22.2: )
+Entering state 80
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 44 80
+Now at end of input.
+Reducing stack by rule 30 (line 371):
+   $1 = nterm Declaration (20.2: )
+   $2 = nterm StatementExp (22.2: )
+-> $$ = nterm StatementExp (20.2: )
+Entering state 82
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 46 82
+Now at end of input.
+Reducing stack by rule 32 (line 381):
+   $1 = nterm Statement (19.22: )
+   $2 = nterm StatementExp (20.2: )
+-> $$ = nterm StatementExp (19.22: )
+Entering state 81
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 45 81
+Now at end of input.
+Reducing stack by rule 31 (line 376):
+   $1 = nterm Definition (19.14: )
+   $2 = nterm StatementExp (19.22: )
+-> $$ = nterm StatementExp (19.14: )
+Entering state 80
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 44 80
+Now at end of input.
+Reducing stack by rule 30 (line 371):
+   $1 = nterm Declaration (19.2: )
+   $2 = nterm StatementExp (19.14: )
+-> $$ = nterm StatementExp (19.2: )
+Entering state 82
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 46 82
+Now at end of input.
+Reducing stack by rule 32 (line 381):
+   $1 = nterm Statement (11.2: )
+   $2 = nterm StatementExp (19.2: )
+-> $$ = nterm StatementExp (11.2: )
+Entering state 80
+Stack now 0 8 13 17 22 44 45 46 44 46 46 44 80
+Now at end of input.
+Reducing stack by rule 30 (line 371):
+   $1 = nterm Declaration (9.2: )
+   $2 = nterm StatementExp (11.2: )
+-> $$ = nterm StatementExp (9.2: )
+Entering state 82
+Stack now 0 8 13 17 22 44 45 46 44 46 46 82
+Now at end of input.
+Reducing stack by rule 32 (line 381):
+   $1 = nterm Statement (7.40: )
+   $2 = nterm StatementExp (9.2: )
+-> $$ = nterm StatementExp (7.40: )
+Entering state 82
+Stack now 0 8 13 17 22 44 45 46 44 46 82
+Now at end of input.
+Reducing stack by rule 32 (line 381):
+   $1 = nterm Statement (7.2: )
+   $2 = nterm StatementExp (7.40: )
+-> $$ = nterm StatementExp (7.2: )
+Entering state 80
+Stack now 0 8 13 17 22 44 45 46 44 80
+Now at end of input.
+Reducing stack by rule 30 (line 371):
+   $1 = nterm Declaration (5.3: )
+   $2 = nterm StatementExp (7.2: )
+-> $$ = nterm StatementExp (5.3: )
+Entering state 82
+Stack now 0 8 13 17 22 44 45 46 82
+Now at end of input.
+Reducing stack by rule 32 (line 381):
+   $1 = nterm Statement (4.14: )
+   $2 = nterm StatementExp (5.3: )
+-> $$ = nterm StatementExp (4.14: )
+Entering state 81
+Stack now 0 8 13 17 22 44 45 81
+Now at end of input.
+Reducing stack by rule 31 (line 376):
+   $1 = nterm Definition (4.3: )
+   $2 = nterm StatementExp (4.14: )
+-> $$ = nterm StatementExp (4.3: )
+Entering state 80
+Stack now 0 8 13 17 22 44 80
+Now at end of input.
+Reducing stack by rule 30 (line 371):
+   $1 = nterm Declaration (3.3: )
+   $2 = nterm StatementExp (4.3: )
+-> $$ = nterm StatementExp (3.3: )
+Entering state 48
+Stack now 0 8 13 17 22 48
+Now at end of input.
+Reducing stack by rule 28 (line 364):
+   $1 = token LCB (1.12: )
+   $2 = nterm StatementExp (3.3: )
+-> $$ = nterm CompStatement (1.12: )
+Entering state 23
+Stack now 0 8 13 17 23
+Now at end of input.
+Reducing stack by rule 12 (line 187):
+   $1 = nterm FunctionHead (1.1: )
+   $2 = token LP (1.9: )
+   $3 = token RP (1.10: )
+   $4 = nterm CompStatement (1.12: )
+-> $$ = nterm FunctionDefinition (1.1: )
+Entering state 7
+Stack now 0 7
+Now at end of input.
+Reducing stack by rule 5 (line 76):
+   $1 = nterm FunctionDefinition (1.1: )
+-> $$ = nterm GlobalDec (1.1: )
+Entering state 5
+Stack now 0 5
+Now at end of input.
+Reducing stack by rule 2 (line 61):
+   $1 = nterm GlobalDec (1.1: )
+-> $$ = nterm GlobalDef (1.1: )
+Entering state 4
+Stack now 0 4
+Now at end of input.
+Reducing stack by rule 1 (line 57):
+   $1 = nterm GlobalDef (1.1: )
+-> $$ = nterm ROOT_TREE (1.1: )
+Entering state 3
+Stack now 0 3
+Now at end of input.
+Shifting token "end of file" (33.1: )
+Entering state 11
+Stack now 0 3 11
+Stack now 0 3 11
+Cleanup: popping token "end of file" (33.1: )
+Cleanup: popping nterm ROOT_TREE (1.1: )
+
+[92mNo semantic errors were found.[0m
+
+Symbol             Function?    Args                               Type/Return        Scope Stack                     
+
+main               Yes          (None)                             int                0                               
+notas              No           *                                  float LIST         1 -> 0                          
+n                  No           *                                  int                1 -> 0                          
+i                  No           *                                  int                1 -> 0                          
+nota               No           *                                  float              2 -> 1 -> 0                     
+soma               No           *                                  float              1 -> 0                          
+AUX                No           *                                  float LIST         1 -> 0                          
+media1             No           *                                  float              1 -> 0                          
+media2             No           *                                  float              1 -> 0                          
+
++- [92mGlobalDefinition[0m
+  +- [92mFunctionDefinition[0m
+    +- [92mmain()[0m
+    +- [92mStatementExp[0m
+      +- [92mfloat LIST notas[0m
+      +- [92mStatementExp[0m
+        +- [92m=[0m
+        |  +- [92mnotas[0m
+        |  +- [92mNIL[0m
+        +- [92mStatementExp[0m
+          +- [92mStatementExp[0m
+            +- [92mint n[0m
+            +- [92mStatementExp[0m
+              +- [92mwrite_ln_call[0m
+              |  +- [92m"Qual o número de provas?"[0m
+              +- [92mStatementExp[0m
+                +- [92mread_call[0m
+                |  +- [92mn[0m
+                +- [92mStatementExp[0m
+                  +- [92mint i[0m
+                  +- [92mStatementExp[0m
+                    +- [92mFOR[0m
+                    |  +- [92m=[0m
+                    |  |  +- [92mi[0m
+                    |  |  +- [92m0.000000[0m
+                    |  +- [92m<[0m
+                    |  |  +- [92mi[0m
+                    |  |  +- [92mn[0m
+                    |  +- [92m=[0m
+                    |  |  +- [92mi[0m
+                    |  |  +- [92m+[0m
+                    |  |    +- [92mi[0m
+                    |  |    +- [92m1.000000[0m
+                    |  +- [92mStatementExp[0m
+                    |    +- [92mfloat nota[0m
+                    |    +- [92mStatementExp[0m
+                    |      +- [92mwrite_call[0m
+                    |      |  +- [92m"Digite a nota da prova "[0m
+                    |      +- [92mStatementExp[0m
+                    |        +- [92mwrite_call[0m
+                    |        |  +- [92mn[0m
+                    |        +- [92mStatementExp[0m
+                    |          +- [92mwrite_ln_call[0m
+                    |          |  +- [92m":"[0m
+                    |          +- [92mStatementExp[0m
+                    |            +- [92mread_call[0m
+                    |            |  +- [92mnota[0m
+                    |            +- [92mStatementExp[0m
+                    |              +- [92m=[0m
+                    |              |  +- [92mnotas[0m
+                    |              |  +- [92m:[0m
+                    |              |    +- [92mnota[0m
+                    |              |    +- [92mnotas[0m
+                    |              +- [92mStatementExp[0m
+                    +- [92mStatementExp[0m
+                      +- [92mfloat soma[0m
+                      +- [92mStatementExp[0m
+                        +- [92m=[0m
+                        |  +- [92msoma[0m
+                        |  +- [92m0.000000[0m
+                        +- [92mStatementExp[0m
+                          +- [92mStatementExp[0m
+                            +- [92mfloat LIST AUX[0m
+                            +- [92mStatementExp[0m
+                              +- [92mFOR[0m
+                              |  +- [92m=[0m
+                              |  |  +- [92mAUX[0m
+                              |  |  +- [92mnotas[0m
+                              |  +- [92m!=[0m
+                              |  |  +- [92mAUX[0m
+                              |  |  +- [92mNIL[0m
+                              |  +- [92m=[0m
+                              |  |  +- [92mAUX[0m
+                              |  |  +- [92m![0m
+                              |  |    +- [92mAUX[0m
+                              +- [92mStatementExp[0m
+                                +- [92m+[0m
+                                |  +- [92msoma[0m
+                                |  +- [92m?[0m
+                                |    +- [92mAUX[0m
+                                +- [92mStatementExp[0m
+                                  +- [92mfloat media1[0m
+                                  +- [92mStatementExp[0m
+                                    +- [92mfloat media2[0m
+                                    +- [92mStatementExp[0m
+                                      +- [92m=[0m
+                                      |  +- [92mmedia1[0m
+                                      |  +- [92m-[0m
+                                      |    +- [92m/[0m
+                                      |    |  +- [92msoma[0m
+                                      |    |  +- [92mn[0m
+                                      |    +- [92m*[0m
+                                      |      +- [92m10.000000[0m
+                                      |      +- [92mPrimaryExpression[0m
+                                      |        +- [92m/[0m
+                                      |          +- [92m1.000000[0m
+                                      |          +- [92m10.000000[0m
+                                      +- [92mStatementExp[0m
+                                        +- [92mStatementExp[0m
+                                          +- [92m=[0m
+                                          |  +- [92mmedia2[0m
+                                          |  +- [92m/[0m
+                                          |    +- [92msoma[0m
+                                          |    +- [92mn[0m
+                                          +- [92mStatementExp[0m
+                                            +- [92mStatementExp[0m
+                                              +- [92mSelStatement[0m
+                                              |  +- [92m!=[0m
+                                              |  |  +- [92mmedia1[0m
+                                              |  |  +- [92mmedia2[0m
+                                              |  +- [92mwrite_ln_call[0m
+                                              |  |  +- [92m"Há um problema no cálculo da média"[0m
+                                              |  +- [92mSelStatement[0m
+                                              |    +- [92m&&[0m
+                                              |    |  +- [92m==[0m
+                                              |    |  |  +- [92mmedia1[0m
+                                              |    |  |  +- [92mmedia2[0m
+                                              |    |  +- [92m>=[0m
+                                              |    |    +- [92mmedia1[0m
+                                              |    |    +- [92m5.000000[0m
+                                              |    +- [92mwrite_ln_call[0m
+                                              |      +- [92m"Parabéns!"[0m

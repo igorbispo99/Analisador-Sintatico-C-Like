@@ -36,11 +36,12 @@
 %token LP SEMI COM RCB LCB TWD PLUS MIN MUL LT GT LEQ GEQ DIF MAP FIL DIV TR TNR HD ATT COMP_EQ AND OR RP
 %token NUM_CONST NIL STR WRITE READ WRITE_LN
 %token IF ELSE FOR RET
-%nonassoc ELSE RP
+%precedence RP
+%precedence ELSE
 
 %type <state> GlobalDef GlobalDec Declaration ParamList CompStatement SelStatement JmpStatement LogicalAndExpression
 %type <state> FunctionDefinition Definition Statement StatementExp ExpStatement ItStatement Expression LogicalOrExpression
-%type <state> EqualityExpression RelationalExpression AdditiveExpression MultiplicativeExpression
+%type <state> EqualityExpression RelationalExpression AdditiveExpression MultiplicativeExpression IfHead ElseHead
 %type <state> UnaryExpression PrimaryExpression FunctionHead ExpAtt Params ForHead FunctionArgs
 %type <num> NUM_CONST 
 %type <string> IDENTIFIER TYPE SEMI LIST STR
@@ -75,10 +76,6 @@ GlobalDec:
 		}
         | FunctionDefinition {
 			$$ = $1;
-		}
-		| error {
-			yyerrok;
-			$$ = NULL;
 		}
         ;
 
@@ -162,6 +159,45 @@ Definition:
 			}
 
 			
+			if(!check_type_subtree($$, s_table, scope)) {
+				char err[MAX_BUFFER_SIZE];
+				sprintf(err, "Invalid expression type, at ln %d col %d.", @4.first_line, @4.first_column);
+
+				print_error(err);
+
+				first_pass_sematic_error_found = true;
+			}
+		}
+		|
+		IDENTIFIER ATT MIN IDENTIFIER {
+			$$ = new_node("=", root);
+
+			char str[MAX_BUFFER_SIZE];
+			strcpy(str, $1);
+
+			add_child($$, new_node(str, root));
+			add_child($$, new_node("-", root));
+
+			add_child($$->children[1], new_node($4, root));
+
+			if (!variable_was_declared(s_table, scope, $1)) {
+				char err[MAX_BUFFER_SIZE];
+				sprintf(err, "Variable %s not declared, at ln %d col %d.", $1, @1.first_line, @1.first_column);
+
+				print_error(err);
+
+				first_pass_sematic_error_found = true;
+			}
+
+			if (!variable_was_declared(s_table, scope, $4)) {
+				char err[MAX_BUFFER_SIZE];
+				sprintf(err, "Variable %s not declared, at ln %d col %d.", $4, @4.first_line, @4.first_column);
+
+				print_error(err);
+
+				first_pass_sematic_error_found = true;
+			}
+
 			if(!check_type_subtree($$, s_table, scope)) {
 				char err[MAX_BUFFER_SIZE];
 				sprintf(err, "Invalid expression type, at ln %d col %d.", @4.first_line, @4.first_column);
@@ -268,6 +304,60 @@ FunctionArgs:
 
 		push_arg_to_arglist(s_table, arg_2, last_f);
 	}
+	|
+	TYPE IDENTIFIER COM TYPE LIST IDENTIFIER ParamList {
+		$$ = new_node("FunctionParameters", root);
+
+		char arg_1[MAX_BUFFER_SIZE];
+		strcpy(arg_1, $1);
+
+		if(!add_row_symbol_table(s_table, $2, arg_1, scope, true))
+		{
+			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @2.first_line, @2.first_column, $2);
+			first_pass_sematic_error_found = true;
+		}
+
+		push_arg_to_arglist(s_table, arg_1, last_f);
+
+		char arg_2[MAX_BUFFER_SIZE];
+		strcpy(arg_2, $4);
+		strcat(arg_2," LIST ");
+
+		if(!add_row_symbol_table(s_table, $6, arg_2, scope, true))
+		{
+			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @6.first_line, @6.first_column, $6);
+			first_pass_sematic_error_found = true;
+		}
+
+		push_arg_to_arglist(s_table, arg_2, last_f);
+	}
+	|
+	TYPE LIST IDENTIFIER COM TYPE IDENTIFIER ParamList {
+		$$ = new_node("FunctionParameters", root);
+
+		char arg_1[MAX_BUFFER_SIZE];
+		strcpy(arg_1, $1);
+		strcat(arg_1," LIST ");
+
+		if(!add_row_symbol_table(s_table, $3, arg_1, scope, true))
+		{
+			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @3.first_line, @3.first_column, $3);
+			first_pass_sematic_error_found = true;
+		}
+
+		push_arg_to_arglist(s_table, arg_1, last_f);
+
+		char arg_2[MAX_BUFFER_SIZE];
+		strcpy(arg_2, $5);
+
+		if(!add_row_symbol_table(s_table, $6, arg_2, scope, true))
+		{
+			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @6.first_line, @6.first_column, $6);
+			first_pass_sematic_error_found = true;
+		}
+
+		push_arg_to_arglist(s_table, arg_2, last_f);
+	}
 	;
 
 FunctionHead:
@@ -357,7 +447,7 @@ Statement:
 	|	SelStatement { $$ = $1; }
 	|	ItStatement { $$ = $1; }
 	|	ExpStatement { $$ = $1; }
-	|	error {yyerrok; $$ = NULL;}
+
 		;
 
 CompStatement:
@@ -383,25 +473,47 @@ StatementExp:
 			add_child($$, $1);
 			add_child($$, $2);
 		}
+	|	error RCB {yyerrok; $$ = NULL;}
 
 	;
 
  SelStatement:
 		IfHead LP Expression RP Statement {
-			$$ = new_node("SelStatement", root);
+			$$ = new_node("IF", root);
 			add_child($$, $3);
 			add_child($$, $5);
 			decrease_depth_scope(scope);
 		}
-	|	IfHead LP Expression RP Statement ElseHead Statement {
-			$$ = new_node("SelStatement", root);
+		| IfHead LP Expression RP Definition {
+			$$ = new_node("IF", root);
+			add_child($$, $3);
+			add_child($$, $5);
+			decrease_depth_scope(scope);
+		}
+		| IfHead LP Expression RP ExpStatement {
+			$$ = new_node("IF", root);
+			add_child($$, $3);
+			add_child($$, $5);
+			decrease_depth_scope(scope);
+		}
+
+		| IfHead LP Expression RP Statement ElseHead Statement {
+			$$ = new_node("IF_ELSE", root);
+
 			add_child($$, $3);
 			add_child($$, $5);
 			add_child($$, $7);
+
 			decrease_depth_scope(scope);
 		}
-		;
 
+		
+	|   IfHead LP error RP Statement {
+		$$ = new_node("IF", root);
+		add_child($$, $5);
+	}
+	|   error ElseHead Statement {decrease_depth_scope(scope);yyerrok;}
+	;
 IfHead:
 	IF {
 		increase_depth_scope(scope);
@@ -432,7 +544,7 @@ JmpStatement:
 				printf("\033[91mSemantic error at line %d, column %d: Incompatible return type.\033[0m\n", @2.first_line, @2.first_column);
 				first_pass_sematic_error_found = true;
 			}
-			
+
 		}
 		;
 
@@ -444,6 +556,32 @@ ItStatement:
 			add_child($$, $7);
 			add_child($$, $9);
 			decrease_depth_scope(scope);
+		}
+		|
+		ForHead LP ExpAtt SEMI error RP Statement {
+			$$ = new_node("FOR", root);
+			add_child($$, $3);
+			add_child($$, $7);
+
+			decrease_depth_scope(scope);
+			yyerrok;
+		} 
+		|
+		ForHead LP error RP Statement {
+			$$ = new_node("FOR", root);
+			add_child($$, $5);
+			
+			decrease_depth_scope(scope);
+			yyerrok;
+		}
+		|
+		ForHead LP ExpAtt SEMI ExpAtt SEMI error RP Statement {
+			$$ = new_node("FOR", root);
+			add_child($$, $3);
+			add_child($$, $5);
+			add_child($$, $9);
+			decrease_depth_scope(scope);
+			yyerrok;
 		}
 		;
 	
@@ -461,18 +599,16 @@ ExpAtt:
 	Definition {
 		$$ = $1;
 	}
+	|
+	error SEMI {
+		yyerrok;
+		$$ = NULL;
+	}
 	; 
 //
 
 Expression:
 		LogicalOrExpression { $$ = $1; }
-
-		| AdditiveExpression TWD IDENTIFIER {
-			$$ = new_node(":", root);
-			add_child($$, $1);
-			add_child($$, new_node($3, root));
-
-		}
 		;
 
 LogicalOrExpression:
@@ -555,6 +691,12 @@ AdditiveExpression:
 			add_child($$, $1);
 			add_child($$, $3);
 	}
+
+	| AdditiveExpression TWD MultiplicativeExpression {
+			$$ = new_node(":", root);
+			add_child($$, $1);
+			add_child($$, $3);
+	}
 		;
 
 MultiplicativeExpression:
@@ -573,15 +715,15 @@ MultiplicativeExpression:
 
 UnaryExpression:
 		PrimaryExpression { $$ = $1; }
-	|	TNR PrimaryExpression {
+	|	TNR UnaryExpression {
 			$$ = new_node("!", root);
 			add_child($$, $2);
 	}
-	|	HD PrimaryExpression {
+	|	HD UnaryExpression {
 			$$ = new_node("?", root);
 			add_child($$, $2);
 	}
-	|	TR PrimaryExpression {
+	|	TR UnaryExpression {
 			$$ = new_node("%", root);
 			add_child($$, $2);
 	}
@@ -609,6 +751,11 @@ PrimaryExpression:
 	|	LP Expression RP {
 			$$ = new_node("PrimaryExpression", root); 
 			add_child($$, $2);
+		}
+
+	|	LP error RP {
+			yyerrok;
+			$$ = NULL;
 		}
 
 	|	IDENTIFIER LP Params RP {

@@ -1072,7 +1072,7 @@ YY_RULE_SETUP
    yylloc.first_column=n_column;
 
    n_column += yyleng;
-   yylval.num = strtol(yytext, NULL, 0);
+   yylval.num = strtof(yytext, NULL);
    return NUM_CONST;
 }
 	YY_BREAK

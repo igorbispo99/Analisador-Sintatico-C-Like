@@ -1,0 +1,6 @@
+bison -o src/parser.c -d src/parser.y --debug -Wcounterexamples -v
+mkdir -p obj
+gcc -c -o obj/parser.o src/parser.c -g -I "lib/" -Wall -Wpedantic
+mkdir -p bin
+gcc -o bin/parser obj/parser.o obj/lexical.o obj/main.o obj/symbol_table.o obj/syntax_tree.o obj/semantic_analysis.o -g -I "lib/" -Wall -Wpedantic
+cp bin/parser tradutor
