@@ -238,7 +238,7 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
     return "0";
 }
 
-char** get_function_signature(char* symbol_func, symbol_table* table, scope_t* scope, uint16_t* n_params) {
+char** get_function_signature(char* symbol_func, symbol_table* table, scope_t* scope, uint16_t* n_params, bool double_check) {
     int func_table_idx;
 
     for (func_table_idx = 0; func_table_idx < table->n_lines; func_table_idx++) {
@@ -251,6 +251,16 @@ char** get_function_signature(char* symbol_func, symbol_table* table, scope_t* s
 
     if (func_table_idx == table->n_lines) {
         return NULL;
+    }
+
+    if (double_check) {
+        for (int i = 0; i < table->n_lines; i++) {
+            if (equal_to(table->symbol[i], symbol_func) &&
+                variable_was_declared(table, scope, symbol_func) &&
+                table->is_var[i]) {
+                    return NULL;
+                }
+        }
     }
 
     *n_params = table->n_args[func_table_idx];
@@ -274,7 +284,12 @@ bool check_type_with_casting(char* symbol_1, char* symbol_2) {
 }
 
 bool check_function_arg(char* type_exp, char* symbol_func, uint16_t param_idx, symbol_table* table, scope_t* scope, uint16_t* n_params) {
-    char** func_signature = get_function_signature(symbol_func, table, scope, n_params);
+    char** func_signature = get_function_signature(symbol_func, table, scope, n_params, false);
+
+    if (func_signature == NULL) {
+        return false;
+    }
+
     char* param_type = func_signature[param_idx];
 
     if (equal_to(type_exp, param_type)) {

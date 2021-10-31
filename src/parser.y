@@ -490,12 +490,6 @@ StatementExp:
 			add_child($$, $5);
 			decrease_depth_scope(scope);
 		}
-		| IfHead LP Expression RP ExpStatement {
-			$$ = new_node("IF", root);
-			add_child($$, $3);
-			add_child($$, $5);
-			decrease_depth_scope(scope);
-		}
 
 		| IfHead LP Expression RP Statement ElseHead Statement {
 			$$ = new_node("IF_ELSE", root);
@@ -512,7 +506,7 @@ StatementExp:
 		$$ = new_node("IF", root);
 		add_child($$, $5);
 	}
-	|   error ElseHead Statement {decrease_depth_scope(scope);yyerrok;}
+	|   error ElseHead Statement {$$=NULL;decrease_depth_scope(scope);yyerrok;}
 	;
 IfHead:
 	IF {
@@ -771,48 +765,56 @@ PrimaryExpression:
 				print_error(err);
 
 				first_pass_sematic_error_found = true;
-			}
+			} else {
+				uint16_t n_args = 0;
 
-	        uint16_t n_args = 0;
+				char** args = get_function_signature($1, s_table, scope, &n_args, true);
 
-	        char** args = get_function_signature($1, s_table, scope, &n_args);
+				if (!args) {
+					first_pass_sematic_error_found = true;
+					char err[MAX_BUFFER_SIZE];
+					sprintf(err, "Invalid function call, %s is not a function, at ln %d col %d.", $1, @1.first_line, @1.first_column);
 
-			bool compatible_args = true;
+					print_error(err);
+				} else {
+					bool compatible_args = true;
 
-			for (size_t i = 0, j = args_count-1; j >= 0 && i < n_args; i++, j--) {
-				if (!check_type_with_casting(args[i], args_last_f[j])) {
-					compatible_args = false;
-					break;
-				}
-			}
-
-			if (!compatible_args) {
-				first_pass_sematic_error_found = true;
-				char err[MAX_BUFFER_SIZE*2];
-				sprintf(err, "Invalid function call, function %s expect parameters ", $1);
-
-				for (size_t i = 0; i < n_args; i++) {
-					strcat(err, args[i]);
-					if (i != n_args - 1) {
-						strcat(err, ", ");
+					for (size_t i = 0, j = args_count-1; j >= 0 && i < n_args; i++, j--) {
+						if (!check_type_with_casting(args[i], args_last_f[j])) {
+							compatible_args = false;
+							break;
+						}
 					}
+
+					if (!compatible_args) {
+						first_pass_sematic_error_found = true;
+						char err[MAX_BUFFER_SIZE*2];
+						sprintf(err, "Invalid function call, function %s expect parameters ", $1);
+
+						for (size_t i = 0; i < n_args; i++) {
+							strcat(err, args[i]);
+							if (i != n_args - 1) {
+								strcat(err, ", ");
+							}
+						}
+
+						char err_tail[MAX_BUFFER_SIZE];
+						sprintf(err_tail, " at ln %d col %d.", @1.first_line, @1.first_column);
+						strcat(err, err_tail);
+
+						print_error(err);
+						first_pass_sematic_error_found = true;
+					}
+
+					for (size_t i = 0; i < args_count; i++) {
+						free(args_last_f[i]);
+					}
+
+					free(args_last_f);
+
+					args_count = 0;
 				}
-
-				char err_tail[MAX_BUFFER_SIZE];
-				sprintf(err_tail, " at ln %d col %d.", @1.first_line, @1.first_column);
-				strcat(err, err_tail);
-
-				print_error(err);
-				first_pass_sematic_error_found = true;
 			}
-
-			for (size_t i = 0; i < args_count; i++) {
-				free(args_last_f[i]);
-			}
-
-			free(args_last_f);
-
-			args_count = 0;
 
 		}
 	|	IDENTIFIER LP RP {
@@ -836,23 +838,28 @@ PrimaryExpression:
 				first_pass_sematic_error_found = true;
 				char err[MAX_BUFFER_SIZE*2];
 
-		        char** args = get_function_signature($1, s_table, scope, &n_args);
+		        char** args = get_function_signature($1, s_table, scope, &n_args, true);
 
-				sprintf(err, "Invalid function call, function %s expect parameters ", $1);
+				if(!args) {
+					sprintf(err, "Invalid function call, %s is not a function, at ln %d col %d.", $1, @1.first_line, @1.first_column);
+					print_error(err);
+				} else {
+					sprintf(err, "Invalid function call, function %s expect parameters ", $1);
 
-				for (uint16_t i = 0; i < n_args; i++) {
-					strcat(err, args[i]);
-					if (i != n_args - 1) {
-						strcat(err, ", ");
+					for (uint16_t i = 0; i < n_args; i++) {
+						strcat(err, args[i]);
+						if (i != n_args - 1) {
+							strcat(err, ", ");
+						}
 					}
+
+					char err_tail[MAX_BUFFER_SIZE];
+
+					sprintf(err_tail, ", at ln %d col %d.", @1.first_line, @1.first_column);
+					strcat(err, err_tail);
+
+					print_error(err);
 				}
-
-				char err_tail[MAX_BUFFER_SIZE];
-
-				sprintf(err_tail, ", at ln %d col %d.", @1.first_line, @1.first_column);
-				strcat(err, err_tail);
-
-				print_error(err);
 
 			}
 	}		

@@ -12,7 +12,7 @@ bool main_exists(symbol_table* table);
 bool double_declaration_exists(symbol_table* table, char*** vars, uint16_t* n_vars);
 bool variable_was_declared(symbol_table* table, scope_t* scope, char* symbol);
 bool check_function_arg(char* type_exp, char* symbol_func,uint16_t param_idx, symbol_table* table, scope_t* scope, uint16_t* n_args);
-char** get_function_signature(char* symbol_func, symbol_table* table, scope_t* scope, uint16_t* n_params);
+char** get_function_signature(char* symbol_func, symbol_table* table, scope_t* scope, uint16_t* n_params, bool double_check);
 void push_param_to_paramlist(symbol_table* table, const char* type, char*** paramlist, uint16_t* n_params);
 bool analyze_semantics(symbol_table* table, syntax_tree* root);
 bool check_type_with_casting(char* symbol_1, char* symbol_2);

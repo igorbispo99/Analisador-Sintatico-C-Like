@@ -4,8 +4,6 @@ int main() {
 		write(i);
 	}
 
-	if (i) 
-		write(i)
+	n();
 	
-	float i;
 }
