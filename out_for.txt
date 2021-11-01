@@ -1,0 +1,657 @@
+Starting parse
+Entering state 0
+Stack now 0
+Reading a token
+Next token is token TYPE (1.1: )
+Shifting token TYPE (1.1: )
+Entering state 1
+Stack now 0 1
+Reading a token
+Next token is token IDENTIFIER (1.5: )
+Shifting token IDENTIFIER (1.5: )
+Entering state 8
+Stack now 0 1 8
+Reading a token
+Next token is token LP (1.6: )
+Reducing stack by rule 20 (line 371):
+   $1 = token TYPE (1.1: )
+   $2 = token IDENTIFIER (1.5: )
+-> $$ = nterm FunctionHead (1.1: )
+Entering state 7
+Stack now 0 7
+Next token is token LP (1.6: )
+Shifting token LP (1.6: )
+Entering state 12
+Stack now 0 7 12
+Reading a token
+Next token is token COM (1.7: )
+[91mSyntax error, unexpected COM, expecting TYPE or RP, at ln 1 col 7[0m
+Shifting token error (1.7: )
+Entering state 15
+Stack now 0 7 12 15
+Next token is token COM (1.7: )
+Error: discarding token COM (1.7: )
+Error: popping token error (1.7: )
+Stack now 0 7 12
+Shifting token error (1.7: )
+Entering state 15
+Stack now 0 7 12 15
+Reading a token
+Next token is token TYPE (1.8: )
+Error: discarding token TYPE (1.8: )
+Error: popping token error (1.7: )
+Stack now 0 7 12
+Shifting token error (1.7: )
+Entering state 15
+Stack now 0 7 12 15
+Reading a token
+Next token is token IDENTIFIER (1.12: )
+Error: discarding token IDENTIFIER (1.12: )
+Error: popping token error (1.7: )
+Stack now 0 7 12
+Shifting token error (1.7: )
+Entering state 15
+Stack now 0 7 12 15
+Reading a token
+Next token is token RP (1.13: )
+Shifting token RP (1.13: )
+Entering state 20
+Stack now 0 7 12 15 20
+Reading a token
+Next token is token LCB (1.15: )
+Shifting token LCB (1.15: )
+Entering state 23
+Stack now 0 7 12 15 20 23
+Reading a token
+Next token is token TYPE (2.3: )
+Shifting token TYPE (2.3: )
+Entering state 30
+Stack now 0 7 12 15 20 23 30
+Reading a token
+Next token is token IDENTIFIER (2.7: )
+Shifting token IDENTIFIER (2.7: )
+Entering state 72
+Stack now 0 7 12 15 20 23 30 72
+Reading a token
+Next token is token SEMI (2.8: )
+Shifting token SEMI (2.8: )
+Entering state 212
+Stack now 0 7 12 15 20 23 30 72 212
+Reading a token
+Next token is token TYPE (2.10: )
+Reducing stack by rule 6 (line 83):
+   $1 = token TYPE (2.3: )
+   $2 = token IDENTIFIER (2.7: )
+   $3 = token SEMI (2.8: )
+-> $$ = nterm Declaration (2.3: )
+Entering state 46
+Stack now 0 7 12 15 20 23 46
+Next token is token TYPE (2.10: )
+Shifting token TYPE (2.10: )
+Entering state 30
+Stack now 0 7 12 15 20 23 46 30
+Reading a token
+Next token is token IDENTIFIER (2.14: )
+Shifting token IDENTIFIER (2.14: )
+Entering state 72
+Stack now 0 7 12 15 20 23 46 30 72
+Reading a token
+Next token is token SEMI (2.15: )
+Shifting token SEMI (2.15: )
+Entering state 212
+Stack now 0 7 12 15 20 23 46 30 72 212
+Reading a token
+Next token is token TYPE (2.17: )
+Reducing stack by rule 6 (line 83):
+   $1 = token TYPE (2.10: )
+   $2 = token IDENTIFIER (2.14: )
+   $3 = token SEMI (2.15: )
+-> $$ = nterm Declaration (2.10: )
+Entering state 46
+Stack now 0 7 12 15 20 23 46 46
+Next token is token TYPE (2.17: )
+Shifting token TYPE (2.17: )
+Entering state 30
+Stack now 0 7 12 15 20 23 46 46 30
+Reading a token
+Next token is token IDENTIFIER (2.21: )
+Shifting token IDENTIFIER (2.21: )
+Entering state 72
+Stack now 0 7 12 15 20 23 46 46 30 72
+Reading a token
+Next token is token SEMI (2.22: )
+Shifting token SEMI (2.22: )
+Entering state 212
+Stack now 0 7 12 15 20 23 46 46 30 72 212
+Reading a token
+Next token is token FOR (4.3: )
+Reducing stack by rule 6 (line 83):
+   $1 = token TYPE (2.17: )
+   $2 = token IDENTIFIER (2.21: )
+   $3 = token SEMI (2.22: )
+-> $$ = nterm Declaration (2.17: )
+Entering state 46
+Stack now 0 7 12 15 20 23 46 46 46
+Next token is token FOR (4.3: )
+Shifting token FOR (4.3: )
+Entering state 44
+Stack now 0 7 12 15 20 23 46 46 46 44
+Reading a token
+Next token is token LP (4.7: )
+Reducing stack by rule 50 (line 590):
+   $1 = token FOR (4.3: )
+-> $$ = nterm ForHead (4.3: )
+Entering state 56
+Stack now 0 7 12 15 20 23 46 46 46 56
+Next token is token LP (4.7: )
+Shifting token LP (4.7: )
+Entering state 90
+Stack now 0 7 12 15 20 23 46 46 46 56 90
+Reading a token
+Next token is token IDENTIFIER (4.8: )
+Shifting token IDENTIFIER (4.8: )
+Entering state 250
+Stack now 0 7 12 15 20 23 46 46 46 56 90 250
+Reading a token
+Next token is token COM (4.9: )
+[91mSyntax error, unexpected COM, at ln 4 col 9[0m
+Error: popping token IDENTIFIER (4.8: )
+Stack now 0 7 12 15 20 23 46 46 46 56 90
+Shifting token error (4.8: )
+Entering state 127
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127
+Next token is token COM (4.9: )
+Error: discarding token COM (4.9: )
+Error: popping token error (4.8: )
+Stack now 0 7 12 15 20 23 46 46 46 56 90
+Shifting token error (4.8: )
+Entering state 127
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127
+Reading a token
+Next token is token IDENTIFIER (4.10: )
+Error: discarding token IDENTIFIER (4.10: )
+Error: popping token error (4.8: )
+Stack now 0 7 12 15 20 23 46 46 46 56 90
+Shifting token error (4.8: )
+Entering state 127
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127
+Reading a token
+Next token is token COM (4.11: )
+Error: discarding token COM (4.11: )
+Error: popping token error (4.8: )
+Stack now 0 7 12 15 20 23 46 46 46 56 90
+Shifting token error (4.8: )
+Entering state 127
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127
+Reading a token
+Next token is token IDENTIFIER (4.12: )
+Error: discarding token IDENTIFIER (4.12: )
+Error: popping token error (4.8: )
+Stack now 0 7 12 15 20 23 46 46 46 56 90
+Shifting token error (4.8: )
+Entering state 127
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127
+Reading a token
+Next token is token RP (4.13: )
+Shifting token RP (4.13: )
+Entering state 163
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127 163
+Reading a token
+Next token is token LCB (4.15: )
+Shifting token LCB (4.15: )
+Entering state 193
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127 163 193
+Reading a token
+Next token is token WRITE_LN (5.5: )
+Shifting token WRITE_LN (5.5: )
+Entering state 42
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127 163 193 42
+Reading a token
+Next token is token SEMI (5.12: )
+[91mSyntax error, unexpected SEMI, expecting LP, at ln 5 col 12[0m
+Error: popping token WRITE_LN (5.5: )
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127 163 193
+Shifting token error (5.5: )
+Entering state 268
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127 163 193 268
+Next token is token SEMI (5.12: )
+Error: discarding token SEMI (5.12: )
+Error: popping token error (5.5: )
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127 163 193
+Shifting token error (5.5: )
+Entering state 268
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127 163 193 268
+Reading a token
+Next token is token READ (6.5: )
+Error: discarding token READ (6.5: )
+Error: popping token error (5.5: )
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127 163 193
+Shifting token error (5.5: )
+Entering state 268
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127 163 193 268
+Reading a token
+Next token is token SEMI (6.9: )
+Error: discarding token SEMI (6.9: )
+Error: popping token error (5.5: )
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127 163 193
+Shifting token error (5.5: )
+Entering state 268
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127 163 193 268
+Reading a token
+Next token is token RCB (7.3: )
+Shifting token RCB (7.3: )
+Entering state 360
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127 163 193 268 360
+Reading a token
+Next token is token RET (9.3: )
+Reducing stack by rule 35 (line 483):
+   $1 = token error (5.5: )
+   $2 = token RCB (7.3: )
+-> $$ = nterm StatementExp (5.5: )
+Entering state 273
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127 163 193 273
+Next token is token RET (9.3: )
+Reducing stack by rule 30 (line 461):
+   $1 = token LCB (4.15: )
+   $2 = nterm StatementExp (5.5: )
+-> $$ = nterm CompStatement (4.15: )
+Entering state 49
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127 163 49
+Next token is token RET (9.3: )
+Reducing stack by rule 25 (line 452):
+   $1 = nterm CompStatement (4.15: )
+-> $$ = nterm Statement (4.15: )
+Entering state 173
+Stack now 0 7 12 15 20 23 46 46 46 56 90 127 163 173
+Next token is token RET (9.3: )
+Reducing stack by rule 48 (line 571):
+   $1 = nterm ForHead (4.3: )
+   $2 = token LP (4.7: )
+   $3 = token error (4.8: )
+   $4 = token RP (4.13: )
+   $5 = nterm Statement (4.15: )
+-> $$ = nterm ItStatement (4.3: )
+Entering state 55
+Stack now 0 7 12 15 20 23 46 46 46 55
+Next token is token RET (9.3: )
+Reducing stack by rule 28 (line 455):
+   $1 = nterm ItStatement (4.3: )
+-> $$ = nterm Statement (4.3: )
+Entering state 48
+Stack now 0 7 12 15 20 23 46 46 46 48
+Next token is token RET (9.3: )
+Shifting token RET (9.3: )
+Entering state 45
+Stack now 0 7 12 15 20 23 46 46 46 48 45
+Reading a token
+Next token is token NUM_CONST (9.10: )
+Shifting token NUM_CONST (9.10: )
+Entering state 38
+Stack now 0 7 12 15 20 23 46 46 46 48 45 38
+Reading a token
+Next token is token SEMI (9.11: )
+Reducing stack by rule 81 (line 746):
+   $1 = token NUM_CONST (9.10: )
+-> $$ = nterm PrimaryExpression (9.10: )
+Entering state 65
+Stack now 0 7 12 15 20 23 46 46 46 48 45 65
+Next token is token SEMI (9.11: )
+Reducing stack by rule 76 (line 718):
+   $1 = nterm PrimaryExpression (9.10: )
+-> $$ = nterm UnaryExpression (9.10: )
+Entering state 64
+Stack now 0 7 12 15 20 23 46 46 46 48 45 64
+Next token is token SEMI (9.11: )
+Reducing stack by rule 73 (line 704):
+   $1 = nterm UnaryExpression (9.10: )
+-> $$ = nterm MultiplicativeExpression (9.10: )
+Entering state 63
+Stack now 0 7 12 15 20 23 46 46 46 48 45 63
+Next token is token SEMI (9.11: )
+Reducing stack by rule 69 (line 684):
+   $1 = nterm MultiplicativeExpression (9.10: )
+-> $$ = nterm AdditiveExpression (9.10: )
+Entering state 62
+Stack now 0 7 12 15 20 23 46 46 46 48 45 62
+Next token is token SEMI (9.11: )
+Reducing stack by rule 61 (line 645):
+   $1 = nterm AdditiveExpression (9.10: )
+-> $$ = nterm RelationalExpression (9.10: )
+Entering state 61
+Stack now 0 7 12 15 20 23 46 46 46 48 45 61
+Next token is token SEMI (9.11: )
+Reducing stack by rule 59 (line 635):
+   $1 = nterm RelationalExpression (9.10: )
+-> $$ = nterm EqualityExpression (9.10: )
+Entering state 60
+Stack now 0 7 12 15 20 23 46 46 46 48 45 60
+Next token is token SEMI (9.11: )
+Reducing stack by rule 57 (line 626):
+   $1 = nterm EqualityExpression (9.10: )
+-> $$ = nterm LogicalAndExpression (9.10: )
+Entering state 59
+Stack now 0 7 12 15 20 23 46 46 46 48 45 59
+Next token is token SEMI (9.11: )
+Reducing stack by rule 55 (line 616):
+   $1 = nterm LogicalAndExpression (9.10: )
+-> $$ = nterm LogicalOrExpression (9.10: )
+Entering state 58
+Stack now 0 7 12 15 20 23 46 46 46 48 45 58
+Next token is token SEMI (9.11: )
+Reducing stack by rule 54 (line 612):
+   $1 = nterm LogicalOrExpression (9.10: )
+-> $$ = nterm Expression (9.10: )
+Entering state 57
+Stack now 0 7 12 15 20 23 46 46 46 48 45 57
+Next token is token SEMI (9.11: )
+Shifting token SEMI (9.11: )
+Entering state 91
+Stack now 0 7 12 15 20 23 46 46 46 48 45 57 91
+Reading a token
+Next token is token RCB (10.1: )
+Reducing stack by rule 44 (line 533):
+   $1 = nterm Expression (9.10: )
+   $2 = token SEMI (9.11: )
+-> $$ = nterm ExpStatement (9.10: )
+Entering state 85
+Stack now 0 7 12 15 20 23 46 46 46 48 45 85
+Next token is token RCB (10.1: )
+Reducing stack by rule 45 (line 539):
+   $1 = token RET (9.3: )
+   $2 = nterm ExpStatement (9.10: )
+-> $$ = nterm JmpStatement (9.3: )
+Entering state 54
+Stack now 0 7 12 15 20 23 46 46 46 48 54
+Next token is token RCB (10.1: )
+Reducing stack by rule 26 (line 453):
+   $1 = nterm JmpStatement (9.3: )
+-> $$ = nterm Statement (9.3: )
+Entering state 48
+Stack now 0 7 12 15 20 23 46 46 46 48 48
+Next token is token RCB (10.1: )
+Shifting token RCB (10.1: )
+Entering state 34
+Stack now 0 7 12 15 20 23 46 46 46 48 48 34
+Reading a token
+Next token is token TYPE (12.1: )
+Reducing stack by rule 31 (line 467):
+   $1 = token RCB (10.1: )
+-> $$ = nterm StatementExp (10.1: )
+Entering state 88
+Stack now 0 7 12 15 20 23 46 46 46 48 48 88
+Next token is token TYPE (12.1: )
+Reducing stack by rule 34 (line 478):
+   $1 = nterm Statement (9.3: )
+   $2 = nterm StatementExp (10.1: )
+-> $$ = nterm StatementExp (9.3: )
+Entering state 88
+Stack now 0 7 12 15 20 23 46 46 46 48 88
+Next token is token TYPE (12.1: )
+Reducing stack by rule 34 (line 478):
+   $1 = nterm Statement (4.3: )
+   $2 = nterm StatementExp (9.3: )
+-> $$ = nterm StatementExp (4.3: )
+Entering state 86
+Stack now 0 7 12 15 20 23 46 46 46 86
+Next token is token TYPE (12.1: )
+Reducing stack by rule 32 (line 468):
+   $1 = nterm Declaration (2.17: )
+   $2 = nterm StatementExp (4.3: )
+-> $$ = nterm StatementExp (2.17: )
+Entering state 86
+Stack now 0 7 12 15 20 23 46 46 86
+Next token is token TYPE (12.1: )
+Reducing stack by rule 32 (line 468):
+   $1 = nterm Declaration (2.10: )
+   $2 = nterm StatementExp (2.17: )
+-> $$ = nterm StatementExp (2.10: )
+Entering state 86
+Stack now 0 7 12 15 20 23 46 86
+Next token is token TYPE (12.1: )
+Reducing stack by rule 32 (line 468):
+   $1 = nterm Declaration (2.3: )
+   $2 = nterm StatementExp (2.10: )
+-> $$ = nterm StatementExp (2.3: )
+Entering state 50
+Stack now 0 7 12 15 20 23 50
+Next token is token TYPE (12.1: )
+Reducing stack by rule 30 (line 461):
+   $1 = token LCB (1.15: )
+   $2 = nterm StatementExp (2.3: )
+-> $$ = nterm CompStatement (1.15: )
+Entering state 26
+Stack now 0 7 12 15 20 26
+Next token is token TYPE (12.1: )
+Reducing stack by rule 13 (line 232):
+   $1 = nterm FunctionHead (1.1: )
+   $2 = token LP (1.6: )
+   $3 = token error (1.7: )
+   $4 = token RP (1.13: )
+   $5 = nterm CompStatement (1.15: )
+-> $$ = nterm FunctionDefinition (1.1: )
+Entering state 6
+Stack now 0 6
+Next token is token TYPE (12.1: )
+Reducing stack by rule 5 (line 77):
+   $1 = nterm FunctionDefinition (1.1: )
+-> $$ = nterm GlobalDec (1.1: )
+Entering state 4
+Stack now 0 4
+Next token is token TYPE (12.1: )
+Reducing stack by rule 2 (line 62):
+   $1 = nterm GlobalDec (1.1: )
+-> $$ = nterm GlobalDef (1.1: )
+Entering state 3
+Stack now 0 3
+Next token is token TYPE (12.1: )
+Shifting token TYPE (12.1: )
+Entering state 1
+Stack now 0 3 1
+Reading a token
+Next token is token IDENTIFIER (12.5: )
+Shifting token IDENTIFIER (12.5: )
+Entering state 8
+Stack now 0 3 1 8
+Reading a token
+Next token is token LP (12.9: )
+Reducing stack by rule 20 (line 371):
+   $1 = token TYPE (12.1: )
+   $2 = token IDENTIFIER (12.5: )
+-> $$ = nterm FunctionHead (12.1: )
+Entering state 7
+Stack now 0 3 7
+Next token is token LP (12.9: )
+Shifting token LP (12.9: )
+Entering state 12
+Stack now 0 3 7 12
+Reading a token
+Next token is token RP (12.10: )
+Shifting token RP (12.10: )
+Entering state 17
+Stack now 0 3 7 12 17
+Reading a token
+Next token is token LCB (12.12: )
+Shifting token LCB (12.12: )
+Entering state 23
+Stack now 0 3 7 12 17 23
+Reading a token
+Next token is token RET (13.5: )
+Shifting token RET (13.5: )
+Entering state 45
+Stack now 0 3 7 12 17 23 45
+Reading a token
+Next token is token NUM_CONST (13.12: )
+Shifting token NUM_CONST (13.12: )
+Entering state 38
+Stack now 0 3 7 12 17 23 45 38
+Reading a token
+Next token is token SEMI (13.13: )
+Reducing stack by rule 81 (line 746):
+   $1 = token NUM_CONST (13.12: )
+-> $$ = nterm PrimaryExpression (13.12: )
+Entering state 65
+Stack now 0 3 7 12 17 23 45 65
+Next token is token SEMI (13.13: )
+Reducing stack by rule 76 (line 718):
+   $1 = nterm PrimaryExpression (13.12: )
+-> $$ = nterm UnaryExpression (13.12: )
+Entering state 64
+Stack now 0 3 7 12 17 23 45 64
+Next token is token SEMI (13.13: )
+Reducing stack by rule 73 (line 704):
+   $1 = nterm UnaryExpression (13.12: )
+-> $$ = nterm MultiplicativeExpression (13.12: )
+Entering state 63
+Stack now 0 3 7 12 17 23 45 63
+Next token is token SEMI (13.13: )
+Reducing stack by rule 69 (line 684):
+   $1 = nterm MultiplicativeExpression (13.12: )
+-> $$ = nterm AdditiveExpression (13.12: )
+Entering state 62
+Stack now 0 3 7 12 17 23 45 62
+Next token is token SEMI (13.13: )
+Reducing stack by rule 61 (line 645):
+   $1 = nterm AdditiveExpression (13.12: )
+-> $$ = nterm RelationalExpression (13.12: )
+Entering state 61
+Stack now 0 3 7 12 17 23 45 61
+Next token is token SEMI (13.13: )
+Reducing stack by rule 59 (line 635):
+   $1 = nterm RelationalExpression (13.12: )
+-> $$ = nterm EqualityExpression (13.12: )
+Entering state 60
+Stack now 0 3 7 12 17 23 45 60
+Next token is token SEMI (13.13: )
+Reducing stack by rule 57 (line 626):
+   $1 = nterm EqualityExpression (13.12: )
+-> $$ = nterm LogicalAndExpression (13.12: )
+Entering state 59
+Stack now 0 3 7 12 17 23 45 59
+Next token is token SEMI (13.13: )
+Reducing stack by rule 55 (line 616):
+   $1 = nterm LogicalAndExpression (13.12: )
+-> $$ = nterm LogicalOrExpression (13.12: )
+Entering state 58
+Stack now 0 3 7 12 17 23 45 58
+Next token is token SEMI (13.13: )
+Reducing stack by rule 54 (line 612):
+   $1 = nterm LogicalOrExpression (13.12: )
+-> $$ = nterm Expression (13.12: )
+Entering state 57
+Stack now 0 3 7 12 17 23 45 57
+Next token is token SEMI (13.13: )
+Shifting token SEMI (13.13: )
+Entering state 91
+Stack now 0 3 7 12 17 23 45 57 91
+Reading a token
+Next token is token RCB (14.1: )
+Reducing stack by rule 44 (line 533):
+   $1 = nterm Expression (13.12: )
+   $2 = token SEMI (13.13: )
+-> $$ = nterm ExpStatement (13.12: )
+Entering state 85
+Stack now 0 3 7 12 17 23 45 85
+Next token is token RCB (14.1: )
+Reducing stack by rule 45 (line 539):
+   $1 = token RET (13.5: )
+   $2 = nterm ExpStatement (13.12: )
+-> $$ = nterm JmpStatement (13.5: )
+Entering state 54
+Stack now 0 3 7 12 17 23 54
+Next token is token RCB (14.1: )
+Reducing stack by rule 26 (line 453):
+   $1 = nterm JmpStatement (13.5: )
+-> $$ = nterm Statement (13.5: )
+Entering state 48
+Stack now 0 3 7 12 17 23 48
+Next token is token RCB (14.1: )
+Shifting token RCB (14.1: )
+Entering state 34
+Stack now 0 3 7 12 17 23 48 34
+Reading a token
+Now at end of input.
+Reducing stack by rule 31 (line 467):
+   $1 = token RCB (14.1: )
+-> $$ = nterm StatementExp (14.1: )
+Entering state 88
+Stack now 0 3 7 12 17 23 48 88
+Now at end of input.
+Reducing stack by rule 34 (line 478):
+   $1 = nterm Statement (13.5: )
+   $2 = nterm StatementExp (14.1: )
+-> $$ = nterm StatementExp (13.5: )
+Entering state 50
+Stack now 0 3 7 12 17 23 50
+Now at end of input.
+Reducing stack by rule 30 (line 461):
+   $1 = token LCB (12.12: )
+   $2 = nterm StatementExp (13.5: )
+-> $$ = nterm CompStatement (12.12: )
+Entering state 24
+Stack now 0 3 7 12 17 24
+Now at end of input.
+Reducing stack by rule 12 (line 223):
+   $1 = nterm FunctionHead (12.1: )
+   $2 = token LP (12.9: )
+   $3 = token RP (12.10: )
+   $4 = nterm CompStatement (12.12: )
+-> $$ = nterm FunctionDefinition (12.1: )
+Entering state 6
+Stack now 0 3 6
+Now at end of input.
+Reducing stack by rule 5 (line 77):
+   $1 = nterm FunctionDefinition (12.1: )
+-> $$ = nterm GlobalDec (12.1: )
+Entering state 11
+Stack now 0 3 11
+Now at end of input.
+Reducing stack by rule 3 (line 66):
+   $1 = nterm GlobalDef (1.1: )
+   $2 = nterm GlobalDec (12.1: )
+-> $$ = nterm GlobalDef (1.1: )
+Entering state 3
+Stack now 0 3
+Now at end of input.
+Reducing stack by rule 1 (line 58):
+   $1 = nterm GlobalDef (1.1: )
+-> $$ = nterm ROOT_TREE (1.1: )
+Entering state 2
+Stack now 0 2
+Now at end of input.
+Shifting token "end of file" (14.1: )
+Entering state 10
+Stack now 0 2 10
+Stack now 0 2 10
+Cleanup: popping token "end of file" (14.1: )
+Cleanup: popping nterm ROOT_TREE (1.1: )
+
+[92mNo semantic errors were found.[0m
+
+Symbol             Function?    Args                               Type/Return        Scope Stack                     
+
+f                  Yes          ()                                 int                0                               
+a                  No           *                                  int                1 -> 0                          
+b                  No           *                                  int                1 -> 0                          
+c                  No           *                                  int                1 -> 0                          
+main               Yes          (None)                             int                0                               
+
++- [92mGlobalDefinition[0m
+  +- [92mGlobalDefinition[0m
+  |  +- [92mFunctionDefinition[0m
+  |    +- [92mf()[0m
+  |    +- [92mStatementExp[0m
+  |      +- [92mint a[0m
+  |      +- [92mStatementExp[0m
+  |        +- [92mint b[0m
+  |        +- [92mStatementExp[0m
+  |          +- [92mint c[0m
+  |          +- [92mStatementExp[0m
+  |            +- [92mFOR[0m
+  |            +- [92mStatementExp[0m
+  |              +- [92mRETURN[0m
+  |              |  +- [92m0.000000[0m
+  +- [92mFunctionDefinition[0m
+    +- [92mmain()[0m
+    +- [92mStatementExp[0m
+      +- [92mRETURN[0m
+      |  +- [92m0.000000[0m

@@ -60,11 +60,11 @@ ROOT_TREE:
 
 GlobalDef:
         GlobalDec {
-			$$ = new_node("GlobalDefinition", root);
+			$$ = new_node("GlobalDefinition", root, -1, false);
 			add_child($$, $1);
 		}
         |   GlobalDef GlobalDec {
-			$$ = new_node("GlobalDefinition", root);
+			$$ = new_node("GlobalDefinition", root, -1, false);
 			add_child($$, $1);
 			add_child($$, $2);
 			}
@@ -81,21 +81,20 @@ GlobalDec:
 
 Declaration:
 		TYPE IDENTIFIER SEMI {
-			char str[MAX_BUFFER_SIZE];
-			strcpy(str, $1);
+			char str[2*MAX_BUFFER_SIZE];
 			if(!add_row_symbol_table(s_table, $2, $1, scope, true))
 			{
 				printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @2.first_line, @2.first_column, $2);
 				first_pass_sematic_error_found = true;
 			}
-			strcat(str, " ");
-			$$ = new_node(strcat(str, $2), root);
+
+			sprintf(str, "%s %s (scope %u)", $1, $2, scope->stack[0]);
+
+			$$ = new_node(str, root, scope->stack[0], false);
 		}
 		|
 		TYPE LIST IDENTIFIER SEMI {
-			char str[MAX_BUFFER_SIZE];
-			strcpy(str, $1);
-			strcat(str," LIST ");
+			char str[2*MAX_BUFFER_SIZE];
 			
 			if(!add_row_symbol_table(s_table, $3, str, scope, true))
 			{
@@ -103,19 +102,20 @@ Declaration:
 				first_pass_sematic_error_found = true;
 			}
 
-			$$ = new_node(strcat(str, $3), root);
+			sprintf(str,"%s LIST %s (scope %u)", $1, $3, scope->stack[0]);
 
+			$$ = new_node(str, root, scope->stack[0], false);
 		}
 		;
 
 Definition:
 		IDENTIFIER ATT Expression {
-			$$ = new_node("=", root);
+			$$ = new_node("=", root, scope->stack[0], false);
 
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $1);
 
-			add_child($$, new_node(str, root));
+			add_child($$, new_node(str, root, scope->stack[0], true));
 			add_child($$, $3);
 
 			if (!variable_was_declared(s_table, scope, $1)) {
@@ -139,15 +139,15 @@ Definition:
 		}
 		|
 		IDENTIFIER ATT MIN NUM_CONST {
-			$$ = new_node("=", root);
+			$$ = new_node("=", root, scope->stack[0], false);
 
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $1);
 
-			add_child($$, new_node(str, root));
+			add_child($$, new_node(str, root, scope->stack[0], true));
 			sprintf(str, "-%lf", $4);
 
-			add_child($$, new_node(str, root));
+			add_child($$, new_node(str, root, scope->stack[0], false));
 
 			if (!variable_was_declared(s_table, scope, $1)) {
 				char err[MAX_BUFFER_SIZE];
@@ -170,15 +170,15 @@ Definition:
 		}
 		|
 		IDENTIFIER ATT MIN IDENTIFIER {
-			$$ = new_node("=", root);
+			$$ = new_node("=", root, scope->stack[0], false);
 
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $1);
 
-			add_child($$, new_node(str, root));
-			add_child($$, new_node("-", root));
+			add_child($$, new_node(str, root, scope->stack[0], true));
+			add_child($$, new_node("-", root, scope->stack[0], false));
 
-			add_child($$->children[1], new_node($4, root));
+			add_child($$->children[1], new_node($4, root, scope->stack[0], true));
 
 			if (!variable_was_declared(s_table, scope, $1)) {
 				char err[MAX_BUFFER_SIZE];
@@ -211,7 +211,7 @@ Definition:
  
 FunctionDefinition:
     FunctionHead LP FunctionArgs RP CompStatement{
-		$$ = new_node("FunctionDefinition", root);
+		$$ = new_node("FunctionDefinition", root, scope->stack[0], false);
 
 		add_child($$, $1);
 		add_child($$, $3);
@@ -221,18 +221,27 @@ FunctionDefinition:
 	}
 	|
 	FunctionHead LP RP CompStatement{
-		$$ = new_node("FunctionDefinition", root);
+		$$ = new_node("FunctionDefinition", root, scope->stack[0], false);
 		add_child($$, $1);
 		add_child($$, $4);
 		decrease_depth_scope(scope);
 
 		push_arg_to_arglist(s_table, "None", last_f);
 	}
+	|
+	FunctionHead LP error RP CompStatement {
+		$$ = new_node("FunctionDefinition", root, scope->stack[0], false);
+		add_child($$, $1);
+		add_child($$, $5);
+		decrease_depth_scope(scope);
+	}
     ;
 
 FunctionArgs:
 	TYPE IDENTIFIER {
-		$$ = new_node("FunctionParameters", root);
+		$$ = new_node("FunctionParameters", root, scope->stack[0], false);
+
+		add_child($$, new_node($1, root, scope->stack[0], false));
 
 		if(!add_row_symbol_table(s_table, $2, $1, scope, true))
 		{
@@ -243,7 +252,10 @@ FunctionArgs:
 	}
 	|
 	TYPE IDENTIFIER COM TYPE IDENTIFIER ParamList {
-		$$ = new_node("FunctionParameters", root);
+		$$ = new_node("FunctionParameters", root, scope->stack[0], false);
+
+		add_child($$, new_node($1, root, scope->stack[0], false));
+		add_child($$, new_node($4, root, scope->stack[0], false));
 
 		if(!add_row_symbol_table(s_table, $2, $1, scope, true))
 		{
@@ -262,11 +274,12 @@ FunctionArgs:
 	}
 	|
 	TYPE LIST IDENTIFIER {
-		$$ = new_node("FunctionParameters", root);
+		$$ = new_node("FunctionParameters", root, scope->stack[0], false);
 
 		char str[MAX_BUFFER_SIZE];
 		strcpy(str, $1);
 		strcat(str," LIST ");
+		add_child($$, new_node(str, root, scope->stack[0], false));
 
 		if(!add_row_symbol_table(s_table, $3, str, scope, true))
 		{
@@ -278,11 +291,12 @@ FunctionArgs:
 	}
 	|
 	TYPE LIST IDENTIFIER COM TYPE LIST IDENTIFIER ParamList {
-		$$ = new_node("FunctionParameters", root);
+		$$ = new_node("FunctionParameters", root, scope->stack[0], false);
 
 		char arg_1[MAX_BUFFER_SIZE];
 		strcpy(arg_1, $1);
 		strcat(arg_1," LIST ");
+		add_child($$, new_node(arg_1, root, scope->stack[0], false));
 
 		if(!add_row_symbol_table(s_table, $3, arg_1, scope, true))
 		{
@@ -295,6 +309,7 @@ FunctionArgs:
 		char arg_2[MAX_BUFFER_SIZE];
 		strcpy(arg_2, $5);
 		strcat(arg_2," LIST ");
+		add_child($$, new_node(arg_2, root, scope->stack[0], false));
 
 		if(!add_row_symbol_table(s_table, $7, arg_2, scope, true))
 		{
@@ -306,22 +321,21 @@ FunctionArgs:
 	}
 	|
 	TYPE IDENTIFIER COM TYPE LIST IDENTIFIER ParamList {
-		$$ = new_node("FunctionParameters", root);
+		$$ = new_node("FunctionParameters", root, scope->stack[0], false);
 
-		char arg_1[MAX_BUFFER_SIZE];
-		strcpy(arg_1, $1);
-
-		if(!add_row_symbol_table(s_table, $2, arg_1, scope, true))
+		add_child($$, new_node($1, root, scope->stack[0], false));
+		if(!add_row_symbol_table(s_table, $2, $1, scope, true))
 		{
 			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @2.first_line, @2.first_column, $2);
 			first_pass_sematic_error_found = true;
 		}
 
-		push_arg_to_arglist(s_table, arg_1, last_f);
+		push_arg_to_arglist(s_table, $1, last_f);
 
 		char arg_2[MAX_BUFFER_SIZE];
 		strcpy(arg_2, $4);
 		strcat(arg_2," LIST ");
+		add_child($$, new_node(arg_2, root, scope->stack[0], false));
 
 		if(!add_row_symbol_table(s_table, $6, arg_2, scope, true))
 		{
@@ -333,11 +347,12 @@ FunctionArgs:
 	}
 	|
 	TYPE LIST IDENTIFIER COM TYPE IDENTIFIER ParamList {
-		$$ = new_node("FunctionParameters", root);
+		$$ = new_node("FunctionParameters", root, scope->stack[0], false);
 
 		char arg_1[MAX_BUFFER_SIZE];
 		strcpy(arg_1, $1);
 		strcat(arg_1," LIST ");
+		add_child($$, new_node(arg_1, root, scope->stack[0], false));
 
 		if(!add_row_symbol_table(s_table, $3, arg_1, scope, true))
 		{
@@ -347,16 +362,15 @@ FunctionArgs:
 
 		push_arg_to_arglist(s_table, arg_1, last_f);
 
-		char arg_2[MAX_BUFFER_SIZE];
-		strcpy(arg_2, $5);
+		add_child($$, new_node($5, root, scope->stack[0], false));
 
-		if(!add_row_symbol_table(s_table, $6, arg_2, scope, true))
+		if(!add_row_symbol_table(s_table, $6, $5, scope, true))
 		{
 			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @6.first_line, @6.first_column, $6);
 			first_pass_sematic_error_found = true;
 		}
 
-		push_arg_to_arglist(s_table, arg_2, last_f);
+		push_arg_to_arglist(s_table, $5, last_f);
 	}
 	;
 
@@ -366,7 +380,7 @@ FunctionHead:
 		strcpy(str, $2);
 		strcat(str, "()");
 
-		$$ = new_node(str, root);
+		$$ = new_node(str, root, scope->stack[0], false);
 
 		if(!add_row_symbol_table(s_table, $2, $1, scope, false))
 		{
@@ -377,7 +391,6 @@ FunctionHead:
 		last_f = s_table->n_lines -1;
 
 		increase_depth_scope(scope);
-
 	}
 	|
 	TYPE LIST IDENTIFIER {
@@ -385,7 +398,7 @@ FunctionHead:
 		strcpy(f_name, $3);
 		strcat(f_name, "()");
 
-		$$ = new_node(f_name, root);
+		$$ = new_node(f_name, root, scope->stack[0], false);
 
 		char str[MAX_BUFFER_SIZE];
 		strcpy(str, $1);
@@ -405,11 +418,14 @@ FunctionHead:
 
 ParamList:
       %empty {
-			$$ = new_node("ParamList", root);
+			$$ = new_node("ParamList", root, scope->stack[0], false);
 		}
 		|
 		COM TYPE IDENTIFIER ParamList {
-			$$ = new_node("ParamList", root);
+			$$ = new_node("ParamList", root, scope->stack[0], false);
+
+
+			add_child($$, new_node($2, root, scope->stack[0], false));
 			add_child($$, $4);
 
 			if (!add_row_symbol_table(s_table, $3, $2, scope, true))
@@ -422,12 +438,15 @@ ParamList:
 		}
 		|
 		COM TYPE LIST IDENTIFIER ParamList {
-			$$ = new_node("ParamList", root);
-			add_child($$, $5);
+			$$ = new_node("ParamList", root, scope->stack[0], false);
 
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $2);
 			strcat(str," LIST ");
+			add_child($$, new_node(str, root, scope->stack[0], false));
+
+			add_child($$, $5);
+
 
 			if(!add_row_symbol_table(s_table, $4, str, scope, true))
 			{
@@ -459,17 +478,17 @@ CompStatement:
 StatementExp:
 		RCB { $$ =NULL; }
 	|	Declaration StatementExp {
-			$$ = new_node("StatementExp", root);
+			$$ = new_node("StatementExp", root, scope->stack[0], false);
 			add_child($$, $1);
 			add_child($$, $2);
 		}
 	|	Definition StatementExp {
-			$$ = new_node("StatementExp", root);
+			$$ = new_node("StatementExp", root, scope->stack[0], false);
 			add_child($$, $1);
 			add_child($$, $2);
 		}
 	| 	Statement StatementExp {
-			$$ = new_node("StatementExp", root);
+			$$ = new_node("StatementExp", root, scope->stack[0], false);
 			add_child($$, $1);
 			add_child($$, $2);
 		}
@@ -479,20 +498,20 @@ StatementExp:
 
  SelStatement:
 		IfHead LP Expression RP Statement {
-			$$ = new_node("IF", root);
+			$$ = new_node("IF", root, scope->stack[0], false);
 			add_child($$, $3);
 			add_child($$, $5);
 			decrease_depth_scope(scope);
 		}
 		| IfHead LP Expression RP Definition {
-			$$ = new_node("IF", root);
+			$$ = new_node("IF", root, scope->stack[0], false);
 			add_child($$, $3);
 			add_child($$, $5);
 			decrease_depth_scope(scope);
 		}
 
 		| IfHead LP Expression RP Statement ElseHead Statement {
-			$$ = new_node("IF_ELSE", root);
+			$$ = new_node("IF_ELSE", root, scope->stack[0], false);
 
 			add_child($$, $3);
 			add_child($$, $5);
@@ -503,7 +522,7 @@ StatementExp:
 
 		
 	|   IfHead LP error RP Statement {
-		$$ = new_node("IF", root);
+		$$ = new_node("IF", root, scope->stack[0], false);
 		add_child($$, $5);
 	}
 	|   error ElseHead Statement {$$=NULL;decrease_depth_scope(scope);yyerrok;}
@@ -530,7 +549,7 @@ ExpStatement:
 
 JmpStatement:
 		RET ExpStatement {
-			$$ = new_node("RETURN", root);
+			$$ = new_node("RETURN", root, scope->stack[0], false);
 			add_child($$, $2);
 
 			if (!check_type_subtree($$, s_table, scope))
@@ -544,7 +563,7 @@ JmpStatement:
 
 ItStatement:
 		ForHead LP ExpAtt SEMI ExpAtt SEMI ExpAtt RP Statement {
-			$$ = new_node("FOR", root);
+			$$ = new_node("FOR", root, scope->stack[0], false);
 			add_child($$, $3);
 			add_child($$, $5);
 			add_child($$, $7);
@@ -553,7 +572,7 @@ ItStatement:
 		}
 		|
 		ForHead LP ExpAtt SEMI error RP Statement {
-			$$ = new_node("FOR", root);
+			$$ = new_node("FOR", root, scope->stack[0], false);
 			add_child($$, $3);
 			add_child($$, $7);
 
@@ -562,7 +581,7 @@ ItStatement:
 		} 
 		|
 		ForHead LP error RP Statement {
-			$$ = new_node("FOR", root);
+			$$ = new_node("FOR", root, scope->stack[0], false);
 			add_child($$, $5);
 			
 			decrease_depth_scope(scope);
@@ -570,7 +589,7 @@ ItStatement:
 		}
 		|
 		ForHead LP ExpAtt SEMI ExpAtt SEMI error RP Statement {
-			$$ = new_node("FOR", root);
+			$$ = new_node("FOR", root, scope->stack[0], false);
 			add_child($$, $3);
 			add_child($$, $5);
 			add_child($$, $9);
@@ -598,6 +617,11 @@ ExpAtt:
 		yyerrok;
 		$$ = NULL;
 	}
+	|
+	error COM {
+		yyerrok;
+		$$ = NULL;
+	}
 	; 
 //
 
@@ -608,7 +632,7 @@ Expression:
 LogicalOrExpression:
 		LogicalAndExpression { $$ = $1; }
 	|	LogicalOrExpression OR LogicalAndExpression {
-			$$ = new_node("||", root);
+			$$ = new_node("||", root, scope->stack[0], false);
 			add_child($$, $1);
 			add_child($$, $3);
 
@@ -618,7 +642,7 @@ LogicalOrExpression:
 LogicalAndExpression:
 		EqualityExpression {$$ = $1;}
     |	LogicalAndExpression AND EqualityExpression {
-			$$ = new_node("&&", root);
+			$$ = new_node("&&", root, scope->stack[0], false);
 			add_child($$, $1);
 			add_child($$, $3);
 		}
@@ -627,7 +651,7 @@ LogicalAndExpression:
 EqualityExpression:
 	    RelationalExpression { $$ = $1; }
 	|	EqualityExpression COMP_EQ RelationalExpression {
-			$$ = new_node("==", root);
+			$$ = new_node("==", root, scope->stack[0], false);
 			add_child($$, $1);
 			add_child($$, $3);
 		}
@@ -637,37 +661,37 @@ EqualityExpression:
 RelationalExpression:
 			AdditiveExpression { $$ = $1; }
 	|       RelationalExpression LEQ AdditiveExpression {
-				$$ = new_node("<=", root);
+				$$ = new_node("<=", root, scope->stack[0], false);
 				add_child($$, $1);
 				add_child($$, $3);
 		}
     |       RelationalExpression GEQ AdditiveExpression {
-				$$ = new_node(">=", root);
+				$$ = new_node(">=", root, scope->stack[0], false);
 				add_child($$, $1);
 				add_child($$, $3);
 	}
 	|       RelationalExpression LT AdditiveExpression {
-				$$ = new_node("<", root);
+				$$ = new_node("<", root, scope->stack[0], false);
 				add_child($$, $1);
 				add_child($$, $3);
 	}
 	|       RelationalExpression GT AdditiveExpression {
-				$$ = new_node(">", root);
+				$$ = new_node(">", root, scope->stack[0], false);
 				add_child($$, $1);
 				add_child($$, $3);
 	}
 	|		RelationalExpression DIF AdditiveExpression {
-				$$ = new_node("!=", root);
+				$$ = new_node("!=", root, scope->stack[0], false);
 				add_child($$, $1);
 				add_child($$, $3);
 	}
 	|   RelationalExpression MAP AdditiveExpression {
-				$$ = new_node(">>", root);
+				$$ = new_node(">>", root, scope->stack[0], false);
 				add_child($$, $1);
 				add_child($$, $3);
 	}
 	|   RelationalExpression FIL AdditiveExpression {
-				$$ = new_node("<<", root);
+				$$ = new_node("<<", root, scope->stack[0], false);
 				add_child($$, $1);
 				add_child($$, $3);
 	}
@@ -676,18 +700,18 @@ RelationalExpression:
 AdditiveExpression:
 		MultiplicativeExpression { $$ = $1; }
 	|	AdditiveExpression PLUS MultiplicativeExpression {
-			$$ = new_node("+", root);
+			$$ = new_node("+", root, scope->stack[0], false);
 			add_child($$, $1);
 			add_child($$, $3);
 	}
     |	AdditiveExpression MIN MultiplicativeExpression {
-			$$ = new_node("-", root);
+			$$ = new_node("-", root, scope->stack[0], false);
 			add_child($$, $1);
 			add_child($$, $3);
 	}
 
 	| AdditiveExpression TWD MultiplicativeExpression {
-			$$ = new_node(":", root);
+			$$ = new_node(":", root, scope->stack[0], false);
 			add_child($$, $1);
 			add_child($$, $3);
 	}
@@ -696,12 +720,12 @@ AdditiveExpression:
 MultiplicativeExpression:
 		UnaryExpression { $$ = $1; }
 	|	MultiplicativeExpression MUL UnaryExpression {
-			$$ = new_node("*", root);
+			$$ = new_node("*", root, scope->stack[0], false);
 			add_child($$, $1);
 			add_child($$, $3);
 	}
 	|	MultiplicativeExpression DIV UnaryExpression {
-			$$ = new_node("/", root);
+			$$ = new_node("/", root, scope->stack[0], false);
 			add_child($$, $1);
 			add_child($$, $3);
 	}
@@ -710,21 +734,21 @@ MultiplicativeExpression:
 UnaryExpression:
 		PrimaryExpression { $$ = $1; }
 	|	TNR UnaryExpression {
-			$$ = new_node("!", root);
+			$$ = new_node("!", root, scope->stack[0], false);
 			add_child($$, $2);
 	}
 	|	HD UnaryExpression {
-			$$ = new_node("?", root);
+			$$ = new_node("?", root, scope->stack[0], false);
 			add_child($$, $2);
 	}
 	|	TR UnaryExpression {
-			$$ = new_node("%", root);
+			$$ = new_node("%", root, scope->stack[0], false);
 			add_child($$, $2);
 	}
 	;
 PrimaryExpression:
 		IDENTIFIER {
-			$$ = new_node($1, root);
+			$$ = new_node($1, root, scope->stack[0], true);
 			if (!variable_was_declared(s_table, scope, $1)) {
 				first_pass_sematic_error_found = true;
 				char err[MAX_BUFFER_SIZE];
@@ -739,11 +763,11 @@ PrimaryExpression:
 	|   NUM_CONST {
 			char str[MAX_BUFFER_SIZE];
 			sprintf(str, "%lf", $1);
-			$$ = new_node(str, root);
+			$$ = new_node(str, root, scope->stack[0], false);
 		}
 
 	|	LP Expression RP {
-			$$ = new_node("PrimaryExpression", root); 
+			$$ = new_node("PrimaryExpression", root, scope->stack[0], false); 
 			add_child($$, $2);
 		}
 
@@ -753,8 +777,8 @@ PrimaryExpression:
 		}
 
 	|	IDENTIFIER LP Params RP {
-			$$ = new_node("FunctionCall", root);
-			add_child($$, new_node($1, root));
+			$$ = new_node("FunctionCall", root, scope->stack[0], false);
+			add_child($$, new_node($1, root, scope->stack[0], true));
 			add_child($$, $3);
 
 			if (!variable_was_declared(s_table, scope, $1)) {
@@ -818,9 +842,9 @@ PrimaryExpression:
 
 		}
 	|	IDENTIFIER LP RP {
-			$$ = new_node("FunctionCall", root);
-			add_child($$, new_node($1, root));
-			add_child($$, new_node("", root));
+			$$ = new_node("FunctionCall", root, scope->stack[0], false);
+			add_child($$, new_node($1, root, scope->stack[0], true));
+			add_child($$, new_node("", root, scope->stack[0], false));
 
 			if (!variable_was_declared(s_table, scope, $1)) {
 				first_pass_sematic_error_found = true;
@@ -864,39 +888,39 @@ PrimaryExpression:
 			}
 	}		
 	|	WRITE LP STR RP {
-			$$ = new_node("write_call", root);
-			add_child($$, new_node($3, root));
+			$$ = new_node("write_call", root, scope->stack[0], false);
+			add_child($$, new_node($3, root, scope->stack[0], true));
 
 		}
 	|   WRITE LP Expression RP {
-			$$ = new_node("write_call", root);
+			$$ = new_node("write_call", root, scope->stack[0], false);
 			add_child($$, $3);
 		}
 	|	READ LP IDENTIFIER RP {
-			$$ = new_node("read_call", root);
-			add_child($$, new_node($3, root));
+			$$ = new_node("read_call", root, scope->stack[0], false);
+			add_child($$, new_node($3, root, scope->stack[0], true));
 		}
 	|	WRITE_LN LP STR RP  {
-			$$ = new_node("write_ln_call", root);
-			add_child($$, new_node($3, root));
+			$$ = new_node("write_ln_call", root, scope->stack[0], false);
+			add_child($$, new_node($3, root, scope->stack[0], false));
 		}
 	|	WRITE_LN LP Expression RP  {
-			$$ = new_node("write_ln_call", root);
+			$$ = new_node("write_ln_call", root, scope->stack[0], false);
 			add_child($$, $3);
 		}
 		
-	|	NIL {$$ = new_node("NIL", root);}
+	|	NIL {$$ = new_node("NIL", root, scope->stack[0], false);}
 	;
 
 Params:
 	Expression {
-		$$ = new_node("Args", root);
+		$$ = new_node("Args", root, scope->stack[0], false);
 		add_child($$, $1);
 		push_param_to_paramlist(s_table, check_type_subtree($1, s_table, scope), &args_last_f, &args_count);
 	}
 	|
 	Params COM Expression {
-		$$ = new_node("Args", root);
+		$$ = new_node("Args", root, scope->stack[0], false);
 		add_child($$, $1); 
 		add_child($$, $3);
 		push_param_to_paramlist(s_table, check_type_subtree($3, s_table, scope), &args_last_f, &args_count);

@@ -7,12 +7,14 @@ syntax_tree* new_syntax_tree() {
     return t;
 }
 
-syntax_tree_node* new_node(char* element, syntax_tree* tree) {
+syntax_tree_node* new_node(char* element, syntax_tree* tree, uint16_t scope, bool is_symbol) {
     syntax_tree_node* n = (syntax_tree_node*) malloc(sizeof(syntax_tree_node));
     n->n_children = 0;
     n->element = (char*) malloc(128);
     strcpy(n->element, element);
     n->children = (syntax_tree_node**) malloc(sizeof(syntax_tree_node*));
+    n->scope = scope;
+    n->is_symbol = is_symbol;
 
     tree->tree_size = tree->tree_size + 1;
     tree->element_list = realloc(tree->element_list, sizeof(syntax_tree_node*)*tree->tree_size);

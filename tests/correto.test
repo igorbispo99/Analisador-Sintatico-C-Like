@@ -8,4 +8,6 @@ int main() {
 
     if(i)
         write(10);
+
+    return 0;
 }
