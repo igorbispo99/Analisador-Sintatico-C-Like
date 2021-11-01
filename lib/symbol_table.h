@@ -34,6 +34,7 @@ void show_table(symbol_table* table);
 void free_table(symbol_table* table);
 
 scope_t* new_scope_stack();
+int get_scope_symbol(symbol_table* table, char* symbol, bool is_var);
 void increase_depth_scope(scope_t* scp);
 void decrease_depth_scope(scope_t* scp);
 void free_scope(scope_t* scp);

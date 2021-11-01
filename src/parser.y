@@ -88,9 +88,9 @@ Declaration:
 				first_pass_sematic_error_found = true;
 			}
 
-			sprintf(str, "%s %s (scope %u)", $1, $2, scope->stack[0]);
+			sprintf(str, "%s %s (scope %u)", $1, $2, get_scope_symbol(s_table, $2, true));
 
-			$$ = new_node(str, root, scope->stack[0], false);
+			$$ = new_node(str, root, get_scope_symbol(s_table, $2, true), false);
 		}
 		|
 		TYPE LIST IDENTIFIER SEMI {
@@ -102,20 +102,20 @@ Declaration:
 				first_pass_sematic_error_found = true;
 			}
 
-			sprintf(str,"%s LIST %s (scope %u)", $1, $3, scope->stack[0]);
+			sprintf(str,"%s LIST %s (scope %u)", $1, $3, get_scope_symbol(s_table, $3, true));
 
-			$$ = new_node(str, root, scope->stack[0], false);
+			$$ = new_node(str, root, get_scope_symbol(s_table, $3, true), false);
 		}
 		;
 
 Definition:
 		IDENTIFIER ATT Expression {
-			$$ = new_node("=", root, scope->stack[0], false);
+			$$ = new_node("=", root, get_scope_symbol(s_table, $1, true), false);
 
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $1);
 
-			add_child($$, new_node(str, root, scope->stack[0], true));
+			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, true), true));
 			add_child($$, $3);
 
 			if (!variable_was_declared(s_table, scope, $1)) {
@@ -139,15 +139,15 @@ Definition:
 		}
 		|
 		IDENTIFIER ATT MIN NUM_CONST {
-			$$ = new_node("=", root, scope->stack[0], false);
+			$$ = new_node("=", root, get_scope_symbol(s_table, $1, true), false);
 
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $1);
 
-			add_child($$, new_node(str, root, scope->stack[0], true));
+			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, true), true));
 			sprintf(str, "-%lf", $4);
 
-			add_child($$, new_node(str, root, scope->stack[0], false));
+			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, true), false));
 
 			if (!variable_was_declared(s_table, scope, $1)) {
 				char err[MAX_BUFFER_SIZE];
@@ -170,15 +170,15 @@ Definition:
 		}
 		|
 		IDENTIFIER ATT MIN IDENTIFIER {
-			$$ = new_node("=", root, scope->stack[0], false);
+			$$ = new_node("=", root, get_scope_symbol(s_table, $1, true), false);
 
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $1);
 
-			add_child($$, new_node(str, root, scope->stack[0], true));
-			add_child($$, new_node("-", root, scope->stack[0], false));
+			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, true), true));
+			add_child($$, new_node("-", root, get_scope_symbol(s_table, $4, true), false));
 
-			add_child($$->children[1], new_node($4, root, scope->stack[0], true));
+			add_child($$->children[1], new_node($4, root, get_scope_symbol(s_table, $4, true), true));
 
 			if (!variable_was_declared(s_table, scope, $1)) {
 				char err[MAX_BUFFER_SIZE];
@@ -748,7 +748,7 @@ UnaryExpression:
 	;
 PrimaryExpression:
 		IDENTIFIER {
-			$$ = new_node($1, root, scope->stack[0], true);
+			$$ = new_node($1, root, get_scope_symbol(s_table, $1, true), true);
 			if (!variable_was_declared(s_table, scope, $1)) {
 				first_pass_sematic_error_found = true;
 				char err[MAX_BUFFER_SIZE];

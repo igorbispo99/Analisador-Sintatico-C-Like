@@ -99,6 +99,16 @@ char* get_scope_stack(symbol_table* table, uint16_t line) {
     return out_str;
 }
 
+int get_scope_symbol(symbol_table* table, char* symbol, bool is_var) {
+    for (int i = 0; i < table->n_lines; i++) {
+        if(!strcmp(table->symbol[i], symbol) && (table->is_var[i] == is_var)) {
+            return table->scope[i]->stack[0];
+        }
+    }
+
+    return -1;
+}
+
 bool is_special_function(char* symbol) {
     return !strcmp(symbol, "write") || !strcmp(symbol, "writeln") || !strcmp(symbol, "read");
 }

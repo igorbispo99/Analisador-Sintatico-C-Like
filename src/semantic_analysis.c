@@ -333,9 +333,11 @@ void push_default_functions(symbol_table* table, scope_t* scope, uint16_t* last_
 syntax_tree_node* get_main_node(syntax_tree* root){
     for(uint16_t i = 0; i < root->tree_size; i++) {
         if (root->element_list[i]) {
-            if (root->element_list[i]->children[0]) {
-                if (equal_to(root->element_list[i]->children[0]->element, "main()")) {
-                    return root->element_list[i];
+            if(root->element_list[i]->n_children) {
+                if (root->element_list[i]->children[0]) {
+                    if (equal_to(root->element_list[i]->children[0]->element, "main()")) {
+                        return root->element_list[i];
+                    }
                 }
             }
         }
@@ -365,20 +367,88 @@ bool is_str(char* str) {
     }
 }
 
-char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_idx, size_t* last_label_idx) {
+bool is_declaration(char* str) {
+    bool found_open_parenthesis = false;
+    bool found_close_parenthesis = false;
+    bool found_scope_word = false;
+
+    for(size_t i = 0; i < strlen(str); i++) {
+        if (str[i] == '(') {
+            found_open_parenthesis = true;
+        } else if (str[i] == ')') {
+            found_close_parenthesis = true;
+        }
+
+    }
+
+    int string_len_minus_4 = strlen(str) - 4;
+
+    for(int i = 0; i < string_len_minus_4; i++) {
+        if (str[i] == 's' && str[i+1] == 'c' && str[i+2] == 'o' && str[i+3] =='p' && str[i+4] == 'e') {
+            found_scope_word = true;
+        }
+    }
+
+    if (found_open_parenthesis && found_close_parenthesis && found_scope_word) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+bool is_inside_main_inner(syntax_tree_node* target_n, syntax_tree_node* current_n, syntax_tree* root) {
+    if (!current_n) {
+        return false;
+    }
+
+    if (current_n == target_n) {
+        return true;
+    }
+
+    for(int i = 0; i < current_n->n_children; i++) {
+        if (current_n->children[i]) {
+            if (is_inside_main_inner(target_n, current_n->children[i], root)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool is_inside_main(syntax_tree_node* node, syntax_tree* root) {
+    syntax_tree_node* main_node = get_main_node(root);
+    if (!main_node) {
+        return false;
+    }
+
+    return is_inside_main_inner(node, main_node, root);
+}
+
+char* get_tac_from_node(syntax_tree* root, syntax_tree_node* node, char* tac_exp, size_t* last_v_idx, size_t* last_label_idx) {
     if (node == NULL) {
         return NULL;
     }
 
     if (equal_to(node->element, "StatementExp")) {
-        return get_tac_from_node(node->children[0], tac_exp, last_v_idx, last_label_idx);
-    } 
+        for(uint16_t i = 0; i < node->n_children; i++) {
+            if (node->children[i]) {
+                get_tac_from_node(root, node->children[i], tac_exp, last_v_idx, last_label_idx);
+            }
+        }
+        return tac_exp;
+    } else if (equal_to(node->element, "PrimaryExpresion")) {
+        get_tac_from_node(root, node->children[0], tac_exp, last_v_idx, last_label_idx);
+
+        return tac_exp;
+    }
 
     char* line = calloc(MAX_BUFFER_SIZE, sizeof(char));
 
     if (equal_to(node->element, "IF")) {
         // if_cond_exp
-        get_tac_from_node(node->children[0], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[0], tac_exp, last_v_idx, last_label_idx);
 
         sprintf(line, "brz IF_END_%zu, $%zu\n", *last_label_idx, *last_v_idx-1);
         strcat(tac_exp, line);
@@ -387,7 +457,7 @@ char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_id
         *last_label_idx = *last_label_idx + 1;
 
         // if_body_exp
-        get_tac_from_node(node->children[1], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[1], tac_exp, last_v_idx, last_label_idx);
 
         sprintf(line, "IF_END_%zu:\n", if_label_idx);
         strcat(tac_exp, line);
@@ -395,7 +465,7 @@ char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_id
         *last_label_idx = *last_label_idx + 1;
     } else if (equal_to(node->element, "FOR")) {
         // for_init_exp
-        get_tac_from_node(node->children[0], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[0], tac_exp, last_v_idx, last_label_idx);
 
         sprintf(line, "FOR_%zu:\n", *last_label_idx);
         strcat(tac_exp, line);
@@ -404,7 +474,7 @@ char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_id
         *last_label_idx = *last_label_idx + 1;
 
         // for_cond_exp
-        get_tac_from_node(node->children[1], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[1], tac_exp, last_v_idx, last_label_idx);
 
         sprintf(line, "brz FOR_END_%zu, $%zu\n", *last_label_idx, *last_v_idx-1);
         strcat(tac_exp, line);
@@ -413,19 +483,19 @@ char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_id
         *last_label_idx = *last_label_idx + 1;
 
         // for_body_exp
-        get_tac_from_node(node->children[3], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[3], tac_exp, last_v_idx, last_label_idx);
 
         // for_inc_exp
-        get_tac_from_node(node->children[2], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[2], tac_exp, last_v_idx, last_label_idx);
 
-        sprintf(line, "br FOR_%zu\n", for_head_label);
+        sprintf(line, "jump FOR_%zu\n", for_head_label);
         strcat(tac_exp, line);
 
         sprintf(line, "FOR_END_%zu:\n", for_end_label);
         strcat(tac_exp, line);
     } else if (equal_to(node->element, "IF_ELSE")) {
         // if_cond_exp
-        get_tac_from_node(node->children[0], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[0], tac_exp, last_v_idx, last_label_idx);
 
         sprintf(line, "brz IF_ELSE_%zu, $%zu\n", *last_label_idx, *last_v_idx-1);
         strcat(tac_exp, line);
@@ -434,26 +504,26 @@ char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_id
         *last_label_idx = *last_label_idx + 1;
 
         // if_body_exp
-        get_tac_from_node(node->children[1], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[1], tac_exp, last_v_idx, last_label_idx);
 
         size_t else_end_label_idx = *last_label_idx;
         *last_label_idx = *last_label_idx + 1;
 
-        sprintf(line, "br END_IF_ELSE_%zu\n", else_end_label_idx);
+        sprintf(line, "jump END_IF_ELSE_%zu\n", else_end_label_idx);
         strcat(tac_exp, line);
 
         sprintf(line, "IF_ELSE_%zu:\n", if_label_idx);
         strcat(tac_exp, line);
 
         // else_body_exp
-        get_tac_from_node(node->children[2], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[2], tac_exp, last_v_idx, last_label_idx);
 
         sprintf(line, "END_IF_ELSE_%zu:\n", else_end_label_idx);
         strcat(tac_exp, line);
 
     } else if (equal_to(node->element, "=")) {
         // right_exp
-        get_tac_from_node(node->children[1], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[1], tac_exp, last_v_idx, last_label_idx);
 
         // left exp
         char* l_symbol = node->children[0]->element;
@@ -465,11 +535,11 @@ char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_id
         *last_v_idx = *last_v_idx + 1;
     } else if (equal_to(node->element, "<")) {
         // left_exp
-        get_tac_from_node(node->children[0], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[0], tac_exp, last_v_idx, last_label_idx);
         size_t left_v_idx = *last_v_idx - 1;
 
         // right_exp
-        get_tac_from_node(node->children[1], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[1], tac_exp, last_v_idx, last_label_idx);
 
         sprintf(line, "slt $%zu, $%zu, $%zu\n", *last_v_idx, left_v_idx, *last_v_idx-1);
         strcat(tac_exp, line);
@@ -477,11 +547,11 @@ char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_id
         *last_v_idx = *last_v_idx + 1;
     } else if (equal_to(node->element, ">")) {
         // left_exp
-        get_tac_from_node(node->children[0], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[0], tac_exp, last_v_idx, last_label_idx);
         size_t left_v_idx = *last_v_idx - 1;
 
         // right_exp
-        get_tac_from_node(node->children[1], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[1], tac_exp, last_v_idx, last_label_idx);
 
         sprintf(line, "slt $%zu, $%zu, $%zu\n", *last_v_idx, *last_v_idx-1, left_v_idx);
         strcat(tac_exp, line);
@@ -489,11 +559,11 @@ char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_id
         *last_v_idx = *last_v_idx + 1;
     } else if (equal_to(node->element, "+")) {
         // left_exp
-        get_tac_from_node(node->children[0], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[0], tac_exp, last_v_idx, last_label_idx);
         size_t left_v_idx = *last_v_idx - 1;
 
         // right_exp
-        get_tac_from_node(node->children[1], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[1], tac_exp, last_v_idx, last_label_idx);
 
         sprintf(line, "add $%zu, $%zu, $%zu\n", *last_v_idx, left_v_idx, *last_v_idx-1);
         strcat(tac_exp, line);
@@ -501,11 +571,11 @@ char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_id
         *last_v_idx = *last_v_idx + 1;
     } else if (equal_to(node->element, "-")) {
         // left_exp
-        get_tac_from_node(node->children[0], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[0], tac_exp, last_v_idx, last_label_idx);
         size_t left_v_idx = *last_v_idx - 1;
 
         // right_exp
-        get_tac_from_node(node->children[1], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[1], tac_exp, last_v_idx, last_label_idx);
 
         sprintf(line, "sub $%zu, $%zu, $%zu\n", *last_v_idx, left_v_idx, *last_v_idx-1);
         strcat(tac_exp, line);
@@ -513,11 +583,11 @@ char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_id
         *last_v_idx = *last_v_idx + 1;
     } else if (equal_to(node->element, "*")) {
         // left_exp
-        get_tac_from_node(node->children[0], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[0], tac_exp, last_v_idx, last_label_idx);
         size_t left_v_idx = *last_v_idx - 1;
 
         // right_exp
-        get_tac_from_node(node->children[1], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[1], tac_exp, last_v_idx, last_label_idx);
 
         sprintf(line, "mul $%zu, $%zu, $%zu\n", *last_v_idx, left_v_idx, *last_v_idx-1);
         strcat(tac_exp, line);
@@ -525,11 +595,11 @@ char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_id
         *last_v_idx = *last_v_idx + 1;
     } else if (equal_to(node->element, "/")) {
         // left_exp
-        get_tac_from_node(node->children[0], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[0], tac_exp, last_v_idx, last_label_idx);
         size_t left_v_idx = *last_v_idx - 1;
 
         // right_exp
-        get_tac_from_node(node->children[1], tac_exp, last_v_idx, last_label_idx);
+        get_tac_from_node(root, node->children[1], tac_exp, last_v_idx, last_label_idx);
 
         sprintf(line, "div $%zu, $%zu, $%zu\n", *last_v_idx, left_v_idx, *last_v_idx-1);
         strcat(tac_exp, line);
@@ -538,14 +608,17 @@ char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_id
     } else if (equal_to(node->element, "write_ln_call")) {
         if(is_str(node->children[0]->element)) {
             // write_ln_string
-            for(size_t i = 0; i < strlen(node->children[0]->element); i++) {
-                sprintf(line, "print `%c`\n", node->children[0]->element[i]);
+            int str_size = strlen(node->children[0]->element) - 1;
+            for(int i = 1; i < str_size ; i++) {
+                sprintf(line, "print '%c'\n", node->children[0]->element[i]);
+                strcat(tac_exp, line);
+
             }
-            sprintf(line, "print `\\n`\n");
+            sprintf(line, "print '\\n'\n");
             strcat(tac_exp, line);
         } else {
             // write_ln_expression
-            get_tac_from_node(node->children[0], tac_exp, last_v_idx, last_label_idx);
+            get_tac_from_node(root, node->children[0], tac_exp, last_v_idx, last_label_idx);
 
             sprintf(line, "println $%zu\n", *last_v_idx-1);
             strcat(tac_exp, line);
@@ -553,13 +626,15 @@ char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_id
     } else if (equal_to(node->element, "write_call")) {
         if(is_str(node->children[0]->element)) {
             // write_string
-            for(size_t i = 0; i < strlen(node->children[0]->element); i++) {
-                sprintf(line, "print `%c`\n", node->children[0]->element[i]);
+            int str_size = strlen(node->children[0]->element) - 1;
+            for(size_t i = 1; i < str_size; i++) {
+                sprintf(line, "print '%c'\n", node->children[0]->element[i]);
+                strcat(tac_exp, line);
+
             }
-            strcat(tac_exp, line);
         } else {
             // write_expression
-            get_tac_from_node(node->children[0], tac_exp, last_v_idx, last_label_idx);
+            get_tac_from_node(root, node->children[0], tac_exp, last_v_idx, last_label_idx);
 
             sprintf(line, "print $%zu\n", *last_v_idx-1);
             strcat(tac_exp, line);
@@ -576,7 +651,19 @@ char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_id
 
         strcat(tac_exp, line);
         *last_v_idx = *last_v_idx + 1;
-    } 
+    } else if (equal_to(node->element, "RETURN")) {
+        if (!is_inside_main(node, root)) { 
+            // return expression
+            get_tac_from_node(root, node->children[0], tac_exp, last_v_idx, last_label_idx);
+
+            sprintf(line, "return $%zu\n", *last_v_idx-1);
+            strcat(tac_exp, line);
+            *last_v_idx = 1;
+        } else {
+            sprintf(line, "println \n");
+            strcat(tac_exp, line);
+        }
+    }
 
     free(line);
     return tac_exp;
@@ -633,7 +720,7 @@ void output_tac(symbol_table* table, syntax_tree* root, char* filename) {
 
     size_t last_v_idx = 1;
     size_t last_label_idx = 1;
-    get_tac_from_node(main_body, main_body_tac_str, &last_v_idx, &last_label_idx);
+    get_tac_from_node(root, main_body, main_body_tac_str, &last_v_idx, &last_label_idx);
 
     fprintf(fp, "%s", main_body_tac_str);
 

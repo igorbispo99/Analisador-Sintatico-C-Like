@@ -18,7 +18,7 @@ char** get_function_signature(char* symbol_func, symbol_table* table, scope_t* s
 void push_param_to_paramlist(symbol_table* table, const char* type, char*** paramlist, uint16_t* n_params);
 bool analyze_semantics(symbol_table* table, syntax_tree* root);
 bool check_type_with_casting(char* symbol_1, char* symbol_2);
-char* get_tac_from_node(syntax_tree_node* node, char* tac_exp, size_t* last_v_idx, size_t* last_label_idx);
+char* get_tac_from_node(syntax_tree* root, syntax_tree_node* node, char* tac_exp, size_t* last_v_idx, size_t* last_label_idx);
 bool equal_to(char* str1, char* str2);
 
 char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* scope);

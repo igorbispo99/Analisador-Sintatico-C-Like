@@ -3630,9 +3630,9 @@ yyreduce:
 				first_pass_sematic_error_found = true;
 			}
 
-			sprintf(str, "%s %s (scope %u)", (yyvsp[-2].string), (yyvsp[-1].string), scope->stack[0]);
+			sprintf(str, "%s %s (scope %u)", (yyvsp[-2].string), (yyvsp[-1].string), get_scope_symbol(s_table, (yyvsp[-1].string), true));
 
-			(yyval.state) = new_node(str, root, scope->stack[0], false);
+			(yyval.state) = new_node(str, root, get_scope_symbol(s_table, (yyvsp[-1].string), true), false);
 		}
 #line 3638 "src/parser.c"
     break;
@@ -3648,9 +3648,9 @@ yyreduce:
 				first_pass_sematic_error_found = true;
 			}
 
-			sprintf(str,"%s LIST %s (scope %u)", (yyvsp[-3].string), (yyvsp[-1].string), scope->stack[0]);
+			sprintf(str,"%s LIST %s (scope %u)", (yyvsp[-3].string), (yyvsp[-1].string), get_scope_symbol(s_table, (yyvsp[-1].string), true));
 
-			(yyval.state) = new_node(str, root, scope->stack[0], false);
+			(yyval.state) = new_node(str, root, get_scope_symbol(s_table, (yyvsp[-1].string), true), false);
 		}
 #line 3656 "src/parser.c"
     break;
@@ -3658,12 +3658,12 @@ yyreduce:
   case 9: /* Definition: IDENTIFIER ATT Expression  */
 #line 112 "src/parser.y"
                                           {
-			(yyval.state) = new_node("=", root, scope->stack[0], false);
+			(yyval.state) = new_node("=", root, get_scope_symbol(s_table, (yyvsp[-2].string), true), false);
 
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, (yyvsp[-2].string));
 
-			add_child((yyval.state), new_node(str, root, scope->stack[0], true));
+			add_child((yyval.state), new_node(str, root, get_scope_symbol(s_table, (yyvsp[-2].string), true), true));
 			add_child((yyval.state), (yyvsp[0].state));
 
 			if (!variable_was_declared(s_table, scope, (yyvsp[-2].string))) {
@@ -3691,15 +3691,15 @@ yyreduce:
   case 10: /* Definition: IDENTIFIER ATT MIN NUM_CONST  */
 #line 141 "src/parser.y"
                                              {
-			(yyval.state) = new_node("=", root, scope->stack[0], false);
+			(yyval.state) = new_node("=", root, get_scope_symbol(s_table, (yyvsp[-3].string), true), false);
 
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, (yyvsp[-3].string));
 
-			add_child((yyval.state), new_node(str, root, scope->stack[0], true));
+			add_child((yyval.state), new_node(str, root, get_scope_symbol(s_table, (yyvsp[-3].string), true), true));
 			sprintf(str, "-%lf", (yyvsp[0].num));
 
-			add_child((yyval.state), new_node(str, root, scope->stack[0], false));
+			add_child((yyval.state), new_node(str, root, get_scope_symbol(s_table, (yyvsp[-3].string), true), false));
 
 			if (!variable_was_declared(s_table, scope, (yyvsp[-3].string))) {
 				char err[MAX_BUFFER_SIZE];
@@ -3726,15 +3726,15 @@ yyreduce:
   case 11: /* Definition: IDENTIFIER ATT MIN IDENTIFIER  */
 #line 172 "src/parser.y"
                                               {
-			(yyval.state) = new_node("=", root, scope->stack[0], false);
+			(yyval.state) = new_node("=", root, get_scope_symbol(s_table, (yyvsp[-3].string), true), false);
 
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, (yyvsp[-3].string));
 
-			add_child((yyval.state), new_node(str, root, scope->stack[0], true));
-			add_child((yyval.state), new_node("-", root, scope->stack[0], false));
+			add_child((yyval.state), new_node(str, root, get_scope_symbol(s_table, (yyvsp[-3].string), true), true));
+			add_child((yyval.state), new_node("-", root, get_scope_symbol(s_table, (yyvsp[0].string), true), false));
 
-			add_child((yyval.state)->children[1], new_node((yyvsp[0].string), root, scope->stack[0], true));
+			add_child((yyval.state)->children[1], new_node((yyvsp[0].string), root, get_scope_symbol(s_table, (yyvsp[0].string), true), true));
 
 			if (!variable_was_declared(s_table, scope, (yyvsp[-3].string))) {
 				char err[MAX_BUFFER_SIZE];
@@ -4563,7 +4563,7 @@ yyreduce:
   case 82: /* PrimaryExpression: IDENTIFIER  */
 #line 750 "src/parser.y"
                            {
-			(yyval.state) = new_node((yyvsp[0].string), root, scope->stack[0], true);
+			(yyval.state) = new_node((yyvsp[0].string), root, get_scope_symbol(s_table, (yyvsp[0].string), true), true);
 			if (!variable_was_declared(s_table, scope, (yyvsp[0].string))) {
 				first_pass_sematic_error_found = true;
 				char err[MAX_BUFFER_SIZE];
