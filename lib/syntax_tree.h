@@ -15,6 +15,7 @@ struct syntax_tree_node {
     uint16_t n_children;
     uint16_t scope;
     bool is_symbol;
+    char* type;
 };
 
 typedef struct syntax_tree_node syntax_tree_node;
@@ -25,7 +26,7 @@ typedef struct {
 } syntax_tree;
 
 syntax_tree* new_syntax_tree();
-syntax_tree_node* new_node(char* element, syntax_tree* tree, uint16_t scope, bool is_symbol);
+syntax_tree_node* new_node(char* element, syntax_tree* tree, uint16_t scope, bool is_symbol, char* type);
 syntax_tree_node* add_child(syntax_tree_node* parent, syntax_tree_node* child);
 void free_tree(syntax_tree* tree);
 void show_tree(syntax_tree_node* node, char* line, bool is_last);

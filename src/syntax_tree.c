@@ -7,7 +7,7 @@ syntax_tree* new_syntax_tree() {
     return t;
 }
 
-syntax_tree_node* new_node(char* element, syntax_tree* tree, uint16_t scope, bool is_symbol) {
+syntax_tree_node* new_node(char* element, syntax_tree* tree, uint16_t scope, bool is_symbol, char* type) {
     syntax_tree_node* n = (syntax_tree_node*) malloc(sizeof(syntax_tree_node));
     n->n_children = 0;
     n->element = (char*) malloc(128);
@@ -15,6 +15,8 @@ syntax_tree_node* new_node(char* element, syntax_tree* tree, uint16_t scope, boo
     n->children = (syntax_tree_node**) malloc(sizeof(syntax_tree_node*));
     n->scope = scope;
     n->is_symbol = is_symbol;
+    n->type = (char*) malloc(128);
+    strcpy(n->type, type);
 
     tree->tree_size = tree->tree_size + 1;
     tree->element_list = realloc(tree->element_list, sizeof(syntax_tree_node*)*tree->tree_size);
@@ -56,7 +58,7 @@ void show_tree(syntax_tree_node* node, char* line, bool is_last) {
     if (!node) return;
     if (!node->element) return;
     
-    printf("%s+- \033[92m%s\033[0m\n",  line, node->element);
+    printf("%s+- \033[92m%s (%s)\033[0m\n",  line, node->element, node->type);
     char* new_line = (char*) malloc(MAX_BUFFER_SIZE);
     strcpy(new_line, line);
 
@@ -74,6 +76,7 @@ void free_tree(syntax_tree* tree) {
 
         free(node->element);
         free(node->children);
+        free(node->type);
 
         free(node);
     }

@@ -20,7 +20,7 @@ bool analyze_semantics(symbol_table* table, syntax_tree* root);
 bool check_type_with_casting(char* symbol_1, char* symbol_2);
 char* get_tac_from_node(syntax_tree* root, syntax_tree_node* node, char* tac_exp, size_t* last_v_idx, size_t* last_label_idx);
 bool equal_to(char* str1, char* str2);
-
+char* get_type_var(char* symbol, symbol_table* table, scope_t* scope, bool is_var);
 char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* scope);
 
 int print_error(const char* message);

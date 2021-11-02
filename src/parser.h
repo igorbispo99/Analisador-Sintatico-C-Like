@@ -67,8 +67,9 @@ extern int yydebug;
 	extern bool first_pass_sematic_error_found;
 	extern char** args_last_f;
 	extern uint16_t args_count;
+	extern bool syntax_error_found;
 
-#line 72 "src/parser.h"
+#line 73 "src/parser.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -125,14 +126,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 28 "src/parser.y"
+#line 29 "src/parser.y"
 
     char string[MAX_BUFFER_SIZE/2];
     double num;
     syntax_tree_node* state;
 	syntax_tree* tree;
 
-#line 136 "src/parser.h"
+#line 137 "src/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

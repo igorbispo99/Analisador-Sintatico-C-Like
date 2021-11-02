@@ -96,11 +96,11 @@ bool is_func(char* symbol, symbol_table* table, scope_t* scope) {
     return false;
 }
 
-char* get_type_var(char* symbol, symbol_table* table, scope_t* scope) {
+char* get_type_var(char* symbol, symbol_table* table, scope_t* scope, bool is_var) {
     if (equal_to(symbol, "NIL")) return "float LIST ";
 
     for (int i = table->n_lines-1; i >= 0; i--) {
-        if(!strcmp(table->symbol[i], symbol)) {
+        if(!strcmp(table->symbol[i], symbol) && (table->is_var[i] == is_var)) {
             return table->type[i];
         }
     }
@@ -118,7 +118,7 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
 
     if (node->n_children > 1) {
         if (equal_to(node->element, "FunctionCall")) {
-            return get_type_var(node->children[0]->element, table, scope);
+            return get_type_var(node->children[0]->element, table, scope, false);
         }
 
         type_left = check_type_subtree(node->children[0], table, scope);
@@ -167,7 +167,7 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
         strtod(node->element, &n);
 
         if ((n == node->element) || (*n != '\0')) {
-            return get_type_var(node->element, table, scope);
+            return get_type_var(node->element, table, scope, true);
         } else {
             return "float";
 
@@ -352,7 +352,7 @@ uint16_t which_scope(syntax_tree_node* node) {
 
 bool is_num(char* str) {
     for (int i = 0; i < strlen(str); i++) {
-        if (!isdigit(str[i]) && str[i] != '.') {
+        if (!isdigit(str[i]) && str[i] != '.' && str[i] != '-') {
             return false;
         }
     }
@@ -438,7 +438,7 @@ char* get_tac_from_node(syntax_tree* root, syntax_tree_node* node, char* tac_exp
             }
         }
         return tac_exp;
-    } else if (equal_to(node->element, "PrimaryExpresion")) {
+    } else if (equal_to(node->element, "PrimaryExpression")) {
         get_tac_from_node(root, node->children[0], tac_exp, last_v_idx, last_label_idx);
 
         return tac_exp;

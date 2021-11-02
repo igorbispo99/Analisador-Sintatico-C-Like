@@ -16,6 +16,7 @@
 	bool first_pass_sematic_error_found;
    uint16_t args_count;
    char** args_last_f;
+   bool syntax_error_found;
 
    #include "parser.h"
 %}
