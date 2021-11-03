@@ -29,12 +29,12 @@ typedef struct {
 
 symbol_table* new_symbol_table();
 bool add_row_symbol_table(symbol_table* table, const char* symbol, const char* type, scope_t* scope, bool is_var);
-void push_arg_to_arglist(symbol_table* table, const char* type, uint16_t line);
+void push_arg_to_arglist(symbol_table* table, const char* type, uint16_t line, bool append_to_end);
 void show_table(symbol_table* table);
 void free_table(symbol_table* table);
 
 scope_t* new_scope_stack();
-int get_scope_symbol(symbol_table* table, char* symbol, bool is_var);
+int get_scope_symbol(symbol_table* table, char* symbol, scope_t* scope, bool is_var);
 void increase_depth_scope(scope_t* scp);
 void decrease_depth_scope(scope_t* scp);
 void free_scope(scope_t* scp);

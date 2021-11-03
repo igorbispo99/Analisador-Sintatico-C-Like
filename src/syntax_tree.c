@@ -58,7 +58,7 @@ void show_tree(syntax_tree_node* node, char* line, bool is_last) {
     if (!node) return;
     if (!node->element) return;
     
-    printf("%s+- \033[92m%s (%s)\033[0m\n",  line, node->element, node->type);
+    printf("%s+- %s \x1B[32m(%s)\x1B[0m\n",  line, node->element, node->type);
     char* new_line = (char*) malloc(MAX_BUFFER_SIZE);
     strcpy(new_line, line);
 

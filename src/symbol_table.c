@@ -17,12 +17,20 @@ symbol_table* new_symbol_table() {
     return t;
 }
 
-void push_arg_to_arglist(symbol_table* table, const char* type, uint16_t line) {
+void push_arg_to_arglist(symbol_table* table, const char* type, uint16_t line, bool append_to_end) {
     table->n_args[line] = table->n_args[line] + 1;
     table->args[line] = realloc(table->args[line], table->n_args[line] * (sizeof(char*)));
 
-    table->args[line][table->n_args[line]-1] = calloc(MAX_BUFFER_SIZE, sizeof(char));
-    strcpy(table->args[line][table->n_args[line]-1], type);
+    if (append_to_end) {
+        table->args[line][table->n_args[line]-1] = calloc(MAX_BUFFER_SIZE, sizeof(char));
+        strcpy(table->args[line][table->n_args[line]-1], type);
+    } else {
+        for (int i = table->n_args[line]-1; i > 0; i--) {
+            table->args[line][i] = table->args[line][i-1];
+        }
+        table->args[line][0] = calloc(MAX_BUFFER_SIZE, sizeof(char));
+        strcpy(table->args[line][0], type);        
+    }
 }
 
 bool add_row_symbol_table(symbol_table* table, const char* symbol, const char* type, scope_t* scope, bool is_var) {
@@ -99,10 +107,23 @@ char* get_scope_stack(symbol_table* table, uint16_t line) {
     return out_str;
 }
 
-int get_scope_symbol(symbol_table* table, char* symbol, bool is_var) {
+int get_scope_symbol(symbol_table* table, char* symbol, scope_t* scope, bool is_var) {
     for (int i = 0; i < table->n_lines; i++) {
         if(!strcmp(table->symbol[i], symbol) && (table->is_var[i] == is_var)) {
-            return table->scope[i]->stack[0];
+
+            int j = scope->stack_size-1;
+            int k = table->scope[i]->stack_size - 1;
+
+            for (;j >= 0 && k >= 0; j--, k--) {
+                if (scope->stack[j] != table->scope[i]->stack[k]) break;
+            }
+
+            if (k != -1) {
+                continue;
+            } else {
+                return table->scope[i]->stack[0];
+            }
+
         }
     }
 

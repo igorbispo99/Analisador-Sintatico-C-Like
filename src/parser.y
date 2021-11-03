@@ -22,7 +22,7 @@
 	extern uint16_t last_f;
 	extern bool first_pass_sematic_error_found;
 	extern char** args_last_f;
-	extern uint16_t args_count;
+	extern int args_count;
 	extern bool syntax_error_found;
 }
 
@@ -89,9 +89,9 @@ Declaration:
 				first_pass_sematic_error_found = true;
 			}
 
-			sprintf(str, "%s %s (scope %u)", $1, $2, get_scope_symbol(s_table, $2, true));
+			sprintf(str, "%s %s (scope %u)", $1, $2, get_scope_symbol(s_table, $2, scope, true));
 
-			$$ = new_node(str, root, get_scope_symbol(s_table, $2, true), false, $1);
+			$$ = new_node(str, root, get_scope_symbol(s_table, $2, scope, true), false, $1);
 		}
 		|
 		TYPE LIST IDENTIFIER SEMI {
@@ -105,9 +105,9 @@ Declaration:
 			}
 
 			char node_str[2*MAX_BUFFER_SIZE];
-			sprintf(node_str,"%s LIST %s (scope %u)", $1, $3, get_scope_symbol(s_table, $3, true));
+			sprintf(node_str,"%s LIST %s (scope %u)", $1, $3, get_scope_symbol(s_table, $3, scope, true));
 			
-			$$ = new_node(node_str, root, get_scope_symbol(s_table, $3, true), false, str);
+			$$ = new_node(node_str, root, get_scope_symbol(s_table, $3, scope, true), false, str);
 		}
 		;
 
@@ -115,12 +115,12 @@ Definition:
 		IDENTIFIER ATT Expression {
 			char* exp_type = get_type_var($1, s_table, scope, true);
 
-			$$ = new_node("=", root, get_scope_symbol(s_table, $1, true), false, exp_type);
+			$$ = new_node("=", root, get_scope_symbol(s_table, $1, scope, true), false, exp_type);
 
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $1);
 
-			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, true), true, exp_type));
+			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, scope, true), true, exp_type));
 			add_child($$, $3);
 
 			if (!variable_was_declared(s_table, scope, $1)) {
@@ -146,15 +146,15 @@ Definition:
 		IDENTIFIER ATT MIN NUM_CONST {
 			char* exp_type = get_type_var($1, s_table, scope, true);
 
-			$$ = new_node("=", root, get_scope_symbol(s_table, $1, true), false, exp_type);
+			$$ = new_node("=", root, get_scope_symbol(s_table, $1, scope, true), false, exp_type);
 
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $1);
 
-			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, true), true, exp_type));
+			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, scope, true), true, exp_type));
 			sprintf(str, "-%lf", $4);
 
-			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, true), false, "float"));
+			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, scope, true), false, "float"));
 
 			if (!variable_was_declared(s_table, scope, $1)) {
 				char err[MAX_BUFFER_SIZE];
@@ -178,17 +178,17 @@ Definition:
 		|
 		IDENTIFIER ATT MIN IDENTIFIER {
 			char* exp_type = get_type_var($1, s_table, scope, true);
-			$$ = new_node("=", root, get_scope_symbol(s_table, $1, true), false, exp_type);
+			$$ = new_node("=", root, get_scope_symbol(s_table, $1, scope, true), false, exp_type);
 
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $1);
 
-			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, true), true, exp_type));
+			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, scope, true), true, exp_type));
 
 			exp_type = get_type_var($4, s_table, scope, true);
-			add_child($$, new_node("-", root, get_scope_symbol(s_table, $4, true), false, exp_type));
+			add_child($$, new_node("-", root, get_scope_symbol(s_table, $4, scope, true), false, exp_type));
 
-			add_child($$->children[1], new_node($4, root, get_scope_symbol(s_table, $4, true), true, exp_type));
+			add_child($$->children[1], new_node($4, root, get_scope_symbol(s_table, $4, scope, true), true, exp_type));
 
 			if (!variable_was_declared(s_table, scope, $1)) {
 				char err[MAX_BUFFER_SIZE];
@@ -236,7 +236,7 @@ FunctionDefinition:
 		add_child($$, $4);
 		decrease_depth_scope(scope);
 
-		push_arg_to_arglist(s_table, "None", last_f);
+		push_arg_to_arglist(s_table, "None", last_f, true);
 	}
 	|
 	FunctionHead LP error RP CompStatement {
@@ -250,29 +250,37 @@ FunctionDefinition:
 FunctionArgs:
 	TYPE IDENTIFIER {
 		$$ = new_node("FunctionParameters", root, scope->stack[0], false, "None");
+		char str[MAX_BUFFER_SIZE];
+		sprintf(str, "%s %s", $1, $2);
 
-		add_child($$, new_node($1, root, scope->stack[0], false, "None"));
+		add_child($$, new_node(str, root, scope->stack[0], false, "None"));
 
 		if(!add_row_symbol_table(s_table, $2, $1, scope, true))
 		{
 			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @2.first_line, @2.first_column, $2);
 			first_pass_sematic_error_found = true;
 		}
-		push_arg_to_arglist(s_table, $1, last_f);
+		push_arg_to_arglist(s_table, $1, last_f, true);
 	}
 	|
 	TYPE IDENTIFIER COM TYPE IDENTIFIER ParamList {
 		$$ = new_node("FunctionParameters", root, scope->stack[0], false, "None");
 
-		add_child($$, new_node($1, root, scope->stack[0], false, "None"));
-		add_child($$, new_node($4, root, scope->stack[0], false, "None"));
+		char str[MAX_BUFFER_SIZE];
+		sprintf(str, "%s %s", $1, $2);
+		add_child($$, new_node(str, root, scope->stack[0], false, "None"));
+
+		sprintf(str, "%s %s", $4, $5);
+		add_child($$, new_node(str, root, scope->stack[0], false, "None"));
+		
+		add_child($$, $6);
+
 
 		if(!add_row_symbol_table(s_table, $2, $1, scope, true))
 		{
 			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @2.first_line, @2.first_column, $2);
 			first_pass_sematic_error_found = true;
 		}
-		push_arg_to_arglist(s_table, $1, last_f);
 
 
 		if(!add_row_symbol_table(s_table, $5, $4, scope, true))
@@ -280,7 +288,9 @@ FunctionArgs:
 			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @5.first_line, @5.first_column, $5);
 			first_pass_sematic_error_found = true;
 		}
-		push_arg_to_arglist(s_table, $4, last_f);
+		push_arg_to_arglist(s_table, $4, last_f, false);
+		push_arg_to_arglist(s_table, $1, last_f, false);
+
 	}
 	|
 	TYPE LIST IDENTIFIER {
@@ -289,7 +299,11 @@ FunctionArgs:
 		char str[MAX_BUFFER_SIZE];
 		strcpy(str, $1);
 		strcat(str," LIST ");
-		add_child($$, new_node(str, root, scope->stack[0], false, "None"));
+
+		char str_list[MAX_BUFFER_SIZE*2];
+		sprintf(str_list, "%s LIST %s", $1, $3);
+
+		add_child($$, new_node(str_list, root, scope->stack[0], false, "None"));
 
 		if(!add_row_symbol_table(s_table, $3, str, scope, true))
 		{
@@ -297,7 +311,7 @@ FunctionArgs:
 			first_pass_sematic_error_found = true;
 		}
 
-		push_arg_to_arglist(s_table, str, last_f);	
+		push_arg_to_arglist(s_table, str, last_f, true);	
 	}
 	|
 	TYPE LIST IDENTIFIER COM TYPE LIST IDENTIFIER ParamList {
@@ -306,7 +320,11 @@ FunctionArgs:
 		char arg_1[MAX_BUFFER_SIZE];
 		strcpy(arg_1, $1);
 		strcat(arg_1," LIST ");
-		add_child($$, new_node(arg_1, root, scope->stack[0], false, "None"));
+
+		char str_list[MAX_BUFFER_SIZE*2];
+		sprintf(str_list, "%s LIST %s", $1, $3);
+
+		add_child($$, new_node(str_list, root, scope->stack[0], false, "None"));
 
 		if(!add_row_symbol_table(s_table, $3, arg_1, scope, true))
 		{
@@ -314,12 +332,14 @@ FunctionArgs:
 			first_pass_sematic_error_found = true;
 		}
 
-		push_arg_to_arglist(s_table, arg_1, last_f);
 
-		char arg_2[MAX_BUFFER_SIZE];
+		char arg_2[MAX_BUFFER_SIZE*2];
 		strcpy(arg_2, $5);
 		strcat(arg_2," LIST ");
-		add_child($$, new_node(arg_2, root, scope->stack[0], false, "None"));
+
+		sprintf(str_list, "%s LIST %s", $5, $7);
+
+		add_child($$, new_node(str_list, root, scope->stack[0], false, "None"));
 
 		if(!add_row_symbol_table(s_table, $7, arg_2, scope, true))
 		{
@@ -327,25 +347,36 @@ FunctionArgs:
 			first_pass_sematic_error_found = true;
 		}
 
-		push_arg_to_arglist(s_table, arg_2, last_f);
+		add_child($$, $8);
+
+		push_arg_to_arglist(s_table, arg_2, last_f, false);
+		push_arg_to_arglist(s_table, arg_1, last_f, false);
+
 	}
 	|
 	TYPE IDENTIFIER COM TYPE LIST IDENTIFIER ParamList {
 		$$ = new_node("FunctionParameters", root, scope->stack[0], false, "None");
 
-		add_child($$, new_node($1, root, scope->stack[0], false, "None"));
+		char str[MAX_BUFFER_SIZE];
+		sprintf(str, "%s %s", $1, $2);
+
+		add_child($$, new_node(str, root, scope->stack[0], false, "None"));
 		if(!add_row_symbol_table(s_table, $2, $1, scope, true))
 		{
 			printf("\033[91mSemantic error at line %d, column %d: Variable %s already declared\033[0m\n", @2.first_line, @2.first_column, $2);
 			first_pass_sematic_error_found = true;
 		}
 
-		push_arg_to_arglist(s_table, $1, last_f);
+		push_arg_to_arglist(s_table, $1, last_f, false);
 
 		char arg_2[MAX_BUFFER_SIZE];
 		strcpy(arg_2, $4);
 		strcat(arg_2," LIST ");
-		add_child($$, new_node(arg_2, root, scope->stack[0], false, "None"));
+
+		char str_list[MAX_BUFFER_SIZE*2];
+		sprintf(str_list, "%s LIST %s", $4, $6);
+
+		add_child($$, new_node(str_list, root, scope->stack[0], false, "None"));
 
 		if(!add_row_symbol_table(s_table, $6, arg_2, scope, true))
 		{
@@ -353,7 +384,9 @@ FunctionArgs:
 			first_pass_sematic_error_found = true;
 		}
 
-		push_arg_to_arglist(s_table, arg_2, last_f);
+		add_child($$, $7);
+
+		push_arg_to_arglist(s_table, arg_2, last_f, false);
 	}
 	|
 	TYPE LIST IDENTIFIER COM TYPE IDENTIFIER ParamList {
@@ -362,7 +395,11 @@ FunctionArgs:
 		char arg_1[MAX_BUFFER_SIZE];
 		strcpy(arg_1, $1);
 		strcat(arg_1," LIST ");
-		add_child($$, new_node(arg_1, root, scope->stack[0], false, "None"));
+
+		char str_list[MAX_BUFFER_SIZE*2];
+		sprintf(str_list, "%s LIST %s", $1, $3);
+
+		add_child($$, new_node(str_list, root, scope->stack[0], false, "None"));
 
 		if(!add_row_symbol_table(s_table, $3, arg_1, scope, true))
 		{
@@ -370,9 +407,12 @@ FunctionArgs:
 			first_pass_sematic_error_found = true;
 		}
 
-		push_arg_to_arglist(s_table, arg_1, last_f);
+		push_arg_to_arglist(s_table, arg_1, last_f, false);
 
-		add_child($$, new_node($5, root, scope->stack[0], false, "None"));
+		char str[MAX_BUFFER_SIZE];
+		sprintf(str, "%s %s", $1, $2);
+
+		add_child($$, new_node(str, root, scope->stack[0], false, "None"));
 
 		if(!add_row_symbol_table(s_table, $6, $5, scope, true))
 		{
@@ -380,7 +420,9 @@ FunctionArgs:
 			first_pass_sematic_error_found = true;
 		}
 
-		push_arg_to_arglist(s_table, $5, last_f);
+		add_child($$, $7);
+
+		push_arg_to_arglist(s_table, $5, last_f, false);
 	}
 	;
 
@@ -429,14 +471,16 @@ FunctionHead:
 
 ParamList:
       %empty {
-			$$ = new_node("ParamList", root, scope->stack[0], false, "None");
+			$$ = NULL;
 		}
 		|
 		COM TYPE IDENTIFIER ParamList {
 			$$ = new_node("ParamList", root, scope->stack[0], false, "None");
 
+			char str[MAX_BUFFER_SIZE];
+			sprintf(str, "%s %s", $2, $3);
 
-			add_child($$, new_node($2, root, scope->stack[0], false, "None"));
+			add_child($$, new_node(str, root, scope->stack[0], false, "None"));
 			add_child($$, $4);
 
 			if (!add_row_symbol_table(s_table, $3, $2, scope, true))
@@ -445,7 +489,7 @@ ParamList:
 				first_pass_sematic_error_found = true;
 			}
 
-			push_arg_to_arglist(s_table, $2, last_f);
+			push_arg_to_arglist(s_table, $2, last_f, true);
 		}
 		|
 		COM TYPE LIST IDENTIFIER ParamList {
@@ -454,7 +498,11 @@ ParamList:
 			char str[MAX_BUFFER_SIZE];
 			strcpy(str, $2);
 			strcat(str," LIST ");
-			add_child($$, new_node(str, root, scope->stack[0], false, "None"));
+
+			char str_list[MAX_BUFFER_SIZE*2];
+			sprintf(str_list, "%s LIST %s", $2, $4);
+
+			add_child($$, new_node(str_list, root, scope->stack[0], false, "None"));
 
 			add_child($$, $5);
 
@@ -465,7 +513,7 @@ ParamList:
 				first_pass_sematic_error_found = true;
 			}
 
-			push_arg_to_arglist(s_table, str, last_f);
+			push_arg_to_arglist(s_table, str, last_f, true);
 		}
     ;
 
@@ -800,7 +848,7 @@ PrimaryExpression:
 		IDENTIFIER {
 			char* exp_type = get_type_var($1, s_table, scope, true);
 
-			$$ = new_node($1, root, get_scope_symbol(s_table, $1, true), true, exp_type);
+			$$ = new_node($1, root, get_scope_symbol(s_table, $1, scope, true), true, exp_type);
 			if (!variable_was_declared(s_table, scope, $1)) {
 				first_pass_sematic_error_found = true;
 				char err[MAX_BUFFER_SIZE];
@@ -843,6 +891,13 @@ PrimaryExpression:
 				print_error(err);
 
 				first_pass_sematic_error_found = true;
+
+								
+				for (size_t i = 0; i < args_count; i++) {
+						free(args_last_f[i]);
+					}
+
+				free(args_last_f);
 			} else {
 				uint16_t n_args = 0;
 
@@ -856,15 +911,16 @@ PrimaryExpression:
 					print_error(err);
 				} else {
 					bool compatible_args = true;
-
-					for (size_t i = 0, j = args_count-1; j >= 0 && i < n_args; i++, j--) {
+					int i = 0;
+					int j = args_count-1;
+					for (; j >= 0 && i < n_args; i++, j--) {
 						if (!check_type_with_casting(args[i], args_last_f[j])) {
 							compatible_args = false;
 							break;
 						}
 					}
 
-					if (!compatible_args) {
+					if (!compatible_args || i != n_args) {
 						first_pass_sematic_error_found = true;
 						char err[MAX_BUFFER_SIZE*2];
 						sprintf(err, "Invalid function call, function %s expect parameters ", $1);
@@ -953,7 +1009,7 @@ PrimaryExpression:
 			add_child($$, $3);
 		}
 	|	READ LP IDENTIFIER RP {
-			char* exp_type = get_type_var($3, s_table, scope, false);
+			char* exp_type = get_type_var($3, s_table, scope, true);
 
 			$$ = new_node("read_call", root, scope->stack[0], false, exp_type);
 			add_child($$, new_node($3, root, scope->stack[0], true, exp_type));
@@ -1014,13 +1070,16 @@ syntax_tree* parse(char* filename) {
 
 
 	char option;
-	if (failure || syntax_error_found) {
-		fprintf(stderr, "\033[91m\nSyntax errors were found. Generated TAC may be invalid.\033[0m\n");
+	if (failure || syntax_error_found || first_pass_sematic_error_found) {
+		fprintf(stderr, "\033[91m\nSome errors were found. Generated TAC may be invalid.\033[0m\n");
 		fprintf(stderr, "\033[91mDo you want to generate TAC anyway? (y/N)\033[0m\n");
 		scanf("%c", &option);
+		if (option == 'y' || option == 'Y') {
+			output_tac(s_table, root, filename);
+		}
+	} else {
+		output_tac(s_table, root, filename);
 	}
-
-	output_tac(s_table, root, filename);
 
 	free_table(s_table);
 	yylex_destroy();

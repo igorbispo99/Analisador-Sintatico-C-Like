@@ -1,14 +1,118 @@
+int teste(int i, float a, int b, int c) {
+  writeln(i);
+  writeln(a);
+    writeln(b);
+  writeln(c);
+
+
+  if (i == 1) {
+    writeln("i eh 1");
+    return i+1;
+  } else {
+    return a-0;
+  }
+}
+
+int hello_world() {
+  writeln("Hello World!");
+}
+
+int hello_world_n(int n) {
+  write("Hello World ");
+  writeln(n);
+
+  return n;
+}
+
 int main() {
   int i;
   i = 10;
-  
-  if(i)  
-    for(i = 0; i < 5; i = i + 1)
-      if(i < 2) writeln("a");
-      else writeln("b");
 
-    if(i)
-        write(10);
+  float n;
+  n = 3.5;
+  
+  hello_world();
+  hello_world_n(n*2 - 5);
+
+  if(i)  
+    for(i = 5; i >= 0; i = i - 1)
+      if(i > 2)
+        writeln("a");
+      else
+        writeln("b");
+
+  int a;
+  a = (3.5+2) * 7/4 -2;
+
+  int b;
+  read(b);
+
+
+  if(a && b) {
+      writeln("A and B");
+      writeln(a);
+      writeln(b);
+  }
+
+  if(a || b) {
+     writeln("A or B");
+
+      write("a=");
+      writeln(a);
+      write("b=");
+      writeln(b);
+  }
+
+  a = 0;
+
+  if(a && b) {
+      writeln("A and B, a=0");
+
+      write("a=");
+      writeln(a);
+      write("b=");
+      writeln(b);
+  }
+
+
+  if( (a || b) && a) {
+      writeln("(A or B) and A, a=0");
+
+      write("a=");
+      writeln(a);
+      write("b=");
+      writeln(b);
+  }
+
+  if(a==a) {
+      writeln("(A == A) and A, a=0");
+
+      write("a=");
+      writeln(a);
+      write("b=");
+      writeln(b);
+  }
+
+  if(a!=b) {
+      writeln("(A != B) and A, a=0");
+
+      write("a=");
+      writeln(a);
+      write("b=");
+      writeln(b);
+  } else {
+      writeln("(A == B) and A, a=0");
+
+      write("a=");
+      writeln(a);
+      write("b=");
+      writeln(b);   
+  }
+
+  i = teste(i, a, 10/3, 1-5);
+
+  write("Retorno da funcao com i e a:");
+  writeln(i);
 
     return 0;
 }

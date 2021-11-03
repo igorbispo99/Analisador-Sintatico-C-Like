@@ -1,5 +1,4 @@
 .table
-int c_1
 int b_1
 int i_1
 float a_1
@@ -13,19 +12,13 @@ int b_6
 
 teste:
 mov $1, i_1
-println $1
-mov $2, a_1
-println $2
-mov $3, b_1
-println $3
-mov $4, c_1
-println $4
-mov $5, i_1
-add $6, 1.000000, 0.0
-inttofl $7, $5
-sub $8, $7, $6
-not $8, $8
-brz IF_ELSE_1, $8
+print $1
+mov $2, i_1
+add $3, 1.000000, 0.0
+inttofl $4, $2
+sub $5, $4, $3
+not $5, $5
+brz IF_ELSE_1, $5
 print 'i'
 print ' '
 print 'e'
@@ -33,11 +26,11 @@ print 'h'
 print ' '
 print '1'
 print '\n'
-mov $9, i_1
-add $10, 1.000000, 0.0
-inttofl $11, $9
-add $12, $11, $10
-return $12
+mov $6, i_1
+add $7, 1.000000, 0.0
+inttofl $8, $6
+add $9, $8, $7
+return $9
 jump END_IF_ELSE_2
 IF_ELSE_1:
 mov $1, a_1
@@ -351,24 +344,17 @@ add $77, 10.000000, 0.0
 add $78, 3.000000, 0.0
 div $79, $77, $78
 push $79
-add $80, 1.000000, 0.0
-add $81, 5.000000, 0.0
-sub $82, $80, $81
-push $82
+pop $80
+mov b_1, $80
+pop $81
+inttofl $82, $81
+mov i_1, $82
 pop $83
 fltoint $84, $83
-mov c_1, $84
-pop $85
-fltoint $86, $85
-mov b_1, $86
-pop $87
-inttofl $88, $87
-mov a_1, $88
-pop $89
-mov i_1, $89
+mov a_1, $84
 call teste
-mov $90, #0
-mov i_6, $90
+mov $85, #0
+mov i_6, $85
 print 'R'
 print 'e'
 print 't'
@@ -397,6 +383,6 @@ print 'e'
 print ' '
 print 'a'
 print ':'
-mov $91, i_6
-println $91
+mov $86, i_6
+print $86
 println 

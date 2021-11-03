@@ -66,7 +66,7 @@ extern int yydebug;
 	extern uint16_t last_f;
 	extern bool first_pass_sematic_error_found;
 	extern char** args_last_f;
-	extern uint16_t args_count;
+	extern int args_count;
 	extern bool syntax_error_found;
 
 #line 73 "src/parser.h"
