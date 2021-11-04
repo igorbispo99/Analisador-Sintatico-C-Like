@@ -108,16 +108,17 @@ extern int yydebug;
     AND = 283,                     /* AND  */
     OR = 284,                      /* OR  */
     RP = 285,                      /* RP  */
-    NUM_CONST = 286,               /* NUM_CONST  */
-    NIL = 287,                     /* NIL  */
-    STR = 288,                     /* STR  */
-    WRITE = 289,                   /* WRITE  */
-    READ = 290,                    /* READ  */
-    WRITE_LN = 291,                /* WRITE_LN  */
-    IF = 292,                      /* IF  */
-    ELSE = 293,                    /* ELSE  */
-    FOR = 294,                     /* FOR  */
-    RET = 295                      /* RET  */
+    NUM_CONST_INT = 286,           /* NUM_CONST_INT  */
+    NUM_CONST_FLOAT = 287,         /* NUM_CONST_FLOAT  */
+    NIL = 288,                     /* NIL  */
+    STR = 289,                     /* STR  */
+    WRITE = 290,                   /* WRITE  */
+    READ = 291,                    /* READ  */
+    WRITE_LN = 292,                /* WRITE_LN  */
+    IF = 293,                      /* IF  */
+    ELSE = 294,                    /* ELSE  */
+    FOR = 295,                     /* FOR  */
+    RET = 296                      /* RET  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -129,11 +130,12 @@ union YYSTYPE
 #line 29 "src/parser.y"
 
     char string[MAX_BUFFER_SIZE/2];
-    double num;
+    double num_float;
+	long int num_int;
     syntax_tree_node* state;
 	syntax_tree* tree;
 
-#line 137 "src/parser.h"
+#line 139 "src/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

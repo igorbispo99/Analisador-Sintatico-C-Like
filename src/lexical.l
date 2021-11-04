@@ -24,7 +24,8 @@
 OP [+\-*\/<>=!(){};:?%]|"+="|"-="|"=="|"*="|"!="|">>"|"<<"|"<="|"||"|"&&"
 ID (_|[A-Za-z])([A-Za-z]|[0-9]|_)*
 NL \n
-NUM [0-9]+(\.[0-9]+)?(E[+-]?[0-9]+)?
+NUM_INT [0-9]+
+NUM_FLOAT [0-9]+\.[0-9]+
 STR ["](([\\]["])|([^"]))*["]
 COM \/\/.*
 WS [ \t\r]
@@ -116,13 +117,22 @@ NIL {yylloc.first_column=n_column;n_column += yyleng;return NIL;}
    n_column += yyleng;
 }
 
-{NUM} {
+{NUM_INT} {
 //  printf("Numerical constant: \"%s\" at Ln %lu, Col %lu\n", yytext, n_line, n_column);
    yylloc.first_column=n_column;
 
    n_column += yyleng;
-   yylval.num = strtof(yytext, NULL);
-   return NUM_CONST;
+   yylval.num_int = strtol(yytext, NULL, 10);
+   return NUM_CONST_INT;
+}
+
+{NUM_FLOAT} {
+//  printf("Numerical constant: \"%s\" at Ln %lu, Col %lu\n", yytext, n_line, n_column);
+   yylloc.first_column=n_column;
+
+   n_column += yyleng;
+   yylval.num_float = strtod(yytext, NULL);
+   return NUM_CONST_FLOAT;
 }
 
 {STR} {

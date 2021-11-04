@@ -1,0 +1,7 @@
+int list f (int list g, int list b)
+{ return g; }
+
+
+int main() {
+    return 0;
+}

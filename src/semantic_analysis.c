@@ -97,7 +97,7 @@ bool is_func(char* symbol, symbol_table* table, scope_t* scope) {
 }
 
 char* get_type_var(char* symbol, symbol_table* table, scope_t* scope, bool is_var) {
-    if (equal_to(symbol, "NIL")) return "float LIST ";
+    if (equal_to(symbol, "NIL")) return "NIL";
 
     for (int i = table->n_lines-1; i >= 0; i--) {
         if(!strcmp(table->symbol[i], symbol)) {
@@ -106,6 +106,22 @@ char* get_type_var(char* symbol, symbol_table* table, scope_t* scope, bool is_va
     }
 
     return "*";
+}
+
+uint16_t get_num_of_args(symbol_table* table, char* symbol) {
+    uint16_t num_of_args = 0;
+
+    for(uint16_t i = 0; i < table->n_lines; i++) {
+            if (equal_to(table->symbol[i], symbol) && !table->is_var[i]) {
+                if (equal_to(table->args[i][0], "-")) {
+                    num_of_args = 0;
+                } else {
+                    num_of_args = table->n_args[i];
+                }
+            }
+    }
+
+    return num_of_args;
 }
 
 char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* scope) {
@@ -135,16 +151,28 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
             return child_type;
 
         if (equal_to(node->element, "?")) {
-            if (equal_to(child_type, "float LIST ") || equal_to(child_type, "int LIST ")) {
+            if (equal_to(child_type, "float LIST ")) {
                 return "float";
+            } else if(equal_to(child_type, "int LIST ")) {
+                return "int";
             } else {
                 return NULL;
             }
-        } else if (equal_to(node->element, "%") || equal_to(node->element, "!")) {
-            if (equal_to(child_type, "float LIST ") || equal_to(child_type, "int LIST ")) {
+        } else if (equal_to(node->element, "%")) {
+            if (equal_to(child_type, "float LIST ") ) {
                 return "float LIST ";
+            } else if (equal_to(child_type, "int LIST ")) {
+                return "int LIST ";
             } else {
                 return NULL;
+            }
+        } else if (equal_to(node->element, "!")) {
+            if (equal_to(child_type, "float LIST ") ) {
+                return "float LIST ";
+            } else if (equal_to(child_type, "int LIST ")) {
+                return "int LIST ";
+            } else {
+                return "int";
             }
         } else if (equal_to(node->element, "RETURN")) {
             type_exp = child_type;
@@ -153,13 +181,13 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
             if ((equal_to(type_exp, "float") || equal_to(type_exp, "int")) &&
             (equal_to(type_func, "float") || equal_to(type_func, "int"))) {
                 return type_exp;
-            } else if ((equal_to(type_exp, "int LIST ") || equal_to(type_exp, "float LIST ")) &&
-            (equal_to(type_func, "int LIST ") || equal_to(type_func, "float LIST "))) {
-                return type_exp;
+            } else if ((equal_to(type_exp, "int LIST ") || equal_to(type_exp, "NIL")) && equal_to(type_func, "int LIST ")){ 
+                return "int LIST ";
+            } else if ((equal_to(type_exp, "float LIST ") || equal_to(type_exp, "NIL")) && equal_to(type_func, "float LIST ")){ 
+                return "float LIST ";
             } else {
                 return NULL;
             }
-
         }
         return child_type;
     } else {
@@ -169,41 +197,87 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
         if ((n == node->element) || (*n != '\0')) {
             return get_type_var(node->element, table, scope, true);
         } else {
-            return "float";
-
+            // verify if its a float number
+            if (strchr(node->element, '.')) {
+                return "float";
+            } else {
+                return "int";
+            }
         }
     }
 
     if (equal_to(node->element, "+") || equal_to(node->element, "*") || 
         equal_to(node->element, "-") || equal_to(node->element, "/"))
         {
-        if ((equal_to(type_left, "int") || equal_to(type_left, "float")) &&
-            (equal_to(type_right, "int") || equal_to(type_right, "float"))) 
-            {
-                return "float";
+        if (equal_to(type_left, "float") && equal_to(type_right, "float")) {
+            return "float";
+        } else if (equal_to(type_left, "int") && equal_to(type_right, "int")) {
+            return "int";
+        } else if (equal_to(type_left, "int") && equal_to(type_right, "float")) {
+            return "float";
+        } else if (equal_to(type_left, "float") && equal_to(type_right, "int")) {
+            return "float";
         } else {
             return NULL;
         }
-
     } else if (equal_to(node->element, "=")) {
         if (equal_to(type_left, type_right)) {
             return type_left;
-        } else if ((equal_to(type_left, "int") || equal_to(type_left, "float")) &&
-            (equal_to(type_right, "int") || equal_to(type_right, "float"))){
+        } else if ((equal_to(type_left, "int") && equal_to(type_right, "float"))){
+            return "int";
+        } else if ((equal_to(type_left, "float") && equal_to(type_right, "int"))){
             return "float";
-        } else if ((equal_to(type_left, "int LIST ") || equal_to(type_left, "float LIST "))) {
-                return "float LIST ";
+        } else if (equal_to(type_left, "int LIST ") && equal_to(type_right, "NIL")) {
+            return "int LIST ";
+        } else if (equal_to(type_left, "float LIST ") && equal_to(type_right, "NIL")) {
+            return "float LIST ";
         } else {
             return NULL;
         }
     } else if (equal_to(node->element, ":")) {
-        return "float LIST ";
-    } else if (equal_to(node->element, ">>") || equal_to(node->element, "<<")) {
-        if ((equal_to(type_left, "float") || (equal_to(type_left, "int"))) &&
-            is_func(node->children[0]->element, table, scope))
-            {
-            if  ((equal_to(type_right, "int LIST ") || equal_to(type_right, "float LIST "))){
-                return "float LIST ";
+        if (equal_to(type_left, "float LIST ") && (equal_to(type_right, "float LIST ") || equal_to(type_right, "NIL"))) {
+            return "float LIST ";
+        } else if (equal_to(type_left, "int LIST ") && (equal_to(type_right, "int LIST ") || equal_to(type_right, "NIL"))) {
+            return "int LIST ";
+        } else if ((equal_to(type_left, "int") || equal_to(type_left, "float")) && (equal_to(type_right, "int LIST ") || equal_to(type_right, "float LIST "))) {
+            return type_right;
+        } else if (equal_to(type_left, "int") && (equal_to(type_right, "NIL"))) {
+            return "int LIST ";
+        } else if (equal_to(type_left, "float") && equal_to(type_right, "NIL")) {
+            return "float LIST ";
+        } else {
+            return NULL;
+        } 
+    } else if (equal_to(node->element, ">>")) {
+        if (is_func(node->children[0]->element, table, scope)) {
+            uint16_t args_n = get_num_of_args(table, node->children[0]->element);
+            if (args_n == 1) {
+                if (equal_to(type_left, "int") && (equal_to(type_right, "int LIST ") || equal_to(type_right, "float LIST ") || equal_to(type_right, "NIL"))) {
+                    return "int LIST ";
+                } else if (equal_to(type_left, "float") && (equal_to(type_right, "int LIST ") || equal_to(type_right, "float LIST ") || equal_to(type_right, "NIL"))) {
+                    return "float LIST ";
+                } else {
+                    return NULL;
+                }
+            } else {
+                return NULL;
+            }
+        } else {
+            return NULL;
+        }
+    } else if (equal_to(node->element, "<<")) {
+        if (is_func(node->children[0]->element, table, scope)) {
+            uint16_t args_n = get_num_of_args(table, node->children[0]->element);
+            if (args_n == 1) {
+                if ((equal_to(type_left, "int") || equal_to(type_left, "float")) && equal_to(type_right, "int LIST ")) {
+                    return "int LIST ";
+                } else if ((equal_to(type_left, "int") || equal_to(type_left, "float")) && equal_to(type_right, "float LIST ")) {
+                    return "float LIST ";
+                } else {
+                    return NULL;
+                }
+            } else {
+                return NULL;
             }
         } else {
             return NULL;
@@ -211,19 +285,43 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
     } else if (equal_to(node->element, "==")) {
         if ((equal_to(type_left, "int") || equal_to(type_left, "float")) &&
             (equal_to(type_right, "int") || equal_to(type_right, "float")))
-            {
-                return "int";
-            } else {
+        {
+            return "int";
+        } else if ((equal_to(type_left, "int LIST ") || equal_to(type_left, "float LIST "))) {
+            if (!node->children[1]) {
                 return NULL;
+            } else if (equal_to(node->children[1]->element, "NIL")) {
+                return "int";
             }
+        } else if ((equal_to(type_right, "int LIST ") || equal_to(type_right, "float LIST "))) {
+            if (!node->children[0]) {
+                return NULL;
+            } else if (equal_to(node->children[0]->element, "NIL")) {
+                return "int";
+            }
+        } else {
+            return NULL;
+        }
     } else if (equal_to(node->element, "!=")) {
         if ((equal_to(type_left, "int") || equal_to(type_left, "float")) &&
             (equal_to(type_right, "int") || equal_to(type_right, "float")))
-            {
-                return "int";
-            } else {
+        {
+            return "int";
+        } else if ((equal_to(type_left, "int LIST ") || equal_to(type_left, "float LIST "))) {
+            if (!node->children[1]) {
                 return NULL;
+            } else if (equal_to(node->children[1]->element, "NIL")) {
+                return "int";
             }
+        } else if ((equal_to(type_right, "int LIST ") || equal_to(type_right, "float LIST "))) {
+            if (!node->children[0]) {
+                return NULL;
+            } else if (equal_to(node->children[0]->element, "NIL")) {
+                return "int";
+            }
+        } else {
+            return NULL;
+        }   
     } else if (equal_to(node->element, ">") || equal_to(node->element, "<") ||
         equal_to(node->element, ">=") || equal_to(node->element, "<=")) {
         if ((equal_to(type_left, "int") || equal_to(type_left, "float")) &&
@@ -442,21 +540,7 @@ bool is_inside_main(syntax_tree_node* node, syntax_tree* root) {
     return is_inside_main_inner(node, main_node, root);
 }
 
-uint16_t get_num_of_args(symbol_table* table, char* symbol) {
-    uint16_t num_of_args = 0;
 
-    for(uint16_t i = 0; i < table->n_lines; i++) {
-            if (equal_to(table->symbol[i], symbol) && !table->is_var[i]) {
-                if (equal_to(table->args[i][0], "None")) {
-                    num_of_args = 0;
-                } else {
-                    num_of_args = table->n_args[i];
-                }
-            }
-    }
-
-    return num_of_args;
-}
 
 uint16_t get_scope_inside_within_function(char* symbol_function, syntax_tree* root) {
     uint16_t scope = 0;
@@ -567,12 +651,12 @@ char** get_all_variables_name(syntax_tree* root, char* symbol_function) {
 
 char** get_arg_types(symbol_table* table, char* symbol_function) {
     char** arg_types = (char**)malloc(sizeof(char*));
-    arg_types[0] = "None";
+    arg_types[0] = "-";
 
     for(uint16_t i = 0; i < table->n_lines; i++) {
         if (equal_to(table->symbol[i], symbol_function) && !table->is_var[i]) {
-            if (equal_to(table->args[i][0], "None")) {
-                arg_types[0] = "None";
+            if (equal_to(table->args[i][0], "-")) {
+                arg_types[0] = "-";
             } else {
                 arg_types = (char**)realloc(arg_types, sizeof(char*) * (table->n_args[i] + 1));
                 for(int j = 0; j < table->n_args[i]; j++) {
@@ -606,6 +690,34 @@ char** get_types_parameters(syntax_tree_node* node) {
     types[n_types] = args_node->type;
 
     return types;
+}
+
+uint16_t how_many_constructions(syntax_tree_node* node) {
+    if (!node) {
+        return 0;
+    }
+
+    if(!node->children) {
+        return 0;
+    }
+
+    uint16_t n_nested_constructions = 1;
+    syntax_tree_node* temp_node = node;
+
+    while(equal_to(temp_node->children[0]->element, ":")) {
+        n_nested_constructions++;
+
+        if (temp_node->children){
+            temp_node = temp_node->children[0];
+            if (!temp_node->element) {
+                break;
+            }
+        }else{
+            break;
+        }
+    }
+
+    return n_nested_constructions;
 }
 
 char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node* node, char* tac_exp, size_t* last_v_idx, size_t* last_label_idx) {
@@ -737,13 +849,47 @@ char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node
             sprintf(line, "fltoint $%zu, $%zu\n", *last_v_idx, *last_v_idx-1);
             strcat(tac_exp, line);
             *last_v_idx = *last_v_idx + 1;
+            sprintf(line, "mov %s_%u, $%zu\n", l_symbol, scope, *last_v_idx-1);
+        strcat(tac_exp, line);
         } else if (equal_to(type_left, "float") && equal_to(type_right, "int")) {
             sprintf(line, "inttofl $%zu, $%zu\n", *last_v_idx, *last_v_idx-1);
             strcat(tac_exp, line);
             *last_v_idx = *last_v_idx + 1;
+            sprintf(line, "mov %s_%u, $%zu\n", l_symbol, scope, *last_v_idx-1);
+            strcat(tac_exp, line);
+        } else if (equal_to(type_left, "float LIST ") && equal_to(type_right, "float LIST ")) {
+            uint16_t nested_constructions = how_many_constructions(node->children[1]);
+            if(nested_constructions) {
+                for(int i = 0; i < nested_constructions; i++) {
+                    sprintf(line, "mov $%zu, &%s_%u\n", *last_v_idx, l_symbol, scope);
+                    strcat(tac_exp, line);
+
+                    size_t vector_address = *last_v_idx;
+                    *last_v_idx = *last_v_idx + 1;
+
+                    sprintf(line, "pop $%zu\n", *last_v_idx);
+                    strcat(tac_exp, line);
+                    *last_v_idx = *last_v_idx + 1;
+                    sprintf(line, "pop $%zu\n", *last_v_idx);
+                    strcat(tac_exp, line);
+
+                    sprintf(line, "mov $%zu[%s_%u_size], $%zu\n", vector_address, l_symbol, scope, *last_v_idx);
+                    strcat(tac_exp, line);
+                    sprintf(line, "add %s_%u_size, %s_%u_size, 1\n", l_symbol, scope, l_symbol, scope);
+                    strcat(tac_exp, line);
+                    sprintf(line, "mov $%zu[%s_%u_size], $%zu\n", vector_address, l_symbol, scope, *last_v_idx - 1);
+                    strcat(tac_exp, line);
+                    sprintf(line, "add %s_%u_size, %s_%u_size, 1\n", l_symbol, scope, l_symbol, scope);
+                    strcat(tac_exp, line);
+
+                    *last_v_idx = *last_v_idx + 1;
+                }
+            }
+        } else if (equal_to(type_left, "float") && equal_to(type_right, "float")) {
+            sprintf(line, "mov %s_%u, $%zu\n", l_symbol, scope, *last_v_idx-1);
+            strcat(tac_exp, line);
         }
-        sprintf(line, "mov %s_%u, $%zu\n", l_symbol, scope, *last_v_idx-1);
-        strcat(tac_exp, line);
+
     } else if (equal_to(node->element, "<")) {
         // left_exp
         get_tac_from_node(table, root, node->children[0], tac_exp, last_v_idx, last_label_idx);
@@ -1141,6 +1287,48 @@ char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node
         strcat(tac_exp, line);
 
         *last_v_idx = *last_v_idx + 1;
+    } else if (equal_to(node->element, ":")) {
+        // left_exp
+        get_tac_from_node(table, root, node->children[0], tac_exp, last_v_idx, last_label_idx);
+        size_t left_v_idx = *last_v_idx - 1;
+
+        // right_exp
+        get_tac_from_node(table, root, node->children[1], tac_exp, last_v_idx, last_label_idx);
+        size_t right_v_idx = *last_v_idx - 1;
+
+        char* left_type = node->children[0]->type;
+        char* right_type = node->children[1]->type;
+        bool left_was_cast = false;
+
+        if(equal_to(left_type, "int") && equal_to(right_type, "float")) {
+            sprintf(line, "inttofl $%zu, $%zu\n", *last_v_idx, left_v_idx);
+            left_v_idx = *last_v_idx;
+            *last_v_idx = *last_v_idx + 1;
+            strcat(tac_exp, line);
+            sprintf(line, "push $%zu\n", left_v_idx);
+            strcat(tac_exp, line);
+            sprintf(line, "push $%zu\n", right_v_idx);
+            strcat(tac_exp, line);               
+            left_was_cast = true;            
+        } else if(equal_to(left_type, "float") && equal_to(right_type, "int")) {
+            sprintf(line, "inttofl $%zu, $%zu\n", *last_v_idx, right_v_idx);
+            right_v_idx = *last_v_idx;
+            *last_v_idx = *last_v_idx + 1;
+            strcat(tac_exp, line);
+            sprintf(line, "push $%zu\n", left_v_idx);
+            strcat(tac_exp, line);
+            sprintf(line, "push $%zu\n", right_v_idx);
+            strcat(tac_exp, line);
+            left_was_cast = true;
+
+            *last_v_idx = *last_v_idx + 1;
+        }  else if(equal_to(left_type, "float") && equal_to(right_type, "float")) {
+            sprintf(line, "push $%zu\n", left_v_idx);
+            strcat(tac_exp, line);
+            sprintf(line, "push $%zu\n", right_v_idx);
+            strcat(tac_exp, line);
+        }
+
     } else if (equal_to(node->element, "FunctionCall")) {
         // function name
         char* function_name = node->children[0]->element;
@@ -1327,15 +1515,26 @@ void output_tac(symbol_table* table, syntax_tree* root, char* filename) {
     }
 
     fprintf(fp, ".table\n");
+    uint16_t max_vector_size = 512;
 
     for (int i = 0; i < table->n_lines; i++) {
         if (table->is_var[i]) {
             if (equal_to(table->type[i], "int") || equal_to(table->type[i], "float")) {
                 fprintf(fp, "%s %s_%u\n", table->type[i], table->symbol[i], table->scope[i]->stack[0]);
             } else if (equal_to(table->type[i], "int LIST ")) {
-                fprintf(fp, "int %s_%u[]={0}\n", table->symbol[i], table->scope[i]->stack[0]);
+                fprintf(fp, "int %s_%u[]={", table->symbol[i], table->scope[i]->stack[0]);
+                for (int j = 0; j < max_vector_size-1; j++) {
+                    fprintf(fp, "0, ");
+                }
+                fprintf(fp, "0}\n");
+                fprintf(fp, "int %s_%u_size=0\n", table->symbol[i], table->scope[i]->stack[0]);
             } else if (equal_to(table->type[i], "float LIST ")) {
-                fprintf(fp, "float %s_%u[]={0}\n", table->symbol[i], table->scope[i]->stack[0]);
+                fprintf(fp, "float %s_%u[]={", table->symbol[i], table->scope[i]->stack[0]);
+                for (int j = 0; j < max_vector_size-1; j++) {
+                    fprintf(fp, "0.0, ");
+                }
+                fprintf(fp, "0.0}\n");
+                fprintf(fp, "int %s_%u_size=0\n", table->symbol[i], table->scope[i]->stack[0]);
             }
         }
     }    
