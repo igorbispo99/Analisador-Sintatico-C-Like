@@ -1,3 +1,14 @@
+int {
+
+}
+
+float teste ) {
+
+}
+
+
+int i {return 0;}
+
 int main() {
 	int i;
 	for (i = 0; i < 10 i + 1) {
@@ -5,5 +16,9 @@ int main() {
 	}
 
 	n();
-	
+	i();
+
+	float i;
+	int list fl;
+	fl = i + 10;
 }

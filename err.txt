@@ -18,19 +18,19 @@ time limit exceeded: 6.000000
                                                                                                  ↳ 58: RelationalExpression
                                                                                                        ↳ 60: AdditiveExpression
                                                                                                              ↳ 71: AdditiveExpression • MIN MultiplicativeExpression
-  Second example: FunctionHead LP RP LCB IDENTIFIER ATT AdditiveExpression • MIN UnaryExpression SEMI StatementExp $end
+  Second example: FunctionHead LP RP LCB IDENTIFIER ATT AdditiveExpression • MIN PrimaryExpression SEMI StatementExp $end
   Reduce derivation
     $accept
-    ↳ 0: ROOT_TREE                                                                                                                                                                                                                              $end
+    ↳ 0: ROOT_TREE                                                                                                                                                                                                                                      $end
          ↳ 1: GlobalDef
               ↳ 2: GlobalDec
                    ↳ 5: FunctionDefinition
                         ↳ 10: FunctionHead LP RP CompStatement
                                                  ↳ 28: LCB StatementExp
                                                            ↳ 31: Definition                                                             StatementExp
-                                                                 ↳ 8: IDENTIFIER ATT Expression                                         ↳ 32: Statement                                                                            StatementExp
+                                                                 ↳ 8: IDENTIFIER ATT Expression                                         ↳ 32: Statement                                                                                    StatementExp
                                                                                      ↳ 53: LogicalOrExpression                                ↳ 27: ExpStatement
-                                                                                           ↳ 54: LogicalAndExpression                               ↳ 42: Expression                                                          SEMI
+                                                                                           ↳ 54: LogicalAndExpression                               ↳ 42: Expression                                                                  SEMI
                                                                                                  ↳ 56: EqualityExpression                                 ↳ 53: LogicalOrExpression
                                                                                                        ↳ 58: RelationalExpression                               ↳ 54: LogicalAndExpression
                                                                                                              ↳ 60: AdditiveExpression •                               ↳ 56: EqualityExpression
@@ -38,7 +38,8 @@ time limit exceeded: 6.000000
                                                                                                                                                                                   ↳ 60: AdditiveExpression
                                                                                                                                                                                         ↳ 69: MultiplicativeExpression
                                                                                                                                                                                               ↳ 72: UnaryExpression
-                                                                                                                                                                                                    ↳ 79: MIN UnaryExpression
+                                                                                                                                                                                                    ↳ 75: PrimaryExpression
+                                                                                                                                                                                                          ↳ 92: MIN PrimaryExpression
 src/parser.y: warning: shift/reduce conflict on token MIN [-Wcounterexamples]
 time limit exceeded: 6.000000
   First example: FunctionHead LP RP LCB IDENTIFIER ATT AdditiveExpression MAP AdditiveExpression • MIN MultiplicativeExpression StatementExp $end
@@ -57,19 +58,19 @@ time limit exceeded: 6.000000
                                                                                                  ↳ 56: RelationalExpression
                                                                                                        ↳ 66: AdditiveExpression MAP AdditiveExpression
                                                                                                                                     ↳ 71: AdditiveExpression • MIN MultiplicativeExpression
-  Second example: FunctionHead LP RP LCB IDENTIFIER ATT AdditiveExpression MAP AdditiveExpression • MIN UnaryExpression SEMI StatementExp $end
+  Second example: FunctionHead LP RP LCB IDENTIFIER ATT AdditiveExpression MAP AdditiveExpression • MIN PrimaryExpression SEMI StatementExp $end
   Reduce derivation
     $accept
-    ↳ 0: ROOT_TREE                                                                                                                                                                                                                                                     $end
+    ↳ 0: ROOT_TREE                                                                                                                                                                                                                                                             $end
          ↳ 1: GlobalDef
               ↳ 2: GlobalDec
                    ↳ 5: FunctionDefinition
                         ↳ 10: FunctionHead LP RP CompStatement
                                                  ↳ 28: LCB StatementExp
                                                            ↳ 31: Definition                                                                                    StatementExp
-                                                                 ↳ 8: IDENTIFIER ATT Expression                                                                ↳ 32: Statement                                                                            StatementExp
+                                                                 ↳ 8: IDENTIFIER ATT Expression                                                                ↳ 32: Statement                                                                                    StatementExp
                                                                                      ↳ 53: LogicalOrExpression                                                       ↳ 27: ExpStatement
-                                                                                           ↳ 54: LogicalAndExpression                                                      ↳ 42: Expression                                                          SEMI
+                                                                                           ↳ 54: LogicalAndExpression                                                      ↳ 42: Expression                                                                  SEMI
                                                                                                  ↳ 56: EqualityExpression                                                        ↳ 53: LogicalOrExpression
                                                                                                        ↳ 58: RelationalExpression                                                      ↳ 54: LogicalAndExpression
                                                                                                              ↳ 66: AdditiveExpression MAP AdditiveExpression •                               ↳ 56: EqualityExpression
@@ -77,7 +78,8 @@ time limit exceeded: 6.000000
                                                                                                                                                                                                          ↳ 60: AdditiveExpression
                                                                                                                                                                                                                ↳ 69: MultiplicativeExpression
                                                                                                                                                                                                                      ↳ 72: UnaryExpression
-                                                                                                                                                                                                                           ↳ 79: MIN UnaryExpression
+                                                                                                                                                                                                                           ↳ 75: PrimaryExpression
+                                                                                                                                                                                                                                 ↳ 92: MIN PrimaryExpression
 src/parser.y: warning: shift/reduce conflict on token MIN [-Wcounterexamples]
 time limit exceeded: 6.000000
   First example: FunctionHead LP RP LCB IfHead LP Expression RP IfHead LP Expression IDENTIFIER ATT AdditiveExpression • MIN MultiplicativeExpression Definition StatementExp $end
@@ -101,19 +103,19 @@ time limit exceeded: 6.000000
                                                                                                                                                                             ↳ 58: RelationalExpression
                                                                                                                                                                                   ↳ 60: AdditiveExpression
                                                                                                                                                                                         ↳ 71: AdditiveExpression • MIN MultiplicativeExpression
-  Second example: FunctionHead LP RP LCB IfHead LP Expression RP IfHead LP Expression RP IDENTIFIER ATT AdditiveExpression • MIN UnaryExpression SEMI StatementExp $end
+  Second example: FunctionHead LP RP LCB IfHead LP Expression RP IfHead LP Expression RP IDENTIFIER ATT AdditiveExpression • MIN PrimaryExpression SEMI StatementExp $end
   Reduce derivation
     $accept
-    ↳ 0: ROOT_TREE                                                                                                                                                                                                                                                                                                      $end
+    ↳ 0: ROOT_TREE                                                                                                                                                                                                                                                                                                              $end
          ↳ 1: GlobalDef
               ↳ 2: GlobalDec
                    ↳ 5: FunctionDefinition
                         ↳ 10: FunctionHead LP RP CompStatement
                                                  ↳ 28: LCB StatementExp
                                                            ↳ 32: Statement                                                                                                                                      StatementExp
-                                                                 ↳ 25: SelStatement                                                                                                                             ↳ 32: Statement                                                                            StatementExp
+                                                                 ↳ 25: SelStatement                                                                                                                             ↳ 32: Statement                                                                                    StatementExp
                                                                        ↳ 34: IfHead LP Expression RP Statement                                                                                                        ↳ 27: ExpStatement
-                                                                                                     ↳ 25: SelStatement                                                                                                     ↳ 42: Expression                                                          SEMI
+                                                                                                     ↳ 25: SelStatement                                                                                                     ↳ 42: Expression                                                                  SEMI
                                                                                                            ↳ 35: IfHead LP Expression RP Definition                                                                               ↳ 53: LogicalOrExpression
                                                                                                                                          ↳ 8: IDENTIFIER ATT Expression                                                                 ↳ 54: LogicalAndExpression
                                                                                                                                                              ↳ 53: LogicalOrExpression                                                        ↳ 56: EqualityExpression
@@ -121,7 +123,8 @@ time limit exceeded: 6.000000
                                                                                                                                                                          ↳ 56: EqualityExpression                                                         ↳ 60: AdditiveExpression
                                                                                                                                                                                ↳ 58: RelationalExpression                                                       ↳ 69: MultiplicativeExpression
                                                                                                                                                                                      ↳ 60: AdditiveExpression •                                                       ↳ 72: UnaryExpression
-                                                                                                                                                                                                                                                                            ↳ 79: MIN UnaryExpression
+                                                                                                                                                                                                                                                                            ↳ 75: PrimaryExpression
+                                                                                                                                                                                                                                                                                  ↳ 92: MIN PrimaryExpression
 src/parser.y: warning: shift/reduce conflict on token MIN [-Wcounterexamples]
 time limit exceeded: 6.000000
   First example: FunctionHead LP RP LCB IfHead LP Expression RP IfHead LP Expression RP IDENTIFIER ATT AdditiveExpression MAP AdditiveExpression • MIN MultiplicativeExpression StatementExp $end
@@ -144,19 +147,19 @@ time limit exceeded: 6.000000
                                                                                                                                                                          ↳ 56: RelationalExpression
                                                                                                                                                                                ↳ 66: AdditiveExpression MAP AdditiveExpression
                                                                                                                                                                                                             ↳ 71: AdditiveExpression • MIN MultiplicativeExpression
-  Second example: FunctionHead LP RP LCB IfHead LP Expression RP IfHead LP Expression RP IDENTIFIER ATT AdditiveExpression MAP AdditiveExpression • MIN UnaryExpression SEMI StatementExp $end
+  Second example: FunctionHead LP RP LCB IfHead LP Expression RP IfHead LP Expression RP IDENTIFIER ATT AdditiveExpression MAP AdditiveExpression • MIN PrimaryExpression SEMI StatementExp $end
   Reduce derivation
     $accept
-    ↳ 0: ROOT_TREE                                                                                                                                                                                                                                                                                                                             $end
+    ↳ 0: ROOT_TREE                                                                                                                                                                                                                                                                                                                                     $end
          ↳ 1: GlobalDef
               ↳ 2: GlobalDec
                    ↳ 5: FunctionDefinition
                         ↳ 10: FunctionHead LP RP CompStatement
                                                  ↳ 28: LCB StatementExp
                                                            ↳ 32: Statement                                                                                                                                                             StatementExp
-                                                                 ↳ 25: SelStatement                                                                                                                                                    ↳ 32: Statement                                                                            StatementExp
+                                                                 ↳ 25: SelStatement                                                                                                                                                    ↳ 32: Statement                                                                                    StatementExp
                                                                        ↳ 34: IfHead LP Expression RP Statement                                                                                                                               ↳ 27: ExpStatement
-                                                                                                     ↳ 25: SelStatement                                                                                                                            ↳ 42: Expression                                                          SEMI
+                                                                                                     ↳ 25: SelStatement                                                                                                                            ↳ 42: Expression                                                                  SEMI
                                                                                                            ↳ 35: IfHead LP Expression RP Definition                                                                                                      ↳ 53: LogicalOrExpression
                                                                                                                                          ↳ 8: IDENTIFIER ATT Expression                                                                                        ↳ 54: LogicalAndExpression
                                                                                                                                                              ↳ 53: LogicalOrExpression                                                                               ↳ 56: EqualityExpression
@@ -164,7 +167,8 @@ time limit exceeded: 6.000000
                                                                                                                                                                          ↳ 56: EqualityExpression                                                                                ↳ 60: AdditiveExpression
                                                                                                                                                                                ↳ 58: RelationalExpression                                                                              ↳ 69: MultiplicativeExpression
                                                                                                                                                                                      ↳ 66: AdditiveExpression MAP AdditiveExpression •                                                       ↳ 72: UnaryExpression
-                                                                                                                                                                                                                                                                                                   ↳ 79: MIN UnaryExpression
+                                                                                                                                                                                                                                                                                                   ↳ 75: PrimaryExpression
+                                                                                                                                                                                                                                                                                                         ↳ 92: MIN PrimaryExpression
 time limit exceeded: 6.000000
 time limit exceeded: 6.000000
 time limit exceeded: 6.000000

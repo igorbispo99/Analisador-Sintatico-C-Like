@@ -33,6 +33,18 @@ int main() {
 
   float list FL;
   FL = 1 : (4+2) * (1-7.0) : NIL;
+
+  float list FL2;
+  FL2 = FL;
+
+  int w;
+  w = -7;
+
+  if(!w) {
+    writeln("certo.");
+  }
+
+  writeln(w);
   
   hello_world();
   hello_world_n(n*2 - 5);

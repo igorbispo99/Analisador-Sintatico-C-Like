@@ -15,7 +15,7 @@ bin/parser: obj/parser.o obj/lexical.o obj/main.o obj/symbol_table.o obj/syntax_
 	cp bin/parser tradutor
 
 src/parser.c: src/parser.y
-#	bison -o $@ -d $^ --debug -Wcounterexamples -v
+#	bison -o $@ -d $^ -Wcounterexamples -v --debug
 	bison -o $@ -d $^ -Wall 
 
 src/lexical.c: src/lexical.l

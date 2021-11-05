@@ -39,12 +39,13 @@
 %token NIL STR WRITE READ WRITE_LN
 %token IF ELSE FOR RET
 
+
 %precedence DIF GT LT GEQ LEQ
 %precedence FIL TWD
 
 %precedence RP
 %precedence ELSE
-%precedence IDENTIFIER
+%precedence IDENTIFIER 
 %precedence LP
 
 %type <state> GlobalDef GlobalDec Declaration ParamList CompStatement SelStatement JmpStatement LogicalAndExpression
@@ -113,6 +114,10 @@ Declaration:
 			
 			$$ = new_node(node_str, root, get_scope_symbol(s_table, $3, scope, true), false, str);
 		}
+		| TYPE error {
+			yyerrok;
+			$$=NULL;
+		}
 		;
 
 Definition:
@@ -147,7 +152,7 @@ Definition:
 			}
 		}
 		|
-		IDENTIFIER ATT MIN NUM_CONST_FLOAT {
+		IDENTIFIER ATT MIN Expression  {
 			char* exp_type = get_type_var($1, s_table, scope, true);
 
 			$$ = new_node("=", root, get_scope_symbol(s_table, $1, scope, true), false, exp_type);
@@ -156,9 +161,9 @@ Definition:
 			strcpy(str, $1);
 
 			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, scope, true), true, exp_type));
-			sprintf(str, "-%lf", $4);
+			add_child($$, new_node("-", root, get_scope_symbol(s_table, $1, scope, true), false, $4->type));
 
-			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, scope, true), false, "float"));
+			add_child($$->children[1], $4);
 
 			if (!variable_was_declared(s_table, scope, $1)) {
 				char err[MAX_BUFFER_SIZE];
@@ -172,88 +177,14 @@ Definition:
 			
 			if(!check_type_subtree($$, s_table, scope)) {
 				char err[MAX_BUFFER_SIZE];
-				sprintf(err, "Invalid expression type, at ln %d col %d.", @4.first_line, @4.first_column);
+				sprintf(err, "Invalid operand types, at ln %lu col %lu.", n_line, n_column);
 
 				print_error(err);
 
 				first_pass_sematic_error_found = true;
 			}
 		}
-		|
-		IDENTIFIER ATT MIN NUM_CONST_INT{
-			char* exp_type = get_type_var($1, s_table, scope, true);
 
-			$$ = new_node("=", root, get_scope_symbol(s_table, $1, scope, true), false, exp_type);
-
-			char str[MAX_BUFFER_SIZE];
-			strcpy(str, $1);
-
-			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, scope, true), true, exp_type));
-			sprintf(str, "-%ld", $4);
-
-			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, scope, true), false, "int"));
-
-			if (!variable_was_declared(s_table, scope, $1)) {
-				char err[MAX_BUFFER_SIZE];
-				sprintf(err, "Variable %s not declared, at ln %d col %d.", $1, @1.first_line, @1.first_column);
-
-				print_error(err);
-
-				first_pass_sematic_error_found = true;
-			}
-
-			
-			if(!check_type_subtree($$, s_table, scope)) {
-				char err[MAX_BUFFER_SIZE];
-				sprintf(err, "Invalid expression type, at ln %d col %d.", @4.first_line, @4.first_column);
-
-				print_error(err);
-
-				first_pass_sematic_error_found = true;
-			}
-		}
-		|
-		IDENTIFIER ATT MIN IDENTIFIER {
-			char* exp_type = get_type_var($1, s_table, scope, true);
-			$$ = new_node("=", root, get_scope_symbol(s_table, $1, scope, true), false, exp_type);
-
-			char str[MAX_BUFFER_SIZE];
-			strcpy(str, $1);
-
-			add_child($$, new_node(str, root, get_scope_symbol(s_table, $1, scope, true), true, exp_type));
-
-			exp_type = get_type_var($4, s_table, scope, true);
-			add_child($$, new_node("-", root, get_scope_symbol(s_table, $4, scope, true), false, exp_type));
-
-			add_child($$->children[1], new_node($4, root, get_scope_symbol(s_table, $4, scope, true), true, exp_type));
-
-			if (!variable_was_declared(s_table, scope, $1)) {
-				char err[MAX_BUFFER_SIZE];
-				sprintf(err, "Variable %s not declared, at ln %d col %d.", $1, @1.first_line, @1.first_column);
-
-				print_error(err);
-
-				first_pass_sematic_error_found = true;
-			}
-
-			if (!variable_was_declared(s_table, scope, $4)) {
-				char err[MAX_BUFFER_SIZE];
-				sprintf(err, "Variable %s not declared, at ln %d col %d.", $4, @4.first_line, @4.first_column);
-
-				print_error(err);
-
-				first_pass_sematic_error_found = true;
-			}
-
-			if(!check_type_subtree($$, s_table, scope)) {
-				char err[MAX_BUFFER_SIZE];
-				sprintf(err, "Invalid expression type, at ln %d col %d.", @4.first_line, @4.first_column);
-
-				print_error(err);
-
-				first_pass_sematic_error_found = true;
-			}
-		}
 		;
  
 FunctionDefinition:
@@ -281,7 +212,15 @@ FunctionDefinition:
 		add_child($$, $1);
 		add_child($$, $5);
 		decrease_depth_scope(scope);
+		yyerrok;
 	}
+	| FunctionHead error CompStatement {
+		$$ = new_node("FunctionDefinition", root, scope->stack[0], false, "-");
+		add_child($$, $1);
+		add_child($$, $3);
+		decrease_depth_scope(scope);
+		yyerrok;
+	}	
     ;
 
 FunctionArgs:
@@ -569,6 +508,10 @@ CompStatement:
 		LCB StatementExp {
 			$$ =$2;
 		}
+		|
+		error LCB StatementExp {
+			$$ = $3;
+		}
 		;
 
 StatementExp:
@@ -588,7 +531,7 @@ StatementExp:
 			add_child($$, $1);
 			add_child($$, $2);
 		}
-	|	error RCB {yyerrok; $$ = NULL;}
+	| error RCB {yyerrok; $$=NULL;}
 
 	;
 
@@ -853,13 +796,10 @@ MultiplicativeExpression:
 UnaryExpression:
 		PrimaryExpression { $$ = $1; }
 	|	TNR UnaryExpression {
-			if (equal_to($2->type, "float LIST ")) {
-				$$ = new_node("!", root, scope->stack[0], false, "float LIST ");
-				add_child($$, $2);
-			} else {
-				$$ = new_node("!", root, scope->stack[0], false, "int LIST ");
-				add_child($$, $2);
-			}
+
+			$$ = new_node("!", root, scope->stack[0], false,  $2->type);
+			add_child($$, $2);
+
 		}
 	|	HD UnaryExpression {
 			if (equal_to($2->type, "float LIST ")) {
@@ -878,7 +818,7 @@ UnaryExpression:
 				$$ = new_node("%", root, scope->stack[0], false, "int LIST ");
 				add_child($$, $2);
 			}
-	}
+		}
 	;
 PrimaryExpression:
 		IDENTIFIER {
@@ -1065,6 +1005,7 @@ PrimaryExpression:
 		}
 		
 	|	NIL {$$ = new_node("NIL", root, scope->stack[0], false, "float LIST ");}
+
 	;
 
 Params:

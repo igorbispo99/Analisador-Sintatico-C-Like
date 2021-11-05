@@ -1,5 +1,20 @@
-.code
+.table
+int t[] = {0, 1}
 
-mema $1, 2
-mov $1[0], 10
-mov $1[1], 10.9
+int t2[]= {3,4}
+.code
+mov t2,&t
+mov $1, &t
+mov $2, &t2
+
+mov $3, $1[0]
+println $3
+
+mov $3, $1[1]
+println $3
+
+mov $3, $2[0]
+println $3
+
+mov $3, $2[1]
+println $3

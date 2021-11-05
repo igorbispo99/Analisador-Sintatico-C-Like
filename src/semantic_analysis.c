@@ -743,35 +743,25 @@ uint16_t how_many_constructions(syntax_tree_node* node) {
         return 0;
     }
 
-    uint16_t n_nested_constructions = 1;
+
+    uint16_t n_constructions = 0;
+
+    if (equal_to(node->element, ":")) {
+        n_constructions = 1;
+    }
+
     syntax_tree_node* temp_node = node;
 
-    if(!temp_node->children) {
-        return 0;
-    }
-
-    if(!temp_node->children[0]) {
-        return 0;
-    }
-
-    if(!temp_node->children[0]->element) {
-        return 0;
-    }
-
-    while(equal_to(temp_node->children[0]->element, ":")) {
-        n_nested_constructions++;
-
-        if (temp_node->children){
-            temp_node = temp_node->children[0];
-            if (!temp_node->element) {
-                break;
-            }
-        }else{
+    while(temp_node->n_children == 2) {
+        if (equal_to(temp_node->children[1]->element, ":")) {
+            n_constructions = n_constructions + 1;
+        } else {
             break;
         }
+        temp_node = temp_node->children[1];
     }
 
-    return n_nested_constructions;
+    return n_constructions;
 }
 
 char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node* node, char* tac_exp, size_t* last_v_idx, size_t* last_label_idx) {
@@ -904,16 +894,130 @@ char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node
             strcat(tac_exp, line);
             *last_v_idx = *last_v_idx + 1;
             sprintf(line, "mov %s_%u, $%zu\n", l_symbol, scope, *last_v_idx-1);
-        strcat(tac_exp, line);
+            strcat(tac_exp, line);
         } else if (equal_to(type_left, "float") && equal_to(type_right, "int")) {
             sprintf(line, "inttofl $%zu, $%zu\n", *last_v_idx, *last_v_idx-1);
             strcat(tac_exp, line);
             *last_v_idx = *last_v_idx + 1;
             sprintf(line, "mov %s_%u, $%zu\n", l_symbol, scope, *last_v_idx-1);
             strcat(tac_exp, line);
-        } else if (equal_to(type_left, "float") && equal_to(type_right, "float")) {
+        } else if ((equal_to(type_left, "float") && equal_to(type_right, "float")) ||
+                   (equal_to(type_left, "int") && equal_to(type_right, "int"))) {
             sprintf(line, "mov %s_%u, $%zu\n", l_symbol, scope, *last_v_idx-1);
             strcat(tac_exp, line);
+        } else if ((equal_to(type_left, "float LIST ") || equal_to(type_left, "int LIST ")) && (equal_to(type_right, "float LIST ") || equal_to(type_left, "int LIST "))) {
+            if (node->children[0]->is_symbol && node->children[1]->is_symbol) {
+                sprintf(line, "mov $%zu, %s_%u_size\n", *last_v_idx, node->children[0]->element, which_scope(node->children[0]));
+                size_t size_l_address = *last_v_idx;
+                strcat(tac_exp, line);
+                *last_v_idx = *last_v_idx + 1;
+
+                sprintf(line, "mov $%zu, &%s_%u\n", *last_v_idx, node->children[0]->element, scope);
+                size_t vector_l_address = *last_v_idx;
+                strcat(tac_exp, line);
+                *last_v_idx = *last_v_idx + 1;
+
+                sprintf(line, "mov $%zu, &%s_%u\n", *last_v_idx, node->children[1]->element, which_scope(node->children[1]));
+                size_t vector_r_address = *last_v_idx;
+                strcat(tac_exp, line);
+                *last_v_idx = *last_v_idx + 1;
+
+
+                // loop counter
+                sprintf(line, "mov $%zu, 0\n", *last_v_idx);
+                strcat(tac_exp, line);
+                size_t loop_counter_address = *last_v_idx;
+
+                *last_v_idx = *last_v_idx +1;
+
+                sprintf(line, "LOOP_WRITE_%zu:\n", *last_label_idx);
+                strcat(tac_exp, line);
+                size_t loop_label_idx = *last_label_idx;
+                *last_label_idx = *last_label_idx + 1;
+
+                // loop condition
+                sprintf(line, "slt $%zu, $%zu, %s_%u_size\n",  *last_v_idx, loop_counter_address, node->children[1]->element, which_scope(node->children[1]));
+                strcat(tac_exp, line);
+                *last_v_idx = *last_v_idx + 1;
+
+                // entry of loop
+                sprintf(line, "brz END_WRITE_LOOP_%zu,  $%zu\n",  *last_label_idx, *last_v_idx - 1);
+                strcat(tac_exp, line);
+                size_t end_loop_address = *last_label_idx;
+                *last_v_idx = *last_v_idx + 1;
+
+                //loop body
+                sprintf(line, "mov $%zu, $%zu[$%zu]\n", *last_v_idx, vector_r_address, loop_counter_address);
+                strcat(tac_exp, line);
+                *last_v_idx = *last_v_idx + 1;
+
+
+                sprintf(line, "mov $%zu[$%zu], $%zu\n", vector_l_address, size_l_address, *last_v_idx-1);
+                strcat(tac_exp, line);
+
+                // increment vector indexing   
+                sprintf(line, "add $%zu, $%zu, 1\n", size_l_address, size_l_address);
+                strcat(tac_exp, line);             
+
+                // increment vector size
+                sprintf(line, "add %s_%u_size, %s_%u_size, 1\n", node->children[0]->element, which_scope(node->children[0]), node->children[0]->element, which_scope(node->children[0]));
+                strcat(tac_exp, line);
+
+                // increment loop counter
+                sprintf(line, "add $%zu, $%zu, 1\n", loop_counter_address, loop_counter_address);
+                strcat(tac_exp, line);
+
+
+                sprintf(line, "jump LOOP_WRITE_%zu\n", loop_label_idx);
+                strcat(tac_exp, line);
+                sprintf(line, "END_WRITE_LOOP_%zu:\n", end_loop_address);
+                strcat(tac_exp, line);
+
+
+            } else {
+                uint16_t n_constructors = how_many_constructions(node->children[1]);
+
+                if (n_constructors) {
+                    sprintf(line, "mov $%zu, %s_%u_size\n", *last_v_idx, node->children[0]->element, which_scope(node->children[0]));
+                    size_t size_l_address = *last_v_idx;
+                    strcat(tac_exp, line);
+                    *last_v_idx = *last_v_idx + 1;
+
+
+                    sprintf(line, "mov $%zu, &%s_%u\n", *last_v_idx, node->children[0]->element, scope);
+                    size_t vector_l_address = *last_v_idx;
+                    strcat(tac_exp, line);
+                    *last_v_idx = *last_v_idx + 1;
+    
+                    syntax_tree_node* temp_node = node->children[1];
+
+                    for (int i = 0; i < n_constructors; i++) {
+                        get_tac_from_node(table, root, temp_node->children[0], tac_exp, last_v_idx, last_label_idx);
+
+                        if (equal_to(temp_node->children[0]->type, "float") && equal_to(type_right, "int LIST ")) {
+                            sprintf(line, "fltoint $%zu, $%zu\n", *last_v_idx, *last_v_idx -1);
+                            strcat(tac_exp, line);
+                            *last_v_idx = *last_v_idx + 1;
+                        } else if (equal_to(temp_node->children[0]->type, "int") && equal_to(type_right, "float LIST ")) {
+                            sprintf(line, "inttofl $%zu, $%zu\n", *last_v_idx, *last_v_idx -1);
+                            strcat(tac_exp, line);
+                            *last_v_idx = *last_v_idx + 1;
+                        }
+
+                        sprintf(line, "mov $%zu[$%zu], $%zu\n", vector_l_address, size_l_address, *last_v_idx - 1);
+                        strcat(tac_exp, line);
+                        sprintf(line, "add %s_%u_size, %s_%u_size, 1\n", node->children[0]->element, which_scope(node->children[0]),
+                                                                        node->children[0]->element, which_scope(node->children[0]));
+                        strcat(tac_exp, line);
+                        sprintf(line, "add $%zu, $%zu, 1\n", size_l_address, size_l_address);
+                        strcat(tac_exp, line);
+
+                        temp_node = temp_node->children[1];
+                    }
+
+                }
+
+            }
         }
 
     } else if (equal_to(node->element, "<")) {
@@ -1016,38 +1120,49 @@ char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node
 
         *last_v_idx = *last_v_idx + 1;
     } else if (equal_to(node->element, "-")) {
-        // left_exp
-        get_tac_from_node(table, root, node->children[0], tac_exp, last_v_idx, last_label_idx);
-        size_t left_v_idx = *last_v_idx - 1;
 
-        // right_exp
-        get_tac_from_node(table, root, node->children[1], tac_exp, last_v_idx, last_label_idx);
+        if (node->n_children == 2) {
+            // left_exp
+            get_tac_from_node(table, root, node->children[0], tac_exp, last_v_idx, last_label_idx);
+            size_t left_v_idx = *last_v_idx - 1;
 
-        char* left_type = node->children[0]->type;
-        char* right_type = node->children[1]->type;
-        bool left_was_cast = false;
+            // right_exp
+            get_tac_from_node(table, root, node->children[1], tac_exp, last_v_idx, last_label_idx);
 
-        if(equal_to(left_type, "int") && equal_to(right_type, "float")) {
-            sprintf(line, "inttofl $%zu, $%zu\n", *last_v_idx, left_v_idx);
-            *last_v_idx = *last_v_idx + 1;
-            left_was_cast = true;
+            char* left_type = node->children[0]->type;
+            char* right_type = node->children[1]->type;
+            bool left_was_cast = false;
+
+            if(equal_to(left_type, "int") && equal_to(right_type, "float")) {
+                sprintf(line, "inttofl $%zu, $%zu\n", *last_v_idx, left_v_idx);
+                *last_v_idx = *last_v_idx + 1;
+                left_was_cast = true;
+                strcat(tac_exp, line);
+
+            } else if(equal_to(left_type, "float") && equal_to(right_type, "int")) {
+                sprintf(line, "inttofl $%zu, $%zu\n", *last_v_idx, *last_v_idx -1);
+                *last_v_idx = *last_v_idx + 1;
+                strcat(tac_exp, line);
+            }
+
+            if (left_was_cast){
+                sprintf(line, "sub $%zu, $%zu, $%zu\n", *last_v_idx, *last_v_idx-1, *last_v_idx-2);
+            } else {
+                sprintf(line, "sub $%zu, $%zu, $%zu\n", *last_v_idx, left_v_idx, *last_v_idx-1);
+            }
+
             strcat(tac_exp, line);
 
-        } else if(equal_to(left_type, "float") && equal_to(right_type, "int")) {
-            sprintf(line, "inttofl $%zu, $%zu\n", *last_v_idx, *last_v_idx -1);
             *last_v_idx = *last_v_idx + 1;
-            strcat(tac_exp, line);
-        }
-
-        if (left_was_cast){
-            sprintf(line, "sub $%zu, $%zu, $%zu\n", *last_v_idx, *last_v_idx-1, *last_v_idx-2);
-        } else {
-            sprintf(line, "sub $%zu, $%zu, $%zu\n", *last_v_idx, left_v_idx, *last_v_idx-1);
-        }
+        } else if (node->n_children == 1) {
+            // right exp
+            get_tac_from_node(table, root, node->children[0], tac_exp, last_v_idx, last_label_idx);
+            sprintf(line, "minus $%zu, $%zu\n", *last_v_idx, *last_v_idx-1);
 
         strcat(tac_exp, line);
 
         *last_v_idx = *last_v_idx + 1;
+        }
     } else if (equal_to(node->element, "*")) {
         // left_exp
         get_tac_from_node(table, root, node->children[0], tac_exp, last_v_idx, last_label_idx);
@@ -1313,6 +1428,15 @@ char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node
         strcat(tac_exp, line);
 
         *last_v_idx = *last_v_idx + 1;
+    } else if (equal_to(node->element, "!")) {
+        if (equal_to(node->type, "int")) {
+            get_tac_from_node(table, root, node->children[0], tac_exp, last_v_idx, last_label_idx);
+
+            sprintf(line, "not $%zu, $%zu\n", *last_v_idx, *last_v_idx-1);
+            strcat(tac_exp, line);
+
+            *last_v_idx = *last_v_idx + 1;
+        }
     } else if (equal_to(node->element, "FunctionCall")) {
         // function name
         char* function_name = node->children[0]->element;
@@ -1437,8 +1561,8 @@ char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node
     } else if (is_num(node->element)) {
         // number literal
         sprintf(line, "mov $%zu, %s\n", *last_v_idx, node->element);
-
         strcat(tac_exp, line);
+
         *last_v_idx = *last_v_idx + 1;
     } else if (equal_to(node->element, "RETURN")) {
         if (!is_inside_main(node, root)) { 

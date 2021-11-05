@@ -20,15 +20,17 @@ int n_6
 .code
 
 read_list:
-add $1, -435.700000, 0.0
-fltoint $2, $1
-mov i_1, $2
-add $3, 0, 0.0
+mov $1, 435.700000
+minus $2, $1
+minus $2, $1
+fltoint $3, $2
+mov i_1, $3
+mov $4, 0
 FOR_1:
-mov $4, i_1
-mov $5, n_1
-slt $6, $4, $5
-brz FOR_END_2, $6
+mov $5, i_1
+mov $6, n_1
+slt $7, $5, $6
+brz FOR_END_2, $7
 print 'D'
 print 'i'
 print 'g'
@@ -59,24 +61,24 @@ print ':'
 print ' '
 print '\n'
 scani elem_2
-mov $7, i_1
-add $8, 1, 0.0
-add $9, $7, $8
+mov $8, i_1
+mov $9, 1
+add $10, $8, $9
 jump FOR_1
 FOR_END_2:
-mov $10, new_1
-return $10
+mov $11, new_1
+return $11
 
 succ:
 mov $1, i_3
-add $2, 1, 0.0
+mov $2, 1
 add $3, $1, $2
 return $3
 return 0.0
 
 leq_10:
 mov $1, x_4
-add $2, 10, 0.0
+mov $2, 10
 inttofl $3, $2
 sleq $4, $1, $3
 return $4
@@ -125,8 +127,8 @@ print 'a'
 print ':'
 print ' '
 print '\n'
-add $1, 1, 0.0
-add $2, 1, 0.0
+mov $1, 1
+mov $2, 1
 sub $3, $1, $2
 scani n_5
 mov $4, n_5
@@ -138,14 +140,14 @@ mov $6, #0
 mov $7, FL10_5
 sub $8, $7, $7
 brz IF_ELSE_3, $8
-add $9, 0, 0.0
+mov $9, 0
 mov $10, FL10_5
 FOR_4:
 mov $11, AUXL_6
 sub $12, $11, $11
 brz FOR_END_5, $12
 mov $13, n_5
-add $14, 1, 0.0
+mov $14, 1
 add $15, $13, $14
 print $15
 print ' '
@@ -223,10 +225,10 @@ print 's'
 print '.'
 print '\n'
 END_IF_ELSE_6:
-add $17, 10, 0.0
-add $18, 10, 0.0
-add $19, 1, 0.0
-add $20, 2, 0.0
+mov $17, 10
+mov $18, 10
+mov $19, 1
+mov $20, 2
 add $21, $19, $20
 mul $22, $18, $21
 add $23, $17, $22
