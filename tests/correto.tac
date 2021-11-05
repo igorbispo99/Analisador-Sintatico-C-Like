@@ -110,27 +110,49 @@ mul $15, $14, $13
 mov $4[$3], $15
 add FL_6_size, FL_6_size, 1
 add $3, $3, 1
-mov $16, FL_6
-mov $17, FL2_6_size
-mov $18, &FL2_6
-mov $19, &FL_6
-mov $20, 0
-LOOP_WRITE_3:
-slt $21, $20, FL_6_size
-brz END_WRITE_LOOP_4,  $21
-mov $23, $19[$20]
-mov $18[$17], $23
-add $17, $17, 1
+mov $16, FL2_6_size
+mov $17, &FL2_6
+mov $18, i_6
+inttofl $19, $18
+mov $17[$16], $19
 add FL2_6_size, FL2_6_size, 1
+add $16, $16, 1
+mov $20, FL2_6_size
+mov $21, &FL2_6
+mov $22, &FL_6
+mov $23, 0
+LOOP_WRITE_3:
+slt $24, $23, FL_6_size
+brz END_WRITE_LOOP_4,  $24
+mov $26, $22[$23]
+mov $21[$20], $26
 add $20, $20, 1
+add FL2_6_size, FL2_6_size, 1
+add $23, $23, 1
 jump LOOP_WRITE_3
 END_WRITE_LOOP_4:
-mov $24, 7
-minus $25, $24
-mov w_6, $25
-mov $26, w_6
-not $27, $26
-brz IF_END_4, $27
+mov $27, &FL2_6
+mov $28, $27[0]
+println $28
+mov $29, &FL_6
+mov $30, $29[0]
+println $30
+mov $31, 7
+minus $32, $31
+mov w_6, $32
+mov $33, w_6
+not $34, $33
+brz IF_ELSE_4, $34
+print 'e'
+print 'r'
+print 'r'
+print 'a'
+print 'd'
+print 'o'
+print '.'
+print '\n'
+jump END_IF_ELSE_5
+IF_ELSE_4:
 print 'c'
 print 'e'
 print 'r'
@@ -138,37 +160,37 @@ print 't'
 print 'o'
 print '.'
 print '\n'
-IF_END_4:
-mov $28, w_6
-println $28
+END_IF_ELSE_5:
+mov $35, w_6
+println $35
 call hello_world
-mov $29, #0
-mov $30, n_6
-mov $31, 2
-inttofl $32, $31
-mul $33, $30, $32
-mov $34, 5
-inttofl $35, $34
-sub $36, $33, $35
-push $36
-pop $37
-fltoint $38, $37
-mov n_5, $38
-call hello_world_n
-mov $39, #0
-mov $40, i_6
-brz IF_END_6, $40
+mov $36, #0
+mov $37, n_6
+mov $38, 2
+inttofl $39, $38
+mul $40, $37, $39
 mov $41, 5
-mov i_6, $41
+inttofl $42, $41
+sub $43, $40, $42
+push $43
+pop $44
+fltoint $45, $44
+mov n_5, $45
+call hello_world_n
+mov $46, #0
+mov $47, i_6
+brz IF_END_6, $47
+mov $48, 5
+mov i_6, $48
 FOR_7:
-mov $42, i_6
-mov $43, 0
-sleq $44, $43, $42
-brz FOR_END_8, $44
-mov $45, i_6
-mov $46, 2
-slt $47, $46, $45
-brz IF_ELSE_9, $47
+mov $49, i_6
+mov $50, 0
+sleq $51, $50, $49
+brz FOR_END_8, $51
+mov $52, i_6
+mov $53, 2
+slt $54, $53, $52
+brz IF_ELSE_9, $54
 print 'a'
 print '\n'
 jump END_IF_ELSE_10
@@ -176,33 +198,33 @@ IF_ELSE_9:
 print 'b'
 print '\n'
 END_IF_ELSE_10:
-mov $48, i_6
-mov $49, 1
-sub $50, $48, $49
-mov i_6, $50
+mov $55, i_6
+mov $56, 1
+sub $57, $55, $56
+mov i_6, $57
 jump FOR_7
 FOR_END_8:
 IF_END_6:
-mov $51, 3.500000
-mov $52, 2
-inttofl $53, $52
-add $54, $51, $53
-mov $55, 7
-inttofl $56, $55
-mul $57, $54, $56
-mov $58, 4
-inttofl $59, $58
-div $60, $57, $59
-mov $61, 2
-inttofl $62, $61
-sub $63, $60, $62
-fltoint $64, $63
-mov a_6, $64
+mov $58, 3.500000
+mov $59, 2
+inttofl $60, $59
+add $61, $58, $60
+mov $62, 7
+inttofl $63, $62
+mul $64, $61, $63
+mov $65, 4
+inttofl $66, $65
+div $67, $64, $66
+mov $68, 2
+inttofl $69, $68
+sub $70, $67, $69
+fltoint $71, $70
+mov a_6, $71
 scani b_6
-mov $65, a_6
-mov $66, b_6
-and $67, $65, $66
-brz IF_END_12, $67
+mov $72, a_6
+mov $73, b_6
+and $74, $72, $73
+brz IF_END_12, $74
 print 'A'
 print ' '
 print 'a'
@@ -211,15 +233,15 @@ print 'd'
 print ' '
 print 'B'
 print '\n'
-mov $68, a_6
-println $68
-mov $69, b_6
-println $69
+mov $75, a_6
+println $75
+mov $76, b_6
+println $76
 IF_END_12:
-mov $70, a_6
-mov $71, b_6
-or $72, $70, $71
-brz IF_END_14, $72
+mov $77, a_6
+mov $78, b_6
+or $79, $77, $78
+brz IF_END_14, $79
 print 'A'
 print ' '
 print 'o'
@@ -229,61 +251,26 @@ print 'B'
 print '\n'
 print 'a'
 print '='
-mov $73, a_6
-println $73
-print 'b'
-print '='
-mov $74, b_6
-println $74
-IF_END_14:
-mov $75, 0
-mov a_6, $75
-mov $76, a_6
-mov $77, b_6
-and $78, $76, $77
-brz IF_END_16, $78
-print 'A'
-print ' '
-print 'a'
-print 'n'
-print 'd'
-print ' '
-print 'B'
-print ','
-print ' '
-print 'a'
-print '='
-print '0'
-print '\n'
-print 'a'
-print '='
-mov $79, a_6
-println $79
-print 'b'
-print '='
-mov $80, b_6
+mov $80, a_6
 println $80
-IF_END_16:
-mov $81, a_6
-mov $82, b_6
-or $83, $81, $82
-mov $84, a_6
+print 'b'
+print '='
+mov $81, b_6
+println $81
+IF_END_14:
+mov $82, 0
+mov a_6, $82
+mov $83, a_6
+mov $84, b_6
 and $85, $83, $84
-brz IF_END_18, $85
-print '('
+brz IF_END_16, $85
 print 'A'
-print ' '
-print 'o'
-print 'r'
-print ' '
-print 'B'
-print ')'
 print ' '
 print 'a'
 print 'n'
 print 'd'
 print ' '
-print 'A'
+print 'B'
 print ','
 print ' '
 print 'a'
@@ -298,12 +285,47 @@ print 'b'
 print '='
 mov $87, b_6
 println $87
-IF_END_18:
+IF_END_16:
 mov $88, a_6
-mov $89, a_6
-sub $90, $88, $89
-not $90, $90
-brz IF_END_20, $90
+mov $89, b_6
+or $90, $88, $89
+mov $91, a_6
+and $92, $90, $91
+brz IF_END_18, $92
+print '('
+print 'A'
+print ' '
+print 'o'
+print 'r'
+print ' '
+print 'B'
+print ')'
+print ' '
+print 'a'
+print 'n'
+print 'd'
+print ' '
+print 'A'
+print ','
+print ' '
+print 'a'
+print '='
+print '0'
+print '\n'
+print 'a'
+print '='
+mov $93, a_6
+println $93
+print 'b'
+print '='
+mov $94, b_6
+println $94
+IF_END_18:
+mov $95, a_6
+mov $96, a_6
+sub $97, $95, $96
+not $97, $97
+brz IF_END_20, $97
 print '('
 print 'A'
 print ' '
@@ -326,17 +348,17 @@ print '0'
 print '\n'
 print 'a'
 print '='
-mov $91, a_6
-println $91
+mov $98, a_6
+println $98
 print 'b'
 print '='
-mov $92, b_6
-println $92
+mov $99, b_6
+println $99
 IF_END_20:
-mov $93, a_6
-mov $94, b_6
-sub $95, $93, $94
-brz IF_ELSE_22, $95
+mov $100, a_6
+mov $101, b_6
+sub $102, $100, $101
+brz IF_ELSE_22, $102
 print '('
 print 'A'
 print ' '
@@ -359,12 +381,12 @@ print '0'
 print '\n'
 print 'a'
 print '='
-mov $96, a_6
-println $96
+mov $103, a_6
+println $103
 print 'b'
 print '='
-mov $97, b_6
-println $97
+mov $104, b_6
+println $104
 jump END_IF_ELSE_23
 IF_ELSE_22:
 print '('
@@ -389,37 +411,37 @@ print '0'
 print '\n'
 print 'a'
 print '='
-mov $98, a_6
-println $98
+mov $105, a_6
+println $105
 print 'b'
 print '='
-mov $99, b_6
-println $99
+mov $106, b_6
+println $106
 END_IF_ELSE_23:
-mov $100, i_6
-push $100
-mov $101, a_6
-push $101
-mov $102, 10
-mov $103, 3
-div $104, $102, $103
-push $104
-mov $105, 1
-mov $106, 5
-sub $107, $105, $106
+mov $107, i_6
 push $107
-pop $108
-mov c_1, $108
-pop $109
-mov b_1, $109
-pop $110
-inttofl $111, $110
-mov a_1, $111
-pop $112
-mov i_1, $112
+mov $108, a_6
+push $108
+mov $109, 10
+mov $110, 3
+div $111, $109, $110
+push $111
+mov $112, 1
+mov $113, 5
+sub $114, $112, $113
+push $114
+pop $115
+mov c_1, $115
+pop $116
+mov b_1, $116
+pop $117
+inttofl $118, $117
+mov a_1, $118
+pop $119
+mov i_1, $119
 call teste
-mov $113, #0
-mov i_6, $113
+mov $120, #0
+mov i_6, $120
 print 'R'
 print 'e'
 print 't'
@@ -448,6 +470,6 @@ print 'e'
 print ' '
 print 'a'
 print ':'
-mov $114, i_6
-println $114
+mov $121, i_6
+println $121
 println 

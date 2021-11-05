@@ -610,6 +610,16 @@ ItStatement:
 			decrease_depth_scope(scope);
 		}
 		|
+
+		ForHead LP ExpAtt SEMI ExpAtt SEMI ExpAtt RP Definition {
+			$$ = new_node("FOR", root, scope->stack[0], false, "-");
+			add_child($$, $3);
+			add_child($$, $5);
+			add_child($$, $7);
+			add_child($$, $9);
+			decrease_depth_scope(scope);
+		}
+		|
 		ForHead LP ExpAtt SEMI error RP Statement {
 			$$ = new_node("FOR", root, scope->stack[0], false, "-");
 			add_child($$, $3);

@@ -911,11 +911,6 @@ char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node
             strcat(tac_exp, line);
         } else if ((equal_to(type_left, "float LIST ") || equal_to(type_left, "int LIST ")) && (equal_to(type_right, "float LIST ") || equal_to(type_left, "int LIST "))) {
             if (node->children[0]->is_symbol && node->children[1]->is_symbol) {
-                sprintf(line, "mov $%zu, %s_%u_size\n", *last_v_idx, node->children[0]->element, which_scope(node->children[0]));
-                size_t size_l_address = *last_v_idx;
-                strcat(tac_exp, line);
-                *last_v_idx = *last_v_idx + 1;
-
                 sprintf(line, "mov $%zu, &%s_%u\n", *last_v_idx, node->children[0]->element, scope);
                 size_t vector_l_address = *last_v_idx;
                 strcat(tac_exp, line);
@@ -925,7 +920,6 @@ char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node
                 size_t vector_r_address = *last_v_idx;
                 strcat(tac_exp, line);
                 *last_v_idx = *last_v_idx + 1;
-
 
                 // loop counter
                 sprintf(line, "mov $%zu, 0\n", *last_v_idx);
@@ -955,13 +949,8 @@ char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node
                 strcat(tac_exp, line);
                 *last_v_idx = *last_v_idx + 1;
 
-
-                sprintf(line, "mov $%zu[$%zu], $%zu\n", vector_l_address, size_l_address, *last_v_idx-1);
-                strcat(tac_exp, line);
-
-                // increment vector indexing   
-                sprintf(line, "add $%zu, $%zu, 1\n", size_l_address, size_l_address);
-                strcat(tac_exp, line);             
+                sprintf(line, "mov $%zu[$%zu], $%zu\n", vector_l_address, loop_counter_address, *last_v_idx-1);
+                strcat(tac_exp, line);      
 
                 // increment vector size
                 sprintf(line, "add %s_%u_size, %s_%u_size, 1\n", node->children[0]->element, which_scope(node->children[0]), node->children[0]->element, which_scope(node->children[0]));
@@ -971,13 +960,10 @@ char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node
                 sprintf(line, "add $%zu, $%zu, 1\n", loop_counter_address, loop_counter_address);
                 strcat(tac_exp, line);
 
-
                 sprintf(line, "jump LOOP_WRITE_%zu\n", loop_label_idx);
                 strcat(tac_exp, line);
                 sprintf(line, "END_WRITE_LOOP_%zu:\n", end_loop_address);
                 strcat(tac_exp, line);
-
-
             } else {
                 uint16_t n_constructors = how_many_constructions(node->children[1]);
 
@@ -1017,6 +1003,73 @@ char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node
                         strcat(tac_exp, line);
 
                         temp_node = temp_node->children[1];
+                    }
+
+                    if (temp_node->is_symbol) {
+                        sprintf(line, "mov $%zu, %s_%u_size\n", *last_v_idx, node->children[0]->element, which_scope(node->children[0]));
+                        size_t size_l_address = *last_v_idx;
+                        strcat(tac_exp, line);
+                        *last_v_idx = *last_v_idx + 1;
+
+                        sprintf(line, "mov $%zu, &%s_%u\n", *last_v_idx, node->children[0]->element, scope);
+                        size_t vector_l_address = *last_v_idx;
+                        strcat(tac_exp, line);
+                        *last_v_idx = *last_v_idx + 1;
+
+                        sprintf(line, "mov $%zu, &%s_%u\n", *last_v_idx, temp_node->element, which_scope(temp_node));
+                        size_t vector_r_address = *last_v_idx;
+                        strcat(tac_exp, line);
+                        *last_v_idx = *last_v_idx + 1;
+
+                        // loop counter
+                        sprintf(line, "mov $%zu, 0\n", *last_v_idx);
+                        strcat(tac_exp, line);
+                        size_t loop_counter_address = *last_v_idx;
+
+                        *last_v_idx = *last_v_idx +1;
+
+                        sprintf(line, "LOOP_WRITE_%zu:\n", *last_label_idx);
+                        strcat(tac_exp, line);
+                        size_t loop_label_idx = *last_label_idx;
+                        *last_label_idx = *last_label_idx + 1;
+
+                        // loop condition
+                        sprintf(line, "slt $%zu, $%zu, %s_%u_size\n",  *last_v_idx, loop_counter_address, temp_node->element, which_scope(temp_node));
+                        strcat(tac_exp, line);
+                        *last_v_idx = *last_v_idx + 1;
+
+                        // entry of loop
+                        sprintf(line, "brz END_WRITE_LOOP_%zu,  $%zu\n",  *last_label_idx, *last_v_idx - 1);
+                        strcat(tac_exp, line);
+                        size_t end_loop_address = *last_label_idx;
+                        *last_v_idx = *last_v_idx + 1;
+
+                        //loop body
+                        sprintf(line, "mov $%zu, $%zu[$%zu]\n", *last_v_idx, vector_r_address, loop_counter_address);
+                        strcat(tac_exp, line);
+                        *last_v_idx = *last_v_idx + 1;
+
+
+                        sprintf(line, "mov $%zu[$%zu], $%zu\n", vector_l_address, size_l_address, *last_v_idx-1);
+                        strcat(tac_exp, line);
+
+                        // increment vector indexing   
+                        sprintf(line, "add $%zu, $%zu, 1\n", size_l_address, size_l_address);
+                        strcat(tac_exp, line);             
+
+                        // increment vector size
+                        sprintf(line, "add %s_%u_size, %s_%u_size, 1\n", node->children[0]->element, which_scope(node->children[0]), node->children[0]->element, which_scope(node->children[0]));
+                        strcat(tac_exp, line);
+
+                        // increment loop counter
+                        sprintf(line, "add $%zu, $%zu, 1\n", loop_counter_address, loop_counter_address);
+                        strcat(tac_exp, line);
+
+
+                        sprintf(line, "jump LOOP_WRITE_%zu\n", loop_label_idx);
+                        strcat(tac_exp, line);
+                        sprintf(line, "END_WRITE_LOOP_%zu:\n", end_loop_address);
+                        strcat(tac_exp, line);
                     }
 
                 }
@@ -1441,7 +1494,7 @@ char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node
 
             *last_v_idx = *last_v_idx + 1;
         }
-    } else if (equal_to(node->type, "?")) {
+    } else if (equal_to(node->element, "?")) {
         if (node->children[0]->is_symbol) {
             sprintf(line, "mov $%zu, &%s_%u\n", *last_v_idx, node->children[0]->element, node->children[0]->scope);
             strcat(tac_exp, line);
