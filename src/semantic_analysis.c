@@ -1442,7 +1442,14 @@ char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node
             *last_v_idx = *last_v_idx + 1;
         }
     } else if (equal_to(node->type, "?")) {
-
+        if (node->children[0]->is_symbol) {
+            sprintf(line, "mov $%zu, &%s_%u\n", *last_v_idx, node->children[0]->element, node->children[0]->scope);
+            strcat(tac_exp, line);
+            *last_v_idx = *last_v_idx + 1;
+            sprintf(line, "mov $%zu, $%zu[0]\n", *last_v_idx, *last_v_idx-1);
+            strcat(tac_exp, line);
+            *last_v_idx = *last_v_idx + 1;
+        }
     } else if (equal_to(node->element, "FunctionCall")) {
         // function name
         char* function_name = node->children[0]->element;
