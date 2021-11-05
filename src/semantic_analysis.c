@@ -149,6 +149,10 @@ char* check_type_subtree(syntax_tree_node* node, symbol_table* table, scope_t* s
     } else if (node->n_children == 1) {
         char* child_type = check_type_subtree(node->children[0], table, scope);
 
+        if(!child_type) {
+            return NULL;
+        }
+
         if (equal_to(node->element, "PrimaryExpression") || equal_to(node->element, "Args")) {
             strcpy(node->type, child_type);
             return child_type;
@@ -1437,6 +1441,8 @@ char* get_tac_from_node(symbol_table* table, syntax_tree* root, syntax_tree_node
 
             *last_v_idx = *last_v_idx + 1;
         }
+    } else if (equal_to(node->type, "?")) {
+
     } else if (equal_to(node->element, "FunctionCall")) {
         // function name
         char* function_name = node->children[0]->element;
